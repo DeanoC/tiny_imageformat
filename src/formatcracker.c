@@ -23,7 +23,7 @@ AL2O3_EXTERN_C char const *ImageFormat_Name(enum ImageFormat const fmt) {
 
 AL2O3_EXTERN_C ImageFormat ImageFormat_FromName(char const * name) {
   for (size_t i = 0u; i < ImageFormat_Count(); ++i) {
-    if (_stricmp(name, ImageFormat_Name(i)) == 0) {
+    if (stricmp(name, ImageFormat_Name(i)) == 0) {
       return (ImageFormat)i;
     }
   }
