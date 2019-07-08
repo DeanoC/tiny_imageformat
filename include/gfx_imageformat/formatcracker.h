@@ -322,8 +322,8 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsCompressed(enum ImageFormat const fmt) 
 	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
 	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
 	case ImageFormat_ASTC_12x12_SRGB_BLOCK:
-
 		return true;
+
 	default:return false;
 	}
 }
