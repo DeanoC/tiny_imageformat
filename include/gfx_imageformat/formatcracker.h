@@ -502,6 +502,8 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_BitSizeOfBlock(ImageFormat const fmt)
 	case ImageFormat_BC1_RGB_SRGB_BLOCK:
 	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
 	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case ImageFormat_BC4_UNORM_BLOCK:
+	case ImageFormat_BC4_SNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_BLOCK:
 	case ImageFormat_PVR_2BPPA_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
@@ -515,8 +517,6 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_BitSizeOfBlock(ImageFormat const fmt)
 	case ImageFormat_BC2_SRGB_BLOCK:
 	case ImageFormat_BC3_UNORM_BLOCK:
 	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
 	case ImageFormat_BC5_UNORM_BLOCK:
 	case ImageFormat_BC5_SNORM_BLOCK:
 	case ImageFormat_BC6H_UFLOAT_BLOCK:
