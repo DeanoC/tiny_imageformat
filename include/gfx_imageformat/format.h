@@ -217,7 +217,12 @@ IF_START_MACRO
 	IF_MOD_MACRO(ASTC_12x12_UNORM_BLOCK )
 	IF_MOD_MACRO(ASTC_12x12_SRGB_BLOCK )
 
-IF_END_MACRO
+	// upto here these are all valid vkFormat from now on they aren't necessarily
+	// uploaded to *any* vulkan device
+	IF_MOD_MACRO(A4R4G4B4_UNORM_PACK16)
+	IF_MOD_MACRO(A8R8G8B8_UNORM_PACK32)
+
+	IF_END_MACRO
 #undef IF_START_MACRO
 #undef IF_MOD_MACRO
 #undef IF_END_MACRO
