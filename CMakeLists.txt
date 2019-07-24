@@ -9,7 +9,7 @@ if(NOT al2o3_POPULATED)
 endif()
 
 SET_MIN_VERSIONS()
-set(LibName gfx_imageformat)
+set(LibName tiny_imageformat)
 project(${LibName})
 
 set(Interface

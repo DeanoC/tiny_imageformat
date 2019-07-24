@@ -1,16 +1,17 @@
 #include "al2o3_platform/platform.h"
 #include "al2o3_catch2/catch2.hpp"
 
-#include "gfx_imageformat/format.h"
-#include "gfx_imageformat/formatcracker.h"
+#include "tiny_imageformat/format.h"
+#include "tiny_imageformat/formatcracker.h"
 
 TEST_CASE("Format Cracker IsDepth (C)", "[Image]") {
 
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
+	REQUIRE(ImageFormat_Count() == formatCount);
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
     switch (fmt) {
@@ -34,7 +35,7 @@ TEST_CASE("Format Cracker IsStencil (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
@@ -58,7 +59,7 @@ TEST_CASE("Format Cracker IsDepthStencil (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
@@ -81,7 +82,7 @@ TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
@@ -117,7 +118,7 @@ TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
@@ -186,7 +187,7 @@ TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
@@ -264,7 +265,7 @@ TEST_CASE("Format Cracker IsSRGB (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
@@ -300,7 +301,7 @@ TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   for (int i = 0; i < formatCount; ++i) {
     enum ImageFormat fmt = (ImageFormat) i;

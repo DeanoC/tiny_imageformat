@@ -2,7 +2,7 @@
 #ifndef TINYIMAGEFORMAT_IMAGEFORMAT_H
 #define TINYIMAGEFORMAT_IMAGEFORMAT_H
 
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 #ifndef TINYKTX_HAVE_UINTXX_T
 #include <stdint.h> // for uint32_t etc.
 #endif
@@ -41,7 +41,18 @@
 AL2O3_EXTERN_C char const *ImageFormat_Name(ImageFormat const fmt);
 AL2O3_EXTERN_C ImageFormat ImageFormat_FromName(char const *name);
 
+#ifdef __cplusplus
+constexpr size_t ImageFormat_Count() {
+	size_t count = 0;
+#define IF_START_MACRO
+#define IF_MOD_MACRO(x) count++;
+#define IF_END_MACRO
+#include "tiny_imageformat/format.h"
+	return count;
+}
+#else
 AL2O3_EXTERN_C size_t ImageFormat_Count();
+#endif
 
 AL2O3_EXTERN_C inline bool ImageFormat_IsDepth(enum ImageFormat const fmt) {
 	switch (fmt) {
@@ -2728,7 +2739,7 @@ AL2O3_EXTERN_C char const *ImageFormat_Name(enum ImageFormat const fmt) {
 #define IF_MOD_MACRO(x) case ImageFormat_##x: return #x;
 #define IF_END_MACRO };
 
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
 
   return "Unknown Format";
 }
@@ -2742,16 +2753,19 @@ AL2O3_EXTERN_C ImageFormat ImageFormat_FromName(char const * name) {
   return ImageFormat_UNDEFINED;
 }
 
+#ifndef __cplusplus
 AL2O3_EXTERN_C size_t ImageFormat_Count() {
   static size_t s_count = 0;
   if (s_count == 0) {
 #define IF_START_MACRO
 #define IF_MOD_MACRO(x) s_count++;
 #define IF_END_MACRO
-#include "gfx_imageformat/format.h"
+#include "tiny_imageformat/format.h"
   }
   return s_count;
 }
+#endif
+
 #endif
 
 #endif //TINYIMAGEFORMAT_IMAGEFORMAT_H
