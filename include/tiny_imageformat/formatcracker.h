@@ -3,18 +3,18 @@
 #define TINYIMAGEFORMAT_IMAGEFORMAT_H
 
 #include "tiny_imageformat/format.h"
-#ifndef TINYKTX_HAVE_UINTXX_T
+#ifndef TINYIMAGEFORMAT_HAVE_UINTXX_T
 #include <stdint.h> // for uint32_t etc.
 #endif
-#ifndef TINYKTX_HAVE_BOOL
+#ifndef TINYIMAGEFORMAT_HAVE_BOOL
 #include <stdbool.h> // for bool
 #endif
 
-#ifndef TINYKTX_HAVE_LIMITS_H
+#ifndef TINYIMAGEFORMAT_HAVE_LIMITS_H
 #include <limits.h> // for max/min types
 #endif
 
-#ifndef TINYKTX_HAVE_FLOAT_H
+#ifndef TINYIMAGEFORMAT_HAVE_FLOAT_H
 #include <float.h> // for max/min float types
 #endif
 
@@ -54,7 +54,7 @@ constexpr size_t ImageFormat_Count() {
 AL2O3_EXTERN_C size_t ImageFormat_Count();
 #endif
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsDepth(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsDepth(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_D16_UNORM:
 	case ImageFormat_X8_D24_UNORM_PACK32:
@@ -66,7 +66,7 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsDepth(enum ImageFormat const fmt) {
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsStencil(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsStencil(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_S8_UINT:
 	case ImageFormat_D16_UNORM_S8_UINT:
@@ -77,7 +77,7 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsStencil(enum ImageFormat const fmt) {
 }
 
 //! is this texture format a depth stencil format?
-AL2O3_EXTERN_C inline bool ImageFormat_IsDepthStencil(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsDepthStencil(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_D16_UNORM_S8_UINT:
 	case ImageFormat_D24_UNORM_S8_UINT:
@@ -86,7 +86,7 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsDepthStencil(enum ImageFormat const fmt
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsFloat(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsFloat(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_R16_SFLOAT:
 	case ImageFormat_R16G16_SFLOAT:
@@ -103,12 +103,15 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsFloat(enum ImageFormat const fmt) {
 	case ImageFormat_D32_SFLOAT:
 	case ImageFormat_D32_SFLOAT_S8_UINT:
 	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:return true;
+	case ImageFormat_BC6H_SFLOAT_BLOCK:
+	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
+	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+		return true;
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsNormalised(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsNormalised(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_R4G4_UNORM_PACK8:
 	case ImageFormat_R4G4B4A4_UNORM_PACK16:
@@ -156,10 +159,10 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsNormalised(enum ImageFormat const fmt) 
 	case ImageFormat_BC5_SNORM_BLOCK:
 	case ImageFormat_BC7_UNORM_BLOCK:
 
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 
 	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
 	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
@@ -185,12 +188,13 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsNormalised(enum ImageFormat const fmt) 
 	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
 
 	case ImageFormat_A4R4G4B4_UNORM_PACK16:
+	case ImageFormat_A8R8G8B8_UNORM_PACK32:
 		return true;
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsSigned(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsSigned(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_R8_SNORM:
 	case ImageFormat_R8_SSCALED:
@@ -258,7 +262,7 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsSigned(enum ImageFormat const fmt) {
 	default: return false;
 	}
 }
-AL2O3_EXTERN_C inline bool ImageFormat_IsSRGB(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsSRGB(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_R8_SRGB:
 	case ImageFormat_R8G8_SRGB:
@@ -298,7 +302,7 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsSRGB(enum ImageFormat const fmt) {
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsCompressed(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool ImageFormat_IsCompressed(ImageFormat const fmt) {
 	switch (fmt) {
 	case ImageFormat_BC1_RGB_UNORM_BLOCK:
 	case ImageFormat_BC1_RGB_SRGB_BLOCK:
@@ -317,10 +321,10 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsCompressed(enum ImageFormat const fmt) 
 	case ImageFormat_BC7_UNORM_BLOCK:
 	case ImageFormat_BC7_SRGB_BLOCK:
 
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
@@ -391,12 +395,12 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_WidthOfBlock(ImageFormat const fmt) {
 	case ImageFormat_BC6H_SFLOAT_BLOCK:
 	case ImageFormat_BC7_UNORM_BLOCK:
 	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
@@ -464,8 +468,8 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_HeightOfBlock(ImageFormat const fmt) 
 	case ImageFormat_BC7_UNORM_BLOCK:
 	case ImageFormat_BC7_SRGB_BLOCK:
 
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
 	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
@@ -478,8 +482,8 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_HeightOfBlock(ImageFormat const fmt) 
 	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
 	case ImageFormat_EAC_R11_SNORM_BLOCK:
 	case ImageFormat_EAC_R11G11_SNORM_BLOCK: return 4;
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK: return 8;
 
@@ -547,12 +551,12 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_BitSizeOfBlock(ImageFormat const fmt)
 	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
 	case ImageFormat_BC4_UNORM_BLOCK:
 	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
 		return 64;
@@ -657,8 +661,8 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelCount(enum ImageFormat const f
 	case ImageFormat_BC3_SRGB_BLOCK:
 	case ImageFormat_BC7_UNORM_BLOCK:
 	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
 	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
@@ -730,8 +734,8 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelCount(enum ImageFormat const f
 	case ImageFormat_BC1_RGB_SRGB_BLOCK:
 	case ImageFormat_BC6H_UFLOAT_BLOCK:
 	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
 	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
@@ -804,8 +808,9 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelCount(enum ImageFormat const f
 	}
 }
 
-//! Returns the number of channel bits for compression it gives 'apparent' which is pretty whooly..
+//! Returns the number of channel bits for each channel for non compressed formats
 AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelBitWidth(enum ImageFormat const fmt, int const channel_) {
+	ASSERT(!ImageFormat_IsCompressed(fmt));
 	switch (fmt) {
 	case ImageFormat_R64_UINT:
 	case ImageFormat_R64_SINT:
@@ -886,9 +891,9 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelBitWidth(enum ImageFormat cons
 	case ImageFormat_R16G16B16A16_SINT:
 	case ImageFormat_R16G16B16A16_SFLOAT:
 	case ImageFormat_D16_UNORM:return 16;
-		//			case GenericTextureFormat::B10G11R11_UFLOAT_PACK32:
-		//				if(channel_ == 0) return 10;
-		//				else return 11;
+	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+		if(channel_ == 0) return 10;
+		else return 11;
 	case ImageFormat_A2R10G10B10_UNORM_PACK32:
 	case ImageFormat_A2R10G10B10_USCALED_PACK32:
 	case ImageFormat_A2R10G10B10_UINT_PACK32:
@@ -900,9 +905,9 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelBitWidth(enum ImageFormat cons
 		} else {
 			return 10;
 		}
-		//			case GenericTextureFormat::E5B9G9R9_UFLOAT_PACK32:
-		//				if(channel_ == 0) return 5;
-		//				else return 9;
+	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
+		if(channel_ == 0) return 5;
+		else return 9;
 	case ImageFormat_R8_UNORM:
 	case ImageFormat_R8_SNORM:
 	case ImageFormat_R8_USCALED:
@@ -961,114 +966,9 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelBitWidth(enum ImageFormat cons
 	case ImageFormat_S8_UINT:
 	case ImageFormat_A8R8G8B8_UNORM_PACK32:
 		return 8;
-		// BC7 is variable between 4-7 bits for colour and 0-8 bits alpha
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:return 6;
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
-		if (channel_ == 4) {
-			return 1;
-		} else {
-			return 5;
-		}
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-		if (channel_ == 0) {
-			return 1;
-		} else {
-			return 5;
-		}
-	case ImageFormat_B5G6R5_UNORM_PACK16:
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-		if (channel_ == 2) {
-			return 6;
-		} else {
-			return 5;
-		}
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-		if (channel_ == 0) {
-			return 4;
-		} else {
-			return 5; // TODO is BC2 RGB 565?
-		}
-
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK: // what bit res is alpha in BC3?
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK: // is BC1_RGB 565?
-		return 5;
-
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
-		return 4;
-
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:return 4;
-
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:return 2;
-
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
-		return 5;
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-		if (channel_ == 0) {
-			return 1;
-		} else {
-			return 5;
-		}
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-		return 4;
-
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK:
-		return 8;
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK:
-		return 8; // completely wrong
-
 	case ImageFormat_UNDEFINED:return 0;
 
-		// unknown
+	// unknown
 	default: LOGWARNINGF("channelBitWidth: %s not handled", ImageFormat_Name(fmt));
 		return 0;
 	}
@@ -1154,8 +1054,8 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_BitWidth(ImageFormat const fmt) {
 	case ImageFormat_A2B10G10R10_UNORM_PACK32:
 	case ImageFormat_A2B10G10R10_USCALED_PACK32:
 	case ImageFormat_A2B10G10R10_UINT_PACK32:
-		//			case GenericTextureFormat::B10G11R11_UFLOAT_PACK32:
-		//			case GenericTextureFormat::E5B9G9R9_UFLOAT_PACK32:
+	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
 	case ImageFormat_X8_D24_UNORM_PACK32:
 	case ImageFormat_D32_SFLOAT:
 	case ImageFormat_D24_UNORM_S8_UINT:
@@ -1409,10 +1309,10 @@ AL2O3_EXTERN_C inline double ImageFormat_Max(enum ImageFormat const fmt, int cha
 		} else {
 			return 31.0;
 		}
-		//			case GenericTextureFormat::B10G11R11_UFLOAT_PACK32:
-		//				return 65000.0;
-		//			case GenericTextureFormat::E5B9G9R9_UFLOAT_PACK32:
-		//				return 65472.0;
+	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+		return 65000.0;
+	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
+		return 65472.0;
 
 	case ImageFormat_UNDEFINED:
 	case ImageFormat_BC2_UNORM_BLOCK:
@@ -1425,10 +1325,10 @@ AL2O3_EXTERN_C inline double ImageFormat_Max(enum ImageFormat const fmt, int cha
 	case ImageFormat_BC5_SNORM_BLOCK:
 	case ImageFormat_BC7_UNORM_BLOCK:
 	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
@@ -1522,10 +1422,10 @@ AL2O3_EXTERN_C inline double ImageFormat_Min(enum ImageFormat const fmt, int cha
 	case ImageFormat_BC5_UNORM_BLOCK:
 	case ImageFormat_BC7_UNORM_BLOCK:
 	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
@@ -1634,10 +1534,10 @@ AL2O3_EXTERN_C inline bool ImageFormat_IsHomogenous(ImageFormat const fmt) {
 
 AL2O3_EXTERN_C inline bool ImageFormat_IsPVR(ImageFormat fmt) {
 	switch (fmt) {
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
@@ -1802,10 +1702,10 @@ AL2O3_EXTERN_C inline Image_Swizzle ImageFormat_Swizzle(enum ImageFormat fmt_) {
 	case ImageFormat_BC4_SNORM_BLOCK:
 
 		// TODO check PVR swizzle order!
-	case ImageFormat_PVR_2BPP_BLOCK:
-	case ImageFormat_PVR_2BPPA_BLOCK:
-	case ImageFormat_PVR_4BPP_BLOCK:
-	case ImageFormat_PVR_4BPPA_BLOCK:
+	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
 	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
 	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
 	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
@@ -2668,10 +2568,10 @@ static ImageFormat ImageFormat_FromTinyKtxFormat(TinyKtx_Format format) {
 	case TKTX_BC6H_SFLOAT_BLOCK: return ImageFormat_BC6H_SFLOAT_BLOCK;
 	case TKTX_BC7_UNORM_BLOCK: return ImageFormat_BC7_UNORM_BLOCK;
 	case TKTX_BC7_SRGB_BLOCK: return ImageFormat_BC7_SRGB_BLOCK;
-	case TKTX_PVR_2BPP_BLOCK: return ImageFormat_PVR_2BPP_BLOCK;
-	case TKTX_PVR_2BPPA_BLOCK: return ImageFormat_PVR_2BPPA_BLOCK;
-	case TKTX_PVR_4BPP_BLOCK: return ImageFormat_PVR_4BPP_BLOCK;
-	case TKTX_PVR_4BPPA_BLOCK: return ImageFormat_PVR_4BPPA_BLOCK;
+	case TKTX_PVR_2BPP_BLOCK: return ImageFormat_PVR_2BPP_UNORM_BLOCK;
+	case TKTX_PVR_2BPPA_BLOCK: return ImageFormat_PVR_2BPPA_UNORM_BLOCK;
+	case TKTX_PVR_4BPP_BLOCK: return ImageFormat_PVR_4BPP_UNORM_BLOCK;
+	case TKTX_PVR_4BPPA_BLOCK: return ImageFormat_PVR_4BPPA_UNORM_BLOCK;
 	case TKTX_PVR_2BPP_SRGB_BLOCK: return ImageFormat_PVR_2BPP_SRGB_BLOCK;
 	case TKTX_PVR_2BPPA_SRGB_BLOCK: return ImageFormat_PVR_2BPPA_SRGB_BLOCK;
 	case TKTX_PVR_4BPP_SRGB_BLOCK: return ImageFormat_PVR_4BPP_SRGB_BLOCK;

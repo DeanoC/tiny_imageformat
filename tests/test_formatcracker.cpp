@@ -4,15 +4,19 @@
 #include "tiny_imageformat/format.h"
 #include "tiny_imageformat/formatcracker.h"
 
-TEST_CASE("Format Cracker IsDepth (C)", "[Image]") {
-
+TEST_CASE("Format Count (C)", "[Image]") {
 #define IF_START_MACRO int formatCount = 0;
 #define IF_MOD_MACRO(x) formatCount++;
 #define IF_END_MACRO
 #include "tiny_imageformat/format.h"
 
 	REQUIRE(ImageFormat_Count() == formatCount);
-  for (int i = 0; i < formatCount; ++i) {
+}
+
+
+TEST_CASE("Format Cracker IsDepth (C)", "[Image]") {
+
+  for (int i = 0; i < ImageFormat_Count(); ++i) {
     enum ImageFormat fmt = (ImageFormat) i;
     switch (fmt) {
       case ImageFormat_D16_UNORM:
@@ -56,288 +60,92 @@ TEST_CASE("Format Cracker IsStencil (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsDepthStencil (C)", "[Image]") {
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
+  for (int i = 0; i < ImageFormat_Count(); ++i) {
+		ImageFormat fmt = (ImageFormat) i;
+		char const *name = ImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "D16") != nullptr;
+		shouldBe |= strstr(name, "D24") != nullptr;
+		shouldBe |= strstr(name, "D32") != nullptr;
+		shouldBe &= strstr(name, "S8") != nullptr;
 
-  for (int i = 0; i < formatCount; ++i) {
-    enum ImageFormat fmt = (ImageFormat) i;
-    switch (fmt) {
-      case ImageFormat_D16_UNORM_S8_UINT:
-      case ImageFormat_D24_UNORM_S8_UINT:
-      case ImageFormat_D32_SFLOAT_S8_UINT: {
-        REQUIRE(ImageFormat_IsDepthStencil(fmt));
-        break;
-      };
-
-      default:REQUIRE(ImageFormat_IsDepthStencil(fmt) == false);
-        break;
-    }
+		if (ImageFormat_IsDepthStencil(fmt) != shouldBe) {
+			LOGINFOF("ImageFormat_IsDepthStencil failed %s", name);
+		}
+		CHECK(ImageFormat_IsDepthStencil(fmt) == shouldBe);
   }
 }
 
 TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
+  for (int i = 0; i < ImageFormat_Count(); ++i) {
+		ImageFormat fmt = (ImageFormat) i;
+		char const *name = ImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "SFLOAT") != nullptr;
+		shouldBe |= strstr(name, "UFLOAT") != nullptr;
 
-  for (int i = 0; i < formatCount; ++i) {
-    enum ImageFormat fmt = (ImageFormat) i;
-    switch (fmt) {
-      case ImageFormat_R16_SFLOAT:
-      case ImageFormat_R16G16_SFLOAT:
-      case ImageFormat_R16G16B16_SFLOAT:
-      case ImageFormat_R16G16B16A16_SFLOAT:
-      case ImageFormat_R32_SFLOAT:
-      case ImageFormat_R32G32_SFLOAT:
-      case ImageFormat_R32G32B32_SFLOAT:
-      case ImageFormat_R32G32B32A32_SFLOAT:
-      case ImageFormat_R64_SFLOAT:
-      case ImageFormat_R64G64_SFLOAT:
-      case ImageFormat_R64G64B64_SFLOAT:
-      case ImageFormat_R64G64B64A64_SFLOAT:
-      case ImageFormat_D32_SFLOAT:
-      case ImageFormat_D32_SFLOAT_S8_UINT:
-      case ImageFormat_BC6H_UFLOAT_BLOCK:
-      case ImageFormat_BC6H_SFLOAT_BLOCK: {
-        REQUIRE(ImageFormat_IsFloat(fmt));
-        break;
-      };
-
-      default:REQUIRE(ImageFormat_IsFloat(fmt) == false);
-        break;
-    }
+		if (ImageFormat_IsFloat(fmt) != shouldBe) {
+			LOGINFOF("ImageFormat_IsFloat failed %s", name);
+		}
+		CHECK(ImageFormat_IsFloat(fmt) == shouldBe);
   }
 }
 
 TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
-
-  for (int i = 0; i < formatCount; ++i) {
-    enum ImageFormat fmt = (ImageFormat) i;
-    switch (fmt) {
-      case ImageFormat_R4G4_UNORM_PACK8:
-      case ImageFormat_R4G4B4A4_UNORM_PACK16:
-      case ImageFormat_B4G4R4A4_UNORM_PACK16:
-      case ImageFormat_R5G6B5_UNORM_PACK16:
-      case ImageFormat_B5G6R5_UNORM_PACK16:
-      case ImageFormat_R5G5B5A1_UNORM_PACK16:
-      case ImageFormat_B5G5R5A1_UNORM_PACK16:
-      case ImageFormat_A1R5G5B5_UNORM_PACK16:
-      case ImageFormat_R8_UNORM:
-      case ImageFormat_R8_SNORM:
-      case ImageFormat_R8G8_UNORM:
-      case ImageFormat_R8G8_SNORM:
-      case ImageFormat_R8G8B8_UNORM:
-      case ImageFormat_R8G8B8_SNORM:
-      case ImageFormat_B8G8R8_UNORM:
-      case ImageFormat_B8G8R8_SNORM:
-      case ImageFormat_R8G8B8A8_UNORM:
-      case ImageFormat_R8G8B8A8_SNORM:
-      case ImageFormat_B8G8R8A8_UNORM:
-      case ImageFormat_B8G8R8A8_SNORM:
-      case ImageFormat_A8B8G8R8_UNORM_PACK32:
-      case ImageFormat_A8B8G8R8_SNORM_PACK32:
-      case ImageFormat_A2R10G10B10_UNORM_PACK32:
-      case ImageFormat_A2B10G10R10_UNORM_PACK32:
-      case ImageFormat_R16_UNORM:
-      case ImageFormat_R16_SNORM:
-      case ImageFormat_R16G16_UNORM:
-      case ImageFormat_R16G16_SNORM:
-      case ImageFormat_R16G16B16_UNORM:
-      case ImageFormat_R16G16B16_SNORM:
-      case ImageFormat_R16G16B16A16_UNORM:
-      case ImageFormat_R16G16B16A16_SNORM:
-      case ImageFormat_X8_D24_UNORM_PACK32:
-      case ImageFormat_D16_UNORM:
-      case ImageFormat_D16_UNORM_S8_UINT:
-      case ImageFormat_D24_UNORM_S8_UINT:
-      case ImageFormat_BC1_RGB_UNORM_BLOCK:
-      case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-      case ImageFormat_BC2_UNORM_BLOCK:
-      case ImageFormat_BC3_UNORM_BLOCK:
-      case ImageFormat_BC4_UNORM_BLOCK:
-      case ImageFormat_BC4_SNORM_BLOCK:
-      case ImageFormat_BC5_UNORM_BLOCK:
-      case ImageFormat_BC5_SNORM_BLOCK:
-      case ImageFormat_BC7_UNORM_BLOCK:
-      case ImageFormat_PVR_2BPP_BLOCK:
-      case ImageFormat_PVR_2BPPA_BLOCK:
-      case ImageFormat_PVR_4BPP_BLOCK:
-      case ImageFormat_PVR_4BPPA_BLOCK: {
-        REQUIRE(ImageFormat_IsNormalised(fmt));
-        break;
-      };
-
-      default:REQUIRE(ImageFormat_IsNormalised(fmt) == false);
-        break;
-    }
-  }
+  for (int i = 0; i < ImageFormat_Count(); ++i) {
+		ImageFormat fmt = (ImageFormat) i;
+		char const *name = ImageFormat_Name(fmt);
+		bool shouldBeNormalised = strstr(name, "UNORM") != nullptr;
+		shouldBeNormalised |= strstr(name, "SNORM") != nullptr;
+		if (ImageFormat_IsNormalised(fmt) != shouldBeNormalised) {
+			LOGINFOF("ImageFormat_IsNormalised failed %s", name);
+		}
+		CHECK(ImageFormat_IsNormalised(fmt) == shouldBeNormalised);
+	}
 }
 
 TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
+  for (int i = 0; i < ImageFormat_Count(); ++i) {
+		ImageFormat fmt = (ImageFormat) i;
+		char const *name = ImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "SNORM") != nullptr;
+		shouldBe |= strstr(name, "SSCALED") != nullptr;
+		shouldBe |= strstr(name, "SINT") != nullptr;
+		shouldBe |= strstr(name, "SFLOAT") != nullptr;
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
-
-  for (int i = 0; i < formatCount; ++i) {
-    enum ImageFormat fmt = (ImageFormat) i;
-    switch (fmt) {
-      case ImageFormat_R8_SNORM:
-      case ImageFormat_R8_SSCALED:
-      case ImageFormat_R8_SINT:
-      case ImageFormat_R8G8_SNORM:
-      case ImageFormat_R8G8_SSCALED:
-      case ImageFormat_R8G8_SINT:
-      case ImageFormat_R8G8B8_SNORM:
-      case ImageFormat_R8G8B8_SSCALED:
-      case ImageFormat_R8G8B8_SINT:
-      case ImageFormat_B8G8R8_SNORM:
-      case ImageFormat_B8G8R8_SINT:
-      case ImageFormat_B8G8R8_SSCALED:
-      case ImageFormat_R8G8B8A8_SNORM:
-      case ImageFormat_R8G8B8A8_SINT:
-      case ImageFormat_R8G8B8A8_SSCALED:
-      case ImageFormat_B8G8R8A8_SNORM:
-      case ImageFormat_B8G8R8A8_SINT:
-      case ImageFormat_B8G8R8A8_SSCALED:
-      case ImageFormat_A8B8G8R8_SNORM_PACK32:
-      case ImageFormat_A8B8G8R8_SINT_PACK32:
-      case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-      case ImageFormat_R16_SNORM:
-      case ImageFormat_R16_SINT:
-      case ImageFormat_R16_SSCALED:
-      case ImageFormat_R16_SFLOAT:
-      case ImageFormat_R16G16_SNORM:
-      case ImageFormat_R16G16_SINT:
-      case ImageFormat_R16G16_SSCALED:
-      case ImageFormat_R16G16_SFLOAT:
-      case ImageFormat_R16G16B16_SNORM:
-      case ImageFormat_R16G16B16_SINT:
-      case ImageFormat_R16G16B16_SSCALED:
-      case ImageFormat_R16G16B16_SFLOAT:
-      case ImageFormat_R16G16B16A16_SNORM:
-      case ImageFormat_R16G16B16A16_SINT:
-      case ImageFormat_R16G16B16A16_SSCALED:
-      case ImageFormat_R16G16B16A16_SFLOAT:
-      case ImageFormat_R32_SINT:
-      case ImageFormat_R32_SFLOAT:
-      case ImageFormat_R32G32_SINT:
-      case ImageFormat_R32G32_SFLOAT:
-      case ImageFormat_R32G32B32_SINT:
-      case ImageFormat_R32G32B32_SFLOAT:
-      case ImageFormat_R32G32B32A32_SINT:
-      case ImageFormat_R32G32B32A32_SFLOAT:
-      case ImageFormat_R64_SINT:
-      case ImageFormat_R64_SFLOAT:
-      case ImageFormat_R64G64_SINT:
-      case ImageFormat_R64G64_SFLOAT:
-      case ImageFormat_R64G64B64_SINT:
-      case ImageFormat_R64G64B64_SFLOAT:
-      case ImageFormat_R64G64B64A64_SINT:
-      case ImageFormat_R64G64B64A64_SFLOAT:
-      case ImageFormat_D32_SFLOAT:
-      case ImageFormat_D32_SFLOAT_S8_UINT:
-      case ImageFormat_BC4_SNORM_BLOCK:
-      case ImageFormat_BC5_SNORM_BLOCK:
-      case ImageFormat_BC6H_SFLOAT_BLOCK: {
-        REQUIRE(ImageFormat_IsSigned(fmt));
-        break;
-      };
-
-      default:REQUIRE(ImageFormat_IsSigned(fmt) == false);
-        break;
-    }
+		if (ImageFormat_IsSigned(fmt) != shouldBe) {
+			LOGINFOF("ImageFormat_IsSigned failed %s", name);
+		}
+		CHECK(ImageFormat_IsSigned(fmt) == shouldBe);
   }
 }
 
 TEST_CASE("Format Cracker IsSRGB (C)", "[Image]") {
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
+  for (int i = 0; i < ImageFormat_Count(); ++i) {
+		ImageFormat fmt = (ImageFormat) i;
+		char const *name = ImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "SRGB") != nullptr;
 
-  for (int i = 0; i < formatCount; ++i) {
-    enum ImageFormat fmt = (ImageFormat) i;
-    switch (fmt) {
-      case ImageFormat_R8_SRGB:
-      case ImageFormat_R8G8_SRGB:
-      case ImageFormat_R8G8B8_SRGB:
-      case ImageFormat_B8G8R8_SRGB:
-      case ImageFormat_R8G8B8A8_SRGB:
-      case ImageFormat_B8G8R8A8_SRGB:
-      case ImageFormat_A8B8G8R8_SRGB_PACK32:
-      case ImageFormat_BC1_RGB_SRGB_BLOCK:
-      case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-      case ImageFormat_BC2_SRGB_BLOCK:
-      case ImageFormat_BC3_SRGB_BLOCK:
-      case ImageFormat_BC7_SRGB_BLOCK:
-      case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-      case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-      case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-      case ImageFormat_PVR_4BPPA_SRGB_BLOCK: {
-        REQUIRE(ImageFormat_IsSRGB(fmt));
-        break;
-      };
-
-      default:REQUIRE(ImageFormat_IsSRGB(fmt) == false);
-        break;
-    }
+		if (ImageFormat_IsSRGB(fmt) != shouldBe) {
+			LOGINFOF("ImageFormat_IsSRGB failed %s", name);
+		}
+		CHECK(ImageFormat_IsSRGB(fmt) == shouldBe);
   }
 }
 
 TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
+	for (int i = 0; i < ImageFormat_Count(); ++i) {
+		ImageFormat fmt = (ImageFormat) i;
+		char const *name = ImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "BLOCK") != nullptr;
 
-  for (int i = 0; i < formatCount; ++i) {
-    enum ImageFormat fmt = (ImageFormat) i;
-    switch (fmt) {
-      case ImageFormat_BC1_RGB_UNORM_BLOCK:
-      case ImageFormat_BC1_RGB_SRGB_BLOCK:
-      case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-      case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-      case ImageFormat_BC2_UNORM_BLOCK:
-      case ImageFormat_BC2_SRGB_BLOCK:
-      case ImageFormat_BC3_UNORM_BLOCK:
-      case ImageFormat_BC3_SRGB_BLOCK:
-      case ImageFormat_BC4_UNORM_BLOCK:
-      case ImageFormat_BC4_SNORM_BLOCK:
-      case ImageFormat_BC5_UNORM_BLOCK:
-      case ImageFormat_BC5_SNORM_BLOCK:
-      case ImageFormat_BC6H_UFLOAT_BLOCK:
-      case ImageFormat_BC6H_SFLOAT_BLOCK:
-      case ImageFormat_BC7_UNORM_BLOCK:
-      case ImageFormat_BC7_SRGB_BLOCK:
-      case ImageFormat_PVR_2BPP_BLOCK:
-      case ImageFormat_PVR_2BPPA_BLOCK:
-      case ImageFormat_PVR_4BPP_BLOCK:
-      case ImageFormat_PVR_4BPPA_BLOCK:
-      case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-      case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-      case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-      case ImageFormat_PVR_4BPPA_SRGB_BLOCK: {
-        REQUIRE(ImageFormat_IsCompressed(fmt));
-        break;
-      };
-
-      default:REQUIRE(ImageFormat_IsCompressed(fmt) == false);
-        break;
-    }
-  }
+		if (ImageFormat_IsCompressed(fmt) != shouldBe) {
+			LOGINFOF("ImageFormat_IsCompressed failed %s", name);
+		}
+		CHECK(ImageFormat_IsCompressed(fmt) == shouldBe);
+	}
 }
 
 TEST_CASE("Format Cracker Min (C)", "[Image]") {
