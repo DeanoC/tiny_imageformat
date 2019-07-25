@@ -38,11 +38,11 @@
 #endif
 
 
-AL2O3_EXTERN_C char const *ImageFormat_Name(ImageFormat const fmt);
-AL2O3_EXTERN_C ImageFormat ImageFormat_FromName(char const *name);
+AL2O3_EXTERN_C char const *TinyImageFormat_Name(TinyImageFormat const fmt);
+AL2O3_EXTERN_C TinyImageFormat TinyImageFormat_FromName(char const *name);
 
 #ifdef __cplusplus
-constexpr size_t ImageFormat_Count() {
+constexpr size_t TinyImageFormat_Count() {
 	size_t count = 0;
 #define IF_START_MACRO
 #define IF_MOD_MACRO(x) count++;
@@ -51,553 +51,553 @@ constexpr size_t ImageFormat_Count() {
 	return count;
 }
 #else
-AL2O3_EXTERN_C size_t ImageFormat_Count();
+AL2O3_EXTERN_C size_t TinyImageFormat_Count();
 #endif
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsDepth(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsDepth(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D32_SFLOAT:
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:return true;
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:return true;
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsStencil(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsStencil(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_S8_UINT:
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:return true;
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:return true;
 	default:return false;
 	}
 }
 
 //! is this texture format a depth stencil format?
-AL2O3_EXTERN_C inline bool ImageFormat_IsDepthStencil(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsDepthStencil(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:return true;
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:return true;
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsFloat(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsFloat(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_R64_SFLOAT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_R64G64B64A64_SFLOAT:
-	case ImageFormat_D32_SFLOAT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
-	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32:
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32:
 		return true;
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsNormalised(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsNormalised(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-	case ImageFormat_B5G6R5_UNORM_PACK16:
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
 
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
 
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:
 
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
 
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 		return true;
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsSigned(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsSigned(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8_SINT:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16_SINT:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_R32_SINT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_R64_SINT:
-	case ImageFormat_R64_SFLOAT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64A64_SFLOAT:
-	case ImageFormat_D32_SFLOAT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8_SINT:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16_SINT:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R32_SINT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R64_SINT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:
 
 		return true;
 
 	default: return false;
 	}
 }
-AL2O3_EXTERN_C inline bool ImageFormat_IsSRGB(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsSRGB(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_B8G8R8_SRGB:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK: return true;
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK: return true;
 
 	default: return false;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsCompressed(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsCompressed(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
 
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
 
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:
 
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK:
 		return true;
 
 	default:return false;
 	}
 }
 
-AL2O3_EXTERN_C inline uint32_t ImageFormat_WidthOfBlock(ImageFormat const fmt) {
-	ASSERT(ImageFormat_IsCompressed(fmt));
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_WidthOfBlock(TinyImageFormat const fmt) {
+	ASSERT(TinyImageFormat_IsCompressed(fmt));
 
 	switch (fmt) {
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK: return 4;
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK: return 4;
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK: return 5;
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK: return 6;
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK: return 8;
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK: return 10;
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK: return 12;
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK: return 4;
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK: return 4;
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK: return 5;
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK: return 6;
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK: return 8;
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK: return 10;
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK: return 12;
 
 	default: ASSERT(false);
 		return 0;
 	}
 }
 
-AL2O3_EXTERN_C inline uint32_t ImageFormat_HeightOfBlock(ImageFormat const fmt) {
-	ASSERT(ImageFormat_IsCompressed(fmt));
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_HeightOfBlock(TinyImageFormat const fmt) {
+	ASSERT(TinyImageFormat_IsCompressed(fmt));
 
 	switch (fmt) {
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
 
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK: return 4;
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK: return 8;
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK: return 4;
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK: return 8;
 
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK: return 4;
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK: return 4;
 
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK: return 5;
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK: return 5;
 
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK: return 6;
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK: return 6;
 
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK: return 8;
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK: return 8;
 
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK: return 10;
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK: return 10;
 
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK: return 12;
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK: return 12;
 
 	default: ASSERT(false);
 		return 0;
 	}
 }
 
-AL2O3_EXTERN_C inline uint32_t ImageFormat_PixelCountOfBlock(ImageFormat const fmt) {
-	return ImageFormat_WidthOfBlock(fmt) * ImageFormat_HeightOfBlock(fmt);
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_PixelCountOfBlock(TinyImageFormat const fmt) {
+	return TinyImageFormat_WidthOfBlock(fmt) * TinyImageFormat_HeightOfBlock(fmt);
 }
 
-AL2O3_EXTERN_C inline uint32_t ImageFormat_BitSizeOfBlock(ImageFormat const fmt) {
-	ASSERT(ImageFormat_IsCompressed(fmt));
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_BitSizeOfBlock(TinyImageFormat const fmt) {
+	ASSERT(TinyImageFormat_IsCompressed(fmt));
 
 	switch (fmt) {
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:
 		return 32;
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
 		return 64;
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK:
 		return 128;
 
 	default: ASSERT(false);
@@ -606,1120 +606,1120 @@ AL2O3_EXTERN_C inline uint32_t ImageFormat_BitSizeOfBlock(ImageFormat const fmt)
 }
 
 //! returns the number of channels per gl format
-AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelCount(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_ChannelCount(enum TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_R8G8B8A8_USCALED:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_R8G8B8A8_UINT:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_B8G8R8A8_USCALED:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_UINT:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_A8B8G8R8_USCALED_PACK32:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_A8B8G8R8_UINT_PACK32:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16A16_USCALED:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16A16_UINT:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_R32G32B32A32_UINT:
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_R64G64B64A64_UINT:
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64A64_SFLOAT:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK:
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK:
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK:
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK:
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK:
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK:
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK:
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 		return 4;
 
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-	case ImageFormat_B5G6R5_UNORM_PACK16:
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_R8G8B8_USCALED:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_R8G8B8_UINT:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_B8G8R8_USCALED:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_B8G8R8_UINT:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_B8G8R8_SRGB:
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16B16_USCALED:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16B16_UINT:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R32G32B32_UINT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R64G64B64_UINT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
 		return 3;
 
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8G8_USCALED:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8G8_UINT:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16G16_USCALED:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R16G16_UINT:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R32G32_UINT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R64G64_UINT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:
 		return 2;
 
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8_USCALED:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8_UINT:
-	case ImageFormat_R8_SINT:
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16_USCALED:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16_UINT:
-	case ImageFormat_R16_SINT:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_R32_UINT:
-	case ImageFormat_R32_SINT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_R64_UINT:
-	case ImageFormat_R64_SINT:
-	case ImageFormat_R64_SFLOAT:
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_D32_SFLOAT:
-	case ImageFormat_S8_UINT:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_EAC_R11_UNORM_BLOCK:
-	case ImageFormat_EAC_R11_SNORM_BLOCK:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_R8_SINT:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16_UINT:
+	case TinyImageFormat_R16_SINT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_R32_UINT:
+	case TinyImageFormat_R32_SINT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_R64_UINT:
+	case TinyImageFormat_R64_SINT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
 		return 1;
-	case ImageFormat_UNDEFINED:return 0;
+	case TinyImageFormat_UNDEFINED:return 0;
 
-	default:LOGWARNINGF("channelCount: %s not handled", ImageFormat_Name(fmt));
+	default:LOGWARNINGF("channelCount: %s not handled", TinyImageFormat_Name(fmt));
 		return 0;
 	}
 }
 
 //! Returns the number of channel bits for each channel for non compressed formats
-AL2O3_EXTERN_C inline uint32_t ImageFormat_ChannelBitWidth(enum ImageFormat const fmt, int const channel_) {
-	ASSERT(!ImageFormat_IsCompressed(fmt));
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_ChannelBitWidth(enum TinyImageFormat const fmt, int const channel_) {
+	ASSERT(!TinyImageFormat_IsCompressed(fmt));
 	switch (fmt) {
-	case ImageFormat_R64_UINT:
-	case ImageFormat_R64_SINT:
-	case ImageFormat_R64_SFLOAT:
-	case ImageFormat_R64G64_UINT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R64G64B64_UINT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_R64G64B64A64_UINT:
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64A64_SFLOAT:return 64;
-	case ImageFormat_R32_UINT:
-	case ImageFormat_R32_SINT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_R32G32_UINT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R32G32B32_UINT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R32G32B32A32_UINT:
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_D32_SFLOAT:return 32;
-	case ImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_R64_UINT:
+	case TinyImageFormat_R64_SINT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:return 64;
+	case TinyImageFormat_R32_UINT:
+	case TinyImageFormat_R32_SINT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:return 32;
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
 		if (channel_ == 1) {
 			return 24;
 		} else {
 			return 8;
 		}
-	case ImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
 		if (channel_ == 0) {
 			return 16;
 		} else {
 			return 8;
 		}
-	case ImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
 		if (channel_ == 0) {
 			return 24;
 		} else {
 			return 8;
 		}
-	case ImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
 		if (channel_ == 0) {
 			return 32;
 		} else {
 			return 8;
 		}
 
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16_USCALED:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16_UINT:
-	case ImageFormat_R16_SINT:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16G16_USCALED:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R16G16_UINT:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16B16_USCALED:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16B16_UINT:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16A16_USCALED:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16A16_UINT:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_D16_UNORM:return 16;
-	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16_UINT:
+	case TinyImageFormat_R16_SINT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_D16_UNORM:return 16;
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32:
 		if(channel_ == 0) return 10;
 		else return 11;
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
 		if (channel_ == 0) {
 			return 2;
 		} else {
 			return 10;
 		}
-	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32:
 		if(channel_ == 0) return 5;
 		else return 9;
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8_USCALED:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8_UINT:
-	case ImageFormat_R8_SINT:
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8G8_USCALED:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8G8_UINT:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_R8G8B8_USCALED:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_R8G8B8_UINT:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_B8G8R8_USCALED:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_B8G8R8_UINT:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_B8G8R8_SRGB:
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_R8G8B8A8_USCALED:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_R8G8B8A8_UINT:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_B8G8R8A8_USCALED:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_UINT:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_A8B8G8R8_USCALED_PACK32:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_A8B8G8R8_UINT_PACK32:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_S8_UINT:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_R8_SINT:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 		return 8;
-	case ImageFormat_UNDEFINED:return 0;
+	case TinyImageFormat_UNDEFINED:return 0;
 
 	// unknown
-	default: LOGWARNINGF("channelBitWidth: %s not handled", ImageFormat_Name(fmt));
+	default: LOGWARNINGF("channelBitWidth: %s not handled", TinyImageFormat_Name(fmt));
 		return 0;
 	}
 }
 
-AL2O3_EXTERN_C inline uint32_t ImageFormat_BitWidth(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline uint32_t TinyImageFormat_BitWidth(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R64G64B64A64_UINT:
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64A64_SFLOAT:return 256;
-	case ImageFormat_R64G64B64_UINT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64B64_SFLOAT:return 192;
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:return 256;
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64B64_SFLOAT:return 192;
 
-	case ImageFormat_R64G64_UINT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R32G32B32A32_UINT:
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32A32_SFLOAT:return 128;
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:return 128;
 
-	case ImageFormat_R32G32B32_UINT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32B32_SFLOAT:return 96;
-	case ImageFormat_R64_UINT:
-	case ImageFormat_R64_SINT:
-	case ImageFormat_R64_SFLOAT:
-	case ImageFormat_R32G32_UINT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16A16_USCALED:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16A16_UINT:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16A16_SFLOAT:return 64;
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32B32_SFLOAT:return 96;
+	case TinyImageFormat_R64_UINT:
+	case TinyImageFormat_R64_SINT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:return 64;
 
 		// best case 40 bits worse case 64, be a pessimist
-	case ImageFormat_D32_SFLOAT_S8_UINT:return 64;
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:return 64;
 
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16B16_USCALED:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16B16_UINT:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16B16_SFLOAT:return 48;
-	case ImageFormat_R32_SINT:
-	case ImageFormat_R32_UINT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16G16_UINT:
-	case ImageFormat_R16G16_USCALED:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_R8G8B8A8_USCALED:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_R8G8B8A8_UINT:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_B8G8R8A8_USCALED:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_UINT:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_A8B8G8R8_USCALED_PACK32:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_A8B8G8R8_UINT_PACK32:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
-	case ImageFormat_B10G11R11_UFLOAT_PACK32:
-	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D32_SFLOAT:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16B16_SFLOAT:return 48;
+	case TinyImageFormat_R32_SINT:
+	case TinyImageFormat_R32_UINT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32:
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 		return 32;
 
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_R8G8B8_USCALED:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_R8G8B8_UINT:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_B8G8R8_USCALED:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_B8G8R8_UINT:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_B8G8R8_SRGB:
-	case ImageFormat_D16_UNORM_S8_UINT:return 24;
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_D16_UNORM_S8_UINT:return 24;
 
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-	case ImageFormat_B5G6R5_UNORM_PACK16:
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8G8_USCALED:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8G8_UINT:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16_USCALED:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16_UINT:
-	case ImageFormat_R16_SINT:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16_UINT:
+	case TinyImageFormat_R16_SINT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
 		return 16;
 
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8_USCALED:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8_UINT:
-	case ImageFormat_R8_SINT:
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_S8_UINT:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_R8_SINT:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_S8_UINT:
 		return 8;
 
 
-	default: LOGWARNINGF("bitWidth: %s not handled if compressed use ImageFormat_BitSizeOfBlock", ImageFormat_Name(fmt));
+	default: LOGWARNINGF("bitWidth: %s not handled if compressed use TinyImageFormat_BitSizeOfBlock", TinyImageFormat_Name(fmt));
 		return 0;
 	}
 }
 
-AL2O3_EXTERN_C inline double ImageFormat_Max(enum ImageFormat const fmt, int channel) {
+AL2O3_EXTERN_C inline double TinyImageFormat_Max(enum TinyImageFormat const fmt, int channel) {
 	switch (fmt) {
-	case ImageFormat_R64G64B64A64_UINT:
-	case ImageFormat_R64G64B64_UINT:
-	case ImageFormat_R64G64_UINT:
-	case ImageFormat_R64_UINT:return (double) UINT64_MAX;
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64_UINT:return (double) UINT64_MAX;
 
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64_SINT:return (double) INT64_MAX;
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64_SINT:return (double) INT64_MAX;
 
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_R64G64B64A64_SFLOAT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R64_SFLOAT:return DBL_MAX;
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R64_SFLOAT:return DBL_MAX;
 
-	case ImageFormat_R32G32B32A32_UINT:
-	case ImageFormat_R32G32B32_UINT:
-	case ImageFormat_R32G32_UINT:
-	case ImageFormat_R32_UINT:return UINT32_MAX;
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32_UINT:return UINT32_MAX;
 
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32_SINT:return INT32_MAX;
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32_SINT:return INT32_MAX;
 
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_D32_SFLOAT:return FLT_MAX;
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:return FLT_MAX;
 
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_R16G16B16A16_USCALED:
-	case ImageFormat_R16G16B16_USCALED:
-	case ImageFormat_R16G16_USCALED:
-	case ImageFormat_R16_USCALED:
-	case ImageFormat_R16G16B16A16_UINT:
-	case ImageFormat_R16G16B16_UINT:
-	case ImageFormat_R16G16_UINT:
-	case ImageFormat_R16_UINT:return UINT16_MAX;
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16_UINT:return UINT16_MAX;
 
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16_SINT:return INT16_MAX;
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16_SINT:return INT16_MAX;
 
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:return 0x1.ffcp15;
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:return 0x1.ffcp15;
 
-	case ImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
 		if (channel == 0) {
 			return FLT_MAX;
 		} else {
 			return UINT8_MAX;
 		}
 
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8G8B8A8_USCALED:
-	case ImageFormat_B8G8R8A8_USCALED:
-	case ImageFormat_A8B8G8R8_USCALED_PACK32:
-	case ImageFormat_R8G8B8_USCALED:
-	case ImageFormat_B8G8R8_USCALED:
-	case ImageFormat_R8G8_USCALED:
-	case ImageFormat_R8_USCALED:
-	case ImageFormat_R8G8B8A8_UINT:
-	case ImageFormat_B8G8R8A8_UINT:
-	case ImageFormat_A8B8G8R8_UINT_PACK32:
-	case ImageFormat_R8G8B8_UINT:
-	case ImageFormat_B8G8R8_UINT:
-	case ImageFormat_R8G8_UINT:
-	case ImageFormat_R8_UINT:
-	case ImageFormat_S8_UINT:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_B8G8R8_SRGB:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 		return UINT8_MAX;
 
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8_SINT:return INT8_MAX;
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8_SINT:return INT8_MAX;
 
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
 		if (channel == 0) {
 			return 3.0;
 		} else {
 			return 1023.0;
 		}
 
-	case ImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
 		if (channel == 0) {
 			return 255.0;
 		} else {
 			return (double) (1 << 24) - 1.0;
 		};
-	case ImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
 		if (channel == 1) {
 			return 255.0;
 		} else {
 			return (double) (1 << 24) - 1.0;
 		}
-	case ImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
 		if (channel == 1) {
 			return 255.0;
 		} else {
 			return 65535.0;
 		}
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
 		return 15.0;
 
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-	case ImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
 		if (channel == 1) {
 			return 63.0;
 		} else {
 			return 31.0;
 		}
 
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
 		if (channel == 3) {
 			return 1.0;
 		} else {
 			return 31.0;
 		}
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
 		if (channel == 0) {
 			return 1.0;
 		} else {
 			return 31.0;
 		}
-	case ImageFormat_B10G11R11_UFLOAT_PACK32:
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32:
 		return 65000.0;
-	case ImageFormat_E5B9G9R9_UFLOAT_PACK32:
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32:
 		return 65472.0;
 
-	case ImageFormat_UNDEFINED:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_UNDEFINED:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
 
 		return 255.0; // TODO
-	default:LOGWARNINGF("max %s not handled", ImageFormat_Name(fmt));
+	default:LOGWARNINGF("max %s not handled", TinyImageFormat_Name(fmt));
 		return 0;
 	}
 }
 
-AL2O3_EXTERN_C inline double ImageFormat_Min(enum ImageFormat const fmt, int channel) {
+AL2O3_EXTERN_C inline double TinyImageFormat_Min(enum TinyImageFormat const fmt, int channel) {
 	switch (fmt) {
-	case ImageFormat_R64G64B64A64_UINT:
-	case ImageFormat_R64G64B64_UINT:
-	case ImageFormat_R64G64_UINT:
-	case ImageFormat_R64_UINT:
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_R16G16B16A16_USCALED:
-	case ImageFormat_R16G16B16_USCALED:
-	case ImageFormat_R16G16_USCALED:
-	case ImageFormat_R16_USCALED:
-	case ImageFormat_R16G16B16A16_UINT:
-	case ImageFormat_R16G16B16_UINT:
-	case ImageFormat_R16G16_UINT:
-	case ImageFormat_R16_UINT:
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8G8B8A8_USCALED:
-	case ImageFormat_B8G8R8A8_USCALED:
-	case ImageFormat_A8B8G8R8_USCALED_PACK32:
-	case ImageFormat_R8G8B8_USCALED:
-	case ImageFormat_B8G8R8_USCALED:
-	case ImageFormat_R8G8_USCALED:
-	case ImageFormat_R8_USCALED:
-	case ImageFormat_R8G8B8A8_UINT:
-	case ImageFormat_B8G8R8A8_UINT:
-	case ImageFormat_A8B8G8R8_UINT_PACK32:
-	case ImageFormat_R8G8B8_UINT:
-	case ImageFormat_B8G8R8_UINT:
-	case ImageFormat_R8G8_UINT:
-	case ImageFormat_R8_UINT:
-	case ImageFormat_S8_UINT:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_B8G8R8_SRGB:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
-	case ImageFormat_R32G32B32A32_UINT:
-	case ImageFormat_R32G32B32_UINT:
-	case ImageFormat_R32G32_UINT:
-	case ImageFormat_R32_UINT:
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-	case ImageFormat_B5G6R5_UNORM_PACK16:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64_UINT:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16_UINT:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32_UINT:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 		return 0.0;
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64_SINT:return INT64_MIN;
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64_SINT:return INT64_MIN;
 
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_R64G64B64A64_SFLOAT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R64_SFLOAT:return FLT_MIN;
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R64_SFLOAT:return FLT_MIN;
 
 
 
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32_SINT:return INT32_MIN;
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32_SINT:return INT32_MIN;
 
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_D32_SFLOAT:return FLT_MIN;
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:return FLT_MIN;
 
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16_SINT:return INT16_MIN;
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16_SINT:return INT16_MIN;
 
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK: return 0x1.0p-14;
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK: return 0x1.0p-14;
 
-	case ImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
 		if (channel == 0) {
 			return FLT_MIN;
 		} else {
 			return 0;
 		}
 
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8_SINT:return INT8_MIN;
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8_SINT:return INT8_MIN;
 
-	case ImageFormat_BC4_SNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK: return INT8_MIN;
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK: return INT8_MIN;
 
-	case ImageFormat_UNDEFINED: return 0.0;
+	case TinyImageFormat_UNDEFINED: return 0.0;
 
-	default:LOGWARNINGF("min %s not handled", ImageFormat_Name(fmt));
+	default:LOGWARNINGF("min %s not handled", TinyImageFormat_Name(fmt));
 		return 0.0;
 	}
 }
 // the channels the same? Compressed are treated as true as
 // each block are basically the same (BC6H and BC7 are ignored)
-AL2O3_EXTERN_C inline bool ImageFormat_IsHomogenous(ImageFormat const fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsHomogenous(TinyImageFormat const fmt) {
 	switch (fmt) {
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D32_SFLOAT_S8_UINT:return false;
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:return false;
 	default: return true;
 	}
 }
 
-AL2O3_EXTERN_C inline bool ImageFormat_IsPVR(ImageFormat fmt) {
+AL2O3_EXTERN_C inline bool TinyImageFormat_IsPVR(TinyImageFormat fmt) {
 	switch (fmt) {
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:return true;
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:return true;
 	default: return false;
 	}
 }
 typedef uint8_t *Image_Swizzle;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_RGBA;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_ARGB;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_BGRA;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_ABGR;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGBA;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_ARGB;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_BGRA;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_ABGR;
 
-AL2O3_EXTERN_C inline Image_Swizzle ImageFormat_Swizzle(enum ImageFormat fmt_) {
+AL2O3_EXTERN_C inline Image_Swizzle TinyImageFormat_Swizzle(enum TinyImageFormat fmt_) {
 	switch (fmt_) {
-	case ImageFormat_UNDEFINED:
-	case ImageFormat_R64G64B64A64_UINT:
-	case ImageFormat_R64G64B64_UINT:
-	case ImageFormat_R64G64_UINT:
-	case ImageFormat_R64_UINT:
-	case ImageFormat_R64G64B64A64_SINT:
-	case ImageFormat_R64G64B64_SINT:
-	case ImageFormat_R64G64_SINT:
-	case ImageFormat_R64_SINT:
-	case ImageFormat_R64G64B64_SFLOAT:
-	case ImageFormat_R64G64B64A64_SFLOAT:
-	case ImageFormat_R64G64_SFLOAT:
-	case ImageFormat_R64_SFLOAT:
-	case ImageFormat_R32G32B32A32_UINT:
-	case ImageFormat_R32G32B32_UINT:
-	case ImageFormat_R32G32_UINT:
-	case ImageFormat_R32_UINT:
-	case ImageFormat_R32G32B32A32_SINT:
-	case ImageFormat_R32G32B32_SINT:
-	case ImageFormat_R32G32_SINT:
-	case ImageFormat_R32_SINT:
-	case ImageFormat_R32G32B32A32_SFLOAT:
-	case ImageFormat_R32G32B32_SFLOAT:
-	case ImageFormat_R32G32_SFLOAT:
-	case ImageFormat_R32_SFLOAT:
-	case ImageFormat_D32_SFLOAT:
-	case ImageFormat_R16G16B16A16_UNORM:
-	case ImageFormat_R16G16B16_UNORM:
-	case ImageFormat_R16G16_UNORM:
-	case ImageFormat_R16_UNORM:
-	case ImageFormat_D16_UNORM:
-	case ImageFormat_R16G16B16A16_USCALED:
-	case ImageFormat_R16G16B16_USCALED:
-	case ImageFormat_R16G16_USCALED:
-	case ImageFormat_R16_USCALED:
-	case ImageFormat_R16G16B16A16_UINT:
-	case ImageFormat_R16G16B16_UINT:
-	case ImageFormat_R16G16_UINT:
-	case ImageFormat_R16_UINT:
-	case ImageFormat_R16G16B16A16_SNORM:
-	case ImageFormat_R16G16B16_SNORM:
-	case ImageFormat_R16G16_SNORM:
-	case ImageFormat_R16_SNORM:
-	case ImageFormat_R16G16B16A16_SSCALED:
-	case ImageFormat_R16G16B16_SSCALED:
-	case ImageFormat_R16G16_SSCALED:
-	case ImageFormat_R16_SSCALED:
-	case ImageFormat_R16G16B16A16_SINT:
-	case ImageFormat_R16G16B16_SINT:
-	case ImageFormat_R16G16_SINT:
-	case ImageFormat_R16_SINT:
-	case ImageFormat_R16G16B16A16_SFLOAT:
-	case ImageFormat_R16G16B16_SFLOAT:
-	case ImageFormat_R16G16_SFLOAT:
-	case ImageFormat_R16_SFLOAT:
-	case ImageFormat_D32_SFLOAT_S8_UINT:
-	case ImageFormat_R8G8B8A8_UNORM:
-	case ImageFormat_R8G8B8A8_USCALED:
-	case ImageFormat_R8G8B8A8_UINT:
-	case ImageFormat_R8G8B8_USCALED:
-	case ImageFormat_R8G8B8_UNORM:
-	case ImageFormat_R8G8B8_UINT:
-	case ImageFormat_R8G8B8A8_SRGB:
-	case ImageFormat_R8G8_UNORM:
-	case ImageFormat_R8G8_USCALED:
-	case ImageFormat_R8_USCALED:
-	case ImageFormat_R8_UNORM:
-	case ImageFormat_R8G8_UINT:
-	case ImageFormat_R8_UINT:
-	case ImageFormat_S8_UINT:
-	case ImageFormat_R8G8B8_SRGB:
-	case ImageFormat_R8G8_SRGB:
-	case ImageFormat_R8_SRGB:
-	case ImageFormat_R8G8B8A8_SNORM:
-	case ImageFormat_R8G8B8_SNORM:
-	case ImageFormat_R8G8_SNORM:
-	case ImageFormat_R8_SNORM:
-	case ImageFormat_R8G8B8A8_SSCALED:
-	case ImageFormat_R8G8_SSCALED:
-	case ImageFormat_R8_SSCALED:
-	case ImageFormat_R8G8B8A8_SINT:
-	case ImageFormat_R8G8B8_SINT:
-	case ImageFormat_R8G8_SINT:
-	case ImageFormat_R8_SINT:
-	case ImageFormat_R8G8B8_SSCALED:
-	case ImageFormat_R4G4B4A4_UNORM_PACK16:
-	case ImageFormat_X8_D24_UNORM_PACK32:
-	case ImageFormat_D24_UNORM_S8_UINT:
-	case ImageFormat_D16_UNORM_S8_UINT:
-	case ImageFormat_R4G4_UNORM_PACK8:
-	case ImageFormat_R5G6B5_UNORM_PACK16:
-	case ImageFormat_R5G5B5A1_UNORM_PACK16:return ImageFormat_Swizzle_RGBA;
+	case TinyImageFormat_UNDEFINED:
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64_UINT:
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64_SINT:
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32_UINT:
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32_SINT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16_UINT:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16_SINT:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8_SINT:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:return TinyImageFormat_Swizzle_RGBA;
 
-	case ImageFormat_A2R10G10B10_UNORM_PACK32:
-	case ImageFormat_A2R10G10B10_USCALED_PACK32:
-	case ImageFormat_A2R10G10B10_UINT_PACK32:
-	case ImageFormat_A1R5G5B5_UNORM_PACK16:
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
-		return ImageFormat_Swizzle_ARGB;
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
+		return TinyImageFormat_Swizzle_ARGB;
 
-	case ImageFormat_A2B10G10R10_UNORM_PACK32:
-	case ImageFormat_A2B10G10R10_USCALED_PACK32:
-	case ImageFormat_A2B10G10R10_UINT_PACK32:
-	case ImageFormat_A8B8G8R8_SRGB_PACK32:
-	case ImageFormat_A8B8G8R8_USCALED_PACK32:
-	case ImageFormat_A8B8G8R8_UNORM_PACK32:
-	case ImageFormat_A8B8G8R8_UINT_PACK32:
-	case ImageFormat_A8B8G8R8_SNORM_PACK32:
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32:
-	case ImageFormat_A8B8G8R8_SINT_PACK32:return ImageFormat_Swizzle_ABGR;
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:return TinyImageFormat_Swizzle_ABGR;
 
-	case ImageFormat_B8G8R8A8_UNORM:
-	case ImageFormat_B8G8R8A8_USCALED:
-	case ImageFormat_B8G8R8A8_UINT:
-	case ImageFormat_B8G8R8A8_SRGB:
-	case ImageFormat_B8G8R8A8_SNORM:
-	case ImageFormat_B8G8R8A8_SSCALED:
-	case ImageFormat_B8G8R8A8_SINT:
-	case ImageFormat_B4G4R4A4_UNORM_PACK16:
-	case ImageFormat_B5G5R5A1_UNORM_PACK16:return ImageFormat_Swizzle_BGRA;
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:return TinyImageFormat_Swizzle_BGRA;
 
-	case ImageFormat_B8G8R8_SNORM:
-	case ImageFormat_B8G8R8_UNORM:
-	case ImageFormat_B8G8R8_USCALED:
-	case ImageFormat_B8G8R8_UINT:
-	case ImageFormat_B8G8R8_SSCALED:
-	case ImageFormat_B8G8R8_SINT:
-	case ImageFormat_B5G6R5_UNORM_PACK16:
-	case ImageFormat_B8G8R8_SRGB:return ImageFormat_Swizzle_BGRA;
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_B8G8R8_SRGB:return TinyImageFormat_Swizzle_BGRA;
 
-	case ImageFormat_BC2_UNORM_BLOCK:
-	case ImageFormat_BC2_SRGB_BLOCK:
-	case ImageFormat_BC3_UNORM_BLOCK:
-	case ImageFormat_BC3_SRGB_BLOCK:
-	case ImageFormat_BC5_UNORM_BLOCK:
-	case ImageFormat_BC5_SNORM_BLOCK:
-	case ImageFormat_BC6H_UFLOAT_BLOCK:
-	case ImageFormat_BC6H_SFLOAT_BLOCK:
-	case ImageFormat_BC7_UNORM_BLOCK:
-	case ImageFormat_BC7_SRGB_BLOCK:
-	case ImageFormat_BC1_RGB_UNORM_BLOCK:
-	case ImageFormat_BC1_RGB_SRGB_BLOCK:
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK:
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK:
-	case ImageFormat_BC4_UNORM_BLOCK:
-	case ImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
 
 		// TODO check PVR swizzle order!
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK:
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK:
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK:
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK:return ImageFormat_Swizzle_RGBA;
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:return TinyImageFormat_Swizzle_RGBA;
 
-	default:LOGERRORF("swizzleFormat %s not handled", ImageFormat_Name(fmt_));
-		return ImageFormat_Swizzle_RGBA;
+	default:LOGERRORF("swizzleFormat %s not handled", TinyImageFormat_Name(fmt_));
+		return TinyImageFormat_Swizzle_RGBA;
 	}
 }
 
 #ifndef TINYIMAGEFORMAT_DXGIFORMAT
 #define TINYIMAGEFORMAT_DXGIFORMAT
 
-typedef enum TinyImageFormat_DXGI_FORMAT {
+typedef enum TinyTinyImageFormat_DXGI_FORMAT {
 	TIF_DXGI_FORMAT_UNKNOWN = 0,
 	TIF_DXGI_FORMAT_R32G32B32A32_TYPELESS,
 	TIF_DXGI_FORMAT_R32G32B32A32_FLOAT,
@@ -1840,13 +1840,13 @@ typedef enum TinyImageFormat_DXGI_FORMAT {
 	TIF_DXGI_FORMAT_V208,
 	TIF_DXGI_FORMAT_V408,
 	TIF_DXGI_FORMAT_FORCE_UINT
-} TinyImageFormat_DXGI_FORMAT;
+} TinyTinyImageFormat_DXGI_FORMAT;
 #endif
 
 
 #ifndef TINYIMAGEFORMAT_VKFORMAT
 #define TINYIMAGEFORMAT_VKFORMAT
-typedef enum TinyImageFormat_VkFormat {
+typedef enum TinyTinyImageFormat_VkFormat {
 	TIF_VK_FORMAT_UNDEFINED = 0,
 	TIF_VK_FORMAT_R4G4_UNORM_PACK8 = 1,
 	TIF_VK_FORMAT_R4G4B4A4_UNORM_PACK16 = 2,
@@ -2075,7 +2075,7 @@ typedef enum TinyImageFormat_VkFormat {
 	TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG = 1000054005,
 	TIF_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG = 1000054006,
 	TIF_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG = 1000054007,
-} TinyImageFormat_VkFormat;
+} TinyTinyImageFormat_VkFormat;
 #endif
 #ifdef IMAGE_IMAGEFORMAT_IMPLEMENTATION
 
@@ -2083,18 +2083,18 @@ typedef enum TinyImageFormat_VkFormat {
 #include "string.h" // for stricmp
 #endif
 
-static uint8_t s_ImageFormat_Swizzle_RGBA[4] = {0, 1, 2, 3};
-static uint8_t s_ImageFormat_Swizzle_ARGB[4] = {3, 0, 1, 2};
-static uint8_t s_ImageFormat_Swizzle_BGRA[4] = {2, 1, 0, 3};
-static uint8_t s_ImageFormat_Swizzle_ABGR[4] = {3, 2, 1, 0};
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_RGBA = s_ImageFormat_Swizzle_RGBA;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_ARGB = s_ImageFormat_Swizzle_ARGB;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_BGRA = s_ImageFormat_Swizzle_BGRA;
-AL2O3_EXTERN_C Image_Swizzle ImageFormat_Swizzle_ABGR = s_ImageFormat_Swizzle_ABGR;
+static uint8_t s_TinyImageFormat_Swizzle_RGBA[4] = {0, 1, 2, 3};
+static uint8_t s_TinyImageFormat_Swizzle_ARGB[4] = {3, 0, 1, 2};
+static uint8_t s_TinyImageFormat_Swizzle_BGRA[4] = {2, 1, 0, 3};
+static uint8_t s_TinyImageFormat_Swizzle_ABGR[4] = {3, 2, 1, 0};
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGBA = s_TinyImageFormat_Swizzle_RGBA;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_ARGB = s_TinyImageFormat_Swizzle_ARGB;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_BGRA = s_TinyImageFormat_Swizzle_BGRA;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_ABGR = s_TinyImageFormat_Swizzle_ABGR;
 
-AL2O3_EXTERN_C char const *ImageFormat_Name(enum ImageFormat const fmt) {
+AL2O3_EXTERN_C char const *TinyImageFormat_Name(enum TinyImageFormat const fmt) {
 #define IF_START_MACRO switch(fmt) {
-#define IF_MOD_MACRO(x) case ImageFormat_##x: return #x;
+#define IF_MOD_MACRO(x) case TinyImageFormat_##x: return #x;
 #define IF_END_MACRO };
 
 #include "tiny_imageformat/format.h"
@@ -2102,17 +2102,17 @@ AL2O3_EXTERN_C char const *ImageFormat_Name(enum ImageFormat const fmt) {
   return "Unknown Format";
 }
 
-AL2O3_EXTERN_C ImageFormat ImageFormat_FromName(char const * name) {
-  for (size_t i = 0u; i < ImageFormat_Count(); ++i) {
-    if (stricmp(name, ImageFormat_Name(i)) == 0) {
-      return (ImageFormat)i;
+AL2O3_EXTERN_C TinyImageFormat TinyImageFormat_FromName(char const * name) {
+  for (size_t i = 0u; i < TinyImageFormat_Count(); ++i) {
+    if (stricmp(name, TinyImageFormat_Name(i)) == 0) {
+      return (TinyImageFormat)i;
     }
   }
-  return ImageFormat_UNDEFINED;
+  return TinyImageFormat_UNDEFINED;
 }
 
 #ifndef __cplusplus
-AL2O3_EXTERN_C size_t ImageFormat_Count() {
+AL2O3_EXTERN_C size_t TinyImageFormat_Count() {
   static size_t s_count = 0;
   if (s_count == 0) {
 #define IF_START_MACRO
@@ -2125,574 +2125,574 @@ AL2O3_EXTERN_C size_t ImageFormat_Count() {
 #endif
 
 
-ImageFormat ImageFormat_FromVkFormat(TinyImageFormat_VkFormat fmt) {
+TinyImageFormat TinyImageFormat_FromVkFormat(TinyTinyImageFormat_VkFormat fmt) {
 	switch(fmt) {
 
-	case TIF_VK_FORMAT_UNDEFINED: return ImageFormat_UNDEFINED;
-	case TIF_VK_FORMAT_R4G4_UNORM_PACK8: return ImageFormat_R4G4_UNORM_PACK8;
-	case TIF_VK_FORMAT_R4G4B4A4_UNORM_PACK16: return ImageFormat_R4G4B4A4_UNORM_PACK16;
-	case TIF_VK_FORMAT_B4G4R4A4_UNORM_PACK16: return ImageFormat_B4G4R4A4_UNORM_PACK16;
-	case TIF_VK_FORMAT_R5G6B5_UNORM_PACK16: return ImageFormat_R5G6B5_UNORM_PACK16;
-	case TIF_VK_FORMAT_B5G6R5_UNORM_PACK16: return ImageFormat_B5G6R5_UNORM_PACK16;
-	case TIF_VK_FORMAT_R5G5B5A1_UNORM_PACK16: return ImageFormat_R5G5B5A1_UNORM_PACK16;
-	case TIF_VK_FORMAT_B5G5R5A1_UNORM_PACK16: return ImageFormat_B5G5R5A1_UNORM_PACK16;
-	case TIF_VK_FORMAT_A1R5G5B5_UNORM_PACK16: return ImageFormat_A1R5G5B5_UNORM_PACK16;
-	case TIF_VK_FORMAT_R8_UNORM: return ImageFormat_R8_UNORM;
-	case TIF_VK_FORMAT_R8_SNORM: return ImageFormat_R8_SNORM;
-	case TIF_VK_FORMAT_R8_USCALED: return ImageFormat_R8_USCALED;
-	case TIF_VK_FORMAT_R8_SSCALED: return ImageFormat_R8_SSCALED;
-	case TIF_VK_FORMAT_R8_UINT: return ImageFormat_R8_UINT;
-	case TIF_VK_FORMAT_R8_SINT: return ImageFormat_R8_SINT;
-	case TIF_VK_FORMAT_R8_SRGB: return ImageFormat_R8_SRGB;
-	case TIF_VK_FORMAT_R8G8_UNORM: return ImageFormat_R8G8_UNORM;
-	case TIF_VK_FORMAT_R8G8_SNORM: return ImageFormat_R8G8_SNORM;
-	case TIF_VK_FORMAT_R8G8_USCALED: return ImageFormat_R8G8_USCALED;
-	case TIF_VK_FORMAT_R8G8_SSCALED: return ImageFormat_R8G8_SSCALED;
-	case TIF_VK_FORMAT_R8G8_UINT: return ImageFormat_R8G8_UINT;
-	case TIF_VK_FORMAT_R8G8_SINT: return ImageFormat_R8G8_SINT;
-	case TIF_VK_FORMAT_R8G8_SRGB: return ImageFormat_R8G8_SRGB;
-	case TIF_VK_FORMAT_R8G8B8_UNORM: return ImageFormat_R8G8B8_UNORM;
-	case TIF_VK_FORMAT_R8G8B8_SNORM: return ImageFormat_R8G8B8_SNORM;
-	case TIF_VK_FORMAT_R8G8B8_USCALED: return ImageFormat_R8G8B8_USCALED;
-	case TIF_VK_FORMAT_R8G8B8_SSCALED: return ImageFormat_R8G8B8_SSCALED;
-	case TIF_VK_FORMAT_R8G8B8_UINT: return ImageFormat_R8G8B8_UINT;
-	case TIF_VK_FORMAT_R8G8B8_SINT: return ImageFormat_R8G8B8_SINT;
-	case TIF_VK_FORMAT_R8G8B8_SRGB: return ImageFormat_R8G8B8_SRGB;
-	case TIF_VK_FORMAT_B8G8R8_UNORM: return ImageFormat_B8G8R8_UNORM;
-	case TIF_VK_FORMAT_B8G8R8_SNORM: return ImageFormat_B8G8R8_SNORM;
-	case TIF_VK_FORMAT_B8G8R8_USCALED: return ImageFormat_B8G8R8_USCALED;
-	case TIF_VK_FORMAT_B8G8R8_SSCALED: return ImageFormat_B8G8R8_SSCALED;
-	case TIF_VK_FORMAT_B8G8R8_UINT: return ImageFormat_B8G8R8_UINT;
-	case TIF_VK_FORMAT_B8G8R8_SINT: return ImageFormat_B8G8R8_SINT;
-	case TIF_VK_FORMAT_B8G8R8_SRGB: return ImageFormat_B8G8R8_SRGB;
-	case TIF_VK_FORMAT_R8G8B8A8_UNORM: return ImageFormat_R8G8B8A8_UNORM;
-	case TIF_VK_FORMAT_R8G8B8A8_SNORM: return ImageFormat_R8G8B8A8_SNORM;
-	case TIF_VK_FORMAT_R8G8B8A8_USCALED: return ImageFormat_R8G8B8A8_USCALED;
-	case TIF_VK_FORMAT_R8G8B8A8_SSCALED: return ImageFormat_R8G8B8A8_SSCALED;
-	case TIF_VK_FORMAT_R8G8B8A8_UINT: return ImageFormat_R8G8B8A8_UINT;
-	case TIF_VK_FORMAT_R8G8B8A8_SINT: return ImageFormat_R8G8B8A8_SINT;
-	case TIF_VK_FORMAT_R8G8B8A8_SRGB: return ImageFormat_R8G8B8A8_SRGB;
-	case TIF_VK_FORMAT_B8G8R8A8_UNORM: return ImageFormat_B8G8R8A8_UNORM;
-	case TIF_VK_FORMAT_B8G8R8A8_SNORM: return ImageFormat_B8G8R8A8_SNORM;
-	case TIF_VK_FORMAT_B8G8R8A8_USCALED: return ImageFormat_B8G8R8A8_USCALED;
-	case TIF_VK_FORMAT_B8G8R8A8_SSCALED: return ImageFormat_B8G8R8A8_SSCALED;
-	case TIF_VK_FORMAT_B8G8R8A8_UINT: return ImageFormat_B8G8R8A8_UINT;
-	case TIF_VK_FORMAT_B8G8R8A8_SINT: return ImageFormat_B8G8R8A8_SINT;
-	case TIF_VK_FORMAT_B8G8R8A8_SRGB: return ImageFormat_B8G8R8A8_SRGB;
-	case TIF_VK_FORMAT_A8B8G8R8_UNORM_PACK32: return ImageFormat_A8B8G8R8_UNORM_PACK32;
-	case TIF_VK_FORMAT_A8B8G8R8_SNORM_PACK32: return ImageFormat_A8B8G8R8_SNORM_PACK32;
-	case TIF_VK_FORMAT_A8B8G8R8_USCALED_PACK32: return ImageFormat_A8B8G8R8_USCALED_PACK32;
-	case TIF_VK_FORMAT_A8B8G8R8_SSCALED_PACK32: return ImageFormat_A8B8G8R8_SSCALED_PACK32;
-	case TIF_VK_FORMAT_A8B8G8R8_UINT_PACK32: return ImageFormat_A8B8G8R8_UINT_PACK32;
-	case TIF_VK_FORMAT_A8B8G8R8_SINT_PACK32: return ImageFormat_A8B8G8R8_SINT_PACK32;
-	case TIF_VK_FORMAT_A8B8G8R8_SRGB_PACK32: return ImageFormat_A8B8G8R8_SRGB_PACK32;
-	case TIF_VK_FORMAT_A2R10G10B10_UNORM_PACK32: return ImageFormat_A2R10G10B10_UNORM_PACK32;
-	case TIF_VK_FORMAT_A2R10G10B10_USCALED_PACK32: return ImageFormat_A2R10G10B10_USCALED_PACK32;
-	case TIF_VK_FORMAT_A2R10G10B10_UINT_PACK32: return ImageFormat_A2R10G10B10_UINT_PACK32;
-	case TIF_VK_FORMAT_A2B10G10R10_UNORM_PACK32: return ImageFormat_A2B10G10R10_UNORM_PACK32;
-	case TIF_VK_FORMAT_A2B10G10R10_USCALED_PACK32: return ImageFormat_A2B10G10R10_USCALED_PACK32;
-	case TIF_VK_FORMAT_A2B10G10R10_UINT_PACK32: return ImageFormat_A2B10G10R10_UINT_PACK32;
-	case TIF_VK_FORMAT_R16_UNORM: return ImageFormat_R16_UNORM;
-	case TIF_VK_FORMAT_R16_SNORM: return ImageFormat_R16_SNORM;
-	case TIF_VK_FORMAT_R16_USCALED: return ImageFormat_R16_USCALED;
-	case TIF_VK_FORMAT_R16_SSCALED: return ImageFormat_R16_SSCALED;
-	case TIF_VK_FORMAT_R16_UINT: return ImageFormat_R16_UINT;
-	case TIF_VK_FORMAT_R16_SINT: return ImageFormat_R16_SINT;
-	case TIF_VK_FORMAT_R16_SFLOAT: return ImageFormat_R16_SFLOAT;
-	case TIF_VK_FORMAT_R16G16_UNORM: return ImageFormat_R16G16_UNORM;
-	case TIF_VK_FORMAT_R16G16_SNORM: return ImageFormat_R16G16_SNORM;
-	case TIF_VK_FORMAT_R16G16_USCALED: return ImageFormat_R16G16_USCALED;
-	case TIF_VK_FORMAT_R16G16_SSCALED: return ImageFormat_R16G16_SSCALED;
-	case TIF_VK_FORMAT_R16G16_UINT: return ImageFormat_R16G16_UINT;
-	case TIF_VK_FORMAT_R16G16_SINT: return ImageFormat_R16G16_SINT;
-	case TIF_VK_FORMAT_R16G16_SFLOAT: return ImageFormat_R16G16_SFLOAT;
-	case TIF_VK_FORMAT_R16G16B16_UNORM: return ImageFormat_R16G16B16_UNORM;
-	case TIF_VK_FORMAT_R16G16B16_SNORM: return ImageFormat_R16G16B16_SNORM;
-	case TIF_VK_FORMAT_R16G16B16_USCALED: return ImageFormat_R16G16B16_USCALED;
-	case TIF_VK_FORMAT_R16G16B16_SSCALED: return ImageFormat_R16G16B16_SSCALED;
-	case TIF_VK_FORMAT_R16G16B16_UINT: return ImageFormat_R16G16B16_UINT;
-	case TIF_VK_FORMAT_R16G16B16_SINT: return ImageFormat_R16G16B16_SINT;
-	case TIF_VK_FORMAT_R16G16B16_SFLOAT: return ImageFormat_R16G16B16_SFLOAT;
-	case TIF_VK_FORMAT_R16G16B16A16_UNORM: return ImageFormat_R16G16B16A16_UNORM;
-	case TIF_VK_FORMAT_R16G16B16A16_SNORM: return ImageFormat_R16G16B16A16_SNORM;
-	case TIF_VK_FORMAT_R16G16B16A16_USCALED: return ImageFormat_R16G16B16A16_USCALED;
-	case TIF_VK_FORMAT_R16G16B16A16_SSCALED: return ImageFormat_R16G16B16A16_SSCALED;
-	case TIF_VK_FORMAT_R16G16B16A16_UINT: return ImageFormat_R16G16B16A16_UINT;
-	case TIF_VK_FORMAT_R16G16B16A16_SINT: return ImageFormat_R16G16B16A16_SINT;
-	case TIF_VK_FORMAT_R16G16B16A16_SFLOAT: return ImageFormat_R16G16B16A16_SFLOAT;
-	case TIF_VK_FORMAT_R32_UINT: return ImageFormat_R32_UINT;
-	case TIF_VK_FORMAT_R32_SINT: return ImageFormat_R32_SINT;
-	case TIF_VK_FORMAT_R32_SFLOAT: return ImageFormat_R32_SFLOAT;
-	case TIF_VK_FORMAT_R32G32_UINT: return ImageFormat_R32G32_UINT;
-	case TIF_VK_FORMAT_R32G32_SINT: return ImageFormat_R32G32_SINT;
-	case TIF_VK_FORMAT_R32G32_SFLOAT: return ImageFormat_R32G32_SFLOAT;
-	case TIF_VK_FORMAT_R32G32B32_UINT: return ImageFormat_R32G32B32_UINT;
-	case TIF_VK_FORMAT_R32G32B32_SINT: return ImageFormat_R32G32B32_SINT;
-	case TIF_VK_FORMAT_R32G32B32_SFLOAT: return ImageFormat_R32G32B32_SFLOAT;
-	case TIF_VK_FORMAT_R32G32B32A32_UINT: return ImageFormat_R32G32B32A32_UINT;
-	case TIF_VK_FORMAT_R32G32B32A32_SINT: return ImageFormat_R32G32B32A32_SINT;
-	case TIF_VK_FORMAT_R32G32B32A32_SFLOAT: return ImageFormat_R32G32B32A32_SFLOAT;
-	case TIF_VK_FORMAT_R64_UINT: return ImageFormat_R64_UINT;
-	case TIF_VK_FORMAT_R64_SINT: return ImageFormat_R64_SINT;
-	case TIF_VK_FORMAT_R64_SFLOAT: return ImageFormat_R64_SFLOAT;
-	case TIF_VK_FORMAT_R64G64_UINT: return ImageFormat_R64G64_UINT;
-	case TIF_VK_FORMAT_R64G64_SINT: return ImageFormat_R64G64_SINT;
-	case TIF_VK_FORMAT_R64G64_SFLOAT: return ImageFormat_R64G64_SFLOAT;
-	case TIF_VK_FORMAT_R64G64B64_UINT: return ImageFormat_R64G64B64_UINT;
-	case TIF_VK_FORMAT_R64G64B64_SINT: return ImageFormat_R64G64B64_SINT;
-	case TIF_VK_FORMAT_R64G64B64_SFLOAT: return ImageFormat_R64G64B64_SFLOAT;
-	case TIF_VK_FORMAT_R64G64B64A64_UINT: return ImageFormat_R64G64B64A64_UINT;
-	case TIF_VK_FORMAT_R64G64B64A64_SINT: return ImageFormat_R64G64B64A64_SINT;
-	case TIF_VK_FORMAT_R64G64B64A64_SFLOAT: return ImageFormat_R64G64B64A64_SFLOAT;
-	case TIF_VK_FORMAT_B10G11R11_UFLOAT_PACK32: return ImageFormat_B10G11R11_UFLOAT_PACK32;
-	case TIF_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32: return ImageFormat_E5B9G9R9_UFLOAT_PACK32;
-	case TIF_VK_FORMAT_D16_UNORM: return ImageFormat_D16_UNORM;
-	case TIF_VK_FORMAT_X8_D24_UNORM_PACK32: return ImageFormat_X8_D24_UNORM_PACK32;
-	case TIF_VK_FORMAT_D32_SFLOAT: return ImageFormat_D32_SFLOAT;
-	case TIF_VK_FORMAT_S8_UINT: return ImageFormat_S8_UINT;
-	case TIF_VK_FORMAT_D16_UNORM_S8_UINT: return ImageFormat_D16_UNORM_S8_UINT;
-	case TIF_VK_FORMAT_D24_UNORM_S8_UINT: return ImageFormat_D24_UNORM_S8_UINT;
-	case TIF_VK_FORMAT_D32_SFLOAT_S8_UINT: return ImageFormat_D32_SFLOAT_S8_UINT;
-	case TIF_VK_FORMAT_BC1_RGB_UNORM_BLOCK: return ImageFormat_BC1_RGB_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC1_RGB_SRGB_BLOCK: return ImageFormat_BC1_RGB_SRGB_BLOCK;
-	case TIF_VK_FORMAT_BC1_RGBA_UNORM_BLOCK: return ImageFormat_BC1_RGBA_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC1_RGBA_SRGB_BLOCK: return ImageFormat_BC1_RGBA_SRGB_BLOCK;
-	case TIF_VK_FORMAT_BC2_UNORM_BLOCK: return ImageFormat_BC2_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC2_SRGB_BLOCK: return ImageFormat_BC2_SRGB_BLOCK;
-	case TIF_VK_FORMAT_BC3_UNORM_BLOCK: return ImageFormat_BC3_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC3_SRGB_BLOCK: return ImageFormat_BC3_SRGB_BLOCK;
-	case TIF_VK_FORMAT_BC4_UNORM_BLOCK: return ImageFormat_BC4_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC4_SNORM_BLOCK: return ImageFormat_BC4_SNORM_BLOCK;
-	case TIF_VK_FORMAT_BC5_UNORM_BLOCK: return ImageFormat_BC5_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC5_SNORM_BLOCK: return ImageFormat_BC5_SNORM_BLOCK;
-	case TIF_VK_FORMAT_BC6H_UFLOAT_BLOCK: return ImageFormat_BC6H_UFLOAT_BLOCK;
-	case TIF_VK_FORMAT_BC6H_SFLOAT_BLOCK: return ImageFormat_BC6H_SFLOAT_BLOCK;
-	case TIF_VK_FORMAT_BC7_UNORM_BLOCK: return ImageFormat_BC7_UNORM_BLOCK;
-	case TIF_VK_FORMAT_BC7_SRGB_BLOCK: return ImageFormat_BC7_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK: return ImageFormat_ETC2_R8G8B8_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK: return ImageFormat_ETC2_R8G8B8_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK: return ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK: return ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK: return ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK: return ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK;
-	case TIF_VK_FORMAT_EAC_R11_UNORM_BLOCK: return ImageFormat_EAC_R11_UNORM_BLOCK;
-	case TIF_VK_FORMAT_EAC_R11_SNORM_BLOCK: return ImageFormat_EAC_R11_SNORM_BLOCK;
-	case TIF_VK_FORMAT_EAC_R11G11_UNORM_BLOCK: return ImageFormat_EAC_R11G11_UNORM_BLOCK;
-	case TIF_VK_FORMAT_EAC_R11G11_SNORM_BLOCK: return ImageFormat_EAC_R11G11_SNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_4x4_UNORM_BLOCK: return ImageFormat_ASTC_4x4_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_4x4_SRGB_BLOCK: return ImageFormat_ASTC_4x4_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_5x4_UNORM_BLOCK: return ImageFormat_ASTC_5x4_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_5x4_SRGB_BLOCK: return ImageFormat_ASTC_5x4_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_5x5_UNORM_BLOCK: return ImageFormat_ASTC_5x5_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_5x5_SRGB_BLOCK: return ImageFormat_ASTC_5x5_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_6x5_UNORM_BLOCK: return ImageFormat_ASTC_6x5_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_6x5_SRGB_BLOCK: return ImageFormat_ASTC_6x5_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_6x6_UNORM_BLOCK: return ImageFormat_ASTC_6x6_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_6x6_SRGB_BLOCK: return ImageFormat_ASTC_6x6_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_8x5_UNORM_BLOCK: return ImageFormat_ASTC_8x5_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_8x5_SRGB_BLOCK: return ImageFormat_ASTC_8x5_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_8x6_UNORM_BLOCK: return ImageFormat_ASTC_8x6_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_8x6_SRGB_BLOCK: return ImageFormat_ASTC_8x6_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_8x8_UNORM_BLOCK: return ImageFormat_ASTC_8x8_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_8x8_SRGB_BLOCK: return ImageFormat_ASTC_8x8_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x5_UNORM_BLOCK: return ImageFormat_ASTC_10x5_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x5_SRGB_BLOCK: return ImageFormat_ASTC_10x5_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x6_UNORM_BLOCK: return ImageFormat_ASTC_10x6_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x6_SRGB_BLOCK: return ImageFormat_ASTC_10x6_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x8_UNORM_BLOCK: return ImageFormat_ASTC_10x8_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x8_SRGB_BLOCK: return ImageFormat_ASTC_10x8_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x10_UNORM_BLOCK: return ImageFormat_ASTC_10x10_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_10x10_SRGB_BLOCK: return ImageFormat_ASTC_10x10_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_12x10_UNORM_BLOCK: return ImageFormat_ASTC_12x10_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_12x10_SRGB_BLOCK: return ImageFormat_ASTC_12x10_SRGB_BLOCK;
-	case TIF_VK_FORMAT_ASTC_12x12_UNORM_BLOCK: return ImageFormat_ASTC_12x12_UNORM_BLOCK;
-	case TIF_VK_FORMAT_ASTC_12x12_SRGB_BLOCK: return ImageFormat_ASTC_12x12_SRGB_BLOCK;
+	case TIF_VK_FORMAT_UNDEFINED: return TinyImageFormat_UNDEFINED;
+	case TIF_VK_FORMAT_R4G4_UNORM_PACK8: return TinyImageFormat_R4G4_UNORM_PACK8;
+	case TIF_VK_FORMAT_R4G4B4A4_UNORM_PACK16: return TinyImageFormat_R4G4B4A4_UNORM_PACK16;
+	case TIF_VK_FORMAT_B4G4R4A4_UNORM_PACK16: return TinyImageFormat_B4G4R4A4_UNORM_PACK16;
+	case TIF_VK_FORMAT_R5G6B5_UNORM_PACK16: return TinyImageFormat_R5G6B5_UNORM_PACK16;
+	case TIF_VK_FORMAT_B5G6R5_UNORM_PACK16: return TinyImageFormat_B5G6R5_UNORM_PACK16;
+	case TIF_VK_FORMAT_R5G5B5A1_UNORM_PACK16: return TinyImageFormat_R5G5B5A1_UNORM_PACK16;
+	case TIF_VK_FORMAT_B5G5R5A1_UNORM_PACK16: return TinyImageFormat_B5G5R5A1_UNORM_PACK16;
+	case TIF_VK_FORMAT_A1R5G5B5_UNORM_PACK16: return TinyImageFormat_A1R5G5B5_UNORM_PACK16;
+	case TIF_VK_FORMAT_R8_UNORM: return TinyImageFormat_R8_UNORM;
+	case TIF_VK_FORMAT_R8_SNORM: return TinyImageFormat_R8_SNORM;
+	case TIF_VK_FORMAT_R8_USCALED: return TinyImageFormat_R8_USCALED;
+	case TIF_VK_FORMAT_R8_SSCALED: return TinyImageFormat_R8_SSCALED;
+	case TIF_VK_FORMAT_R8_UINT: return TinyImageFormat_R8_UINT;
+	case TIF_VK_FORMAT_R8_SINT: return TinyImageFormat_R8_SINT;
+	case TIF_VK_FORMAT_R8_SRGB: return TinyImageFormat_R8_SRGB;
+	case TIF_VK_FORMAT_R8G8_UNORM: return TinyImageFormat_R8G8_UNORM;
+	case TIF_VK_FORMAT_R8G8_SNORM: return TinyImageFormat_R8G8_SNORM;
+	case TIF_VK_FORMAT_R8G8_USCALED: return TinyImageFormat_R8G8_USCALED;
+	case TIF_VK_FORMAT_R8G8_SSCALED: return TinyImageFormat_R8G8_SSCALED;
+	case TIF_VK_FORMAT_R8G8_UINT: return TinyImageFormat_R8G8_UINT;
+	case TIF_VK_FORMAT_R8G8_SINT: return TinyImageFormat_R8G8_SINT;
+	case TIF_VK_FORMAT_R8G8_SRGB: return TinyImageFormat_R8G8_SRGB;
+	case TIF_VK_FORMAT_R8G8B8_UNORM: return TinyImageFormat_R8G8B8_UNORM;
+	case TIF_VK_FORMAT_R8G8B8_SNORM: return TinyImageFormat_R8G8B8_SNORM;
+	case TIF_VK_FORMAT_R8G8B8_USCALED: return TinyImageFormat_R8G8B8_USCALED;
+	case TIF_VK_FORMAT_R8G8B8_SSCALED: return TinyImageFormat_R8G8B8_SSCALED;
+	case TIF_VK_FORMAT_R8G8B8_UINT: return TinyImageFormat_R8G8B8_UINT;
+	case TIF_VK_FORMAT_R8G8B8_SINT: return TinyImageFormat_R8G8B8_SINT;
+	case TIF_VK_FORMAT_R8G8B8_SRGB: return TinyImageFormat_R8G8B8_SRGB;
+	case TIF_VK_FORMAT_B8G8R8_UNORM: return TinyImageFormat_B8G8R8_UNORM;
+	case TIF_VK_FORMAT_B8G8R8_SNORM: return TinyImageFormat_B8G8R8_SNORM;
+	case TIF_VK_FORMAT_B8G8R8_USCALED: return TinyImageFormat_B8G8R8_USCALED;
+	case TIF_VK_FORMAT_B8G8R8_SSCALED: return TinyImageFormat_B8G8R8_SSCALED;
+	case TIF_VK_FORMAT_B8G8R8_UINT: return TinyImageFormat_B8G8R8_UINT;
+	case TIF_VK_FORMAT_B8G8R8_SINT: return TinyImageFormat_B8G8R8_SINT;
+	case TIF_VK_FORMAT_B8G8R8_SRGB: return TinyImageFormat_B8G8R8_SRGB;
+	case TIF_VK_FORMAT_R8G8B8A8_UNORM: return TinyImageFormat_R8G8B8A8_UNORM;
+	case TIF_VK_FORMAT_R8G8B8A8_SNORM: return TinyImageFormat_R8G8B8A8_SNORM;
+	case TIF_VK_FORMAT_R8G8B8A8_USCALED: return TinyImageFormat_R8G8B8A8_USCALED;
+	case TIF_VK_FORMAT_R8G8B8A8_SSCALED: return TinyImageFormat_R8G8B8A8_SSCALED;
+	case TIF_VK_FORMAT_R8G8B8A8_UINT: return TinyImageFormat_R8G8B8A8_UINT;
+	case TIF_VK_FORMAT_R8G8B8A8_SINT: return TinyImageFormat_R8G8B8A8_SINT;
+	case TIF_VK_FORMAT_R8G8B8A8_SRGB: return TinyImageFormat_R8G8B8A8_SRGB;
+	case TIF_VK_FORMAT_B8G8R8A8_UNORM: return TinyImageFormat_B8G8R8A8_UNORM;
+	case TIF_VK_FORMAT_B8G8R8A8_SNORM: return TinyImageFormat_B8G8R8A8_SNORM;
+	case TIF_VK_FORMAT_B8G8R8A8_USCALED: return TinyImageFormat_B8G8R8A8_USCALED;
+	case TIF_VK_FORMAT_B8G8R8A8_SSCALED: return TinyImageFormat_B8G8R8A8_SSCALED;
+	case TIF_VK_FORMAT_B8G8R8A8_UINT: return TinyImageFormat_B8G8R8A8_UINT;
+	case TIF_VK_FORMAT_B8G8R8A8_SINT: return TinyImageFormat_B8G8R8A8_SINT;
+	case TIF_VK_FORMAT_B8G8R8A8_SRGB: return TinyImageFormat_B8G8R8A8_SRGB;
+	case TIF_VK_FORMAT_A8B8G8R8_UNORM_PACK32: return TinyImageFormat_A8B8G8R8_UNORM_PACK32;
+	case TIF_VK_FORMAT_A8B8G8R8_SNORM_PACK32: return TinyImageFormat_A8B8G8R8_SNORM_PACK32;
+	case TIF_VK_FORMAT_A8B8G8R8_USCALED_PACK32: return TinyImageFormat_A8B8G8R8_USCALED_PACK32;
+	case TIF_VK_FORMAT_A8B8G8R8_SSCALED_PACK32: return TinyImageFormat_A8B8G8R8_SSCALED_PACK32;
+	case TIF_VK_FORMAT_A8B8G8R8_UINT_PACK32: return TinyImageFormat_A8B8G8R8_UINT_PACK32;
+	case TIF_VK_FORMAT_A8B8G8R8_SINT_PACK32: return TinyImageFormat_A8B8G8R8_SINT_PACK32;
+	case TIF_VK_FORMAT_A8B8G8R8_SRGB_PACK32: return TinyImageFormat_A8B8G8R8_SRGB_PACK32;
+	case TIF_VK_FORMAT_A2R10G10B10_UNORM_PACK32: return TinyImageFormat_A2R10G10B10_UNORM_PACK32;
+	case TIF_VK_FORMAT_A2R10G10B10_USCALED_PACK32: return TinyImageFormat_A2R10G10B10_USCALED_PACK32;
+	case TIF_VK_FORMAT_A2R10G10B10_UINT_PACK32: return TinyImageFormat_A2R10G10B10_UINT_PACK32;
+	case TIF_VK_FORMAT_A2B10G10R10_UNORM_PACK32: return TinyImageFormat_A2B10G10R10_UNORM_PACK32;
+	case TIF_VK_FORMAT_A2B10G10R10_USCALED_PACK32: return TinyImageFormat_A2B10G10R10_USCALED_PACK32;
+	case TIF_VK_FORMAT_A2B10G10R10_UINT_PACK32: return TinyImageFormat_A2B10G10R10_UINT_PACK32;
+	case TIF_VK_FORMAT_R16_UNORM: return TinyImageFormat_R16_UNORM;
+	case TIF_VK_FORMAT_R16_SNORM: return TinyImageFormat_R16_SNORM;
+	case TIF_VK_FORMAT_R16_USCALED: return TinyImageFormat_R16_USCALED;
+	case TIF_VK_FORMAT_R16_SSCALED: return TinyImageFormat_R16_SSCALED;
+	case TIF_VK_FORMAT_R16_UINT: return TinyImageFormat_R16_UINT;
+	case TIF_VK_FORMAT_R16_SINT: return TinyImageFormat_R16_SINT;
+	case TIF_VK_FORMAT_R16_SFLOAT: return TinyImageFormat_R16_SFLOAT;
+	case TIF_VK_FORMAT_R16G16_UNORM: return TinyImageFormat_R16G16_UNORM;
+	case TIF_VK_FORMAT_R16G16_SNORM: return TinyImageFormat_R16G16_SNORM;
+	case TIF_VK_FORMAT_R16G16_USCALED: return TinyImageFormat_R16G16_USCALED;
+	case TIF_VK_FORMAT_R16G16_SSCALED: return TinyImageFormat_R16G16_SSCALED;
+	case TIF_VK_FORMAT_R16G16_UINT: return TinyImageFormat_R16G16_UINT;
+	case TIF_VK_FORMAT_R16G16_SINT: return TinyImageFormat_R16G16_SINT;
+	case TIF_VK_FORMAT_R16G16_SFLOAT: return TinyImageFormat_R16G16_SFLOAT;
+	case TIF_VK_FORMAT_R16G16B16_UNORM: return TinyImageFormat_R16G16B16_UNORM;
+	case TIF_VK_FORMAT_R16G16B16_SNORM: return TinyImageFormat_R16G16B16_SNORM;
+	case TIF_VK_FORMAT_R16G16B16_USCALED: return TinyImageFormat_R16G16B16_USCALED;
+	case TIF_VK_FORMAT_R16G16B16_SSCALED: return TinyImageFormat_R16G16B16_SSCALED;
+	case TIF_VK_FORMAT_R16G16B16_UINT: return TinyImageFormat_R16G16B16_UINT;
+	case TIF_VK_FORMAT_R16G16B16_SINT: return TinyImageFormat_R16G16B16_SINT;
+	case TIF_VK_FORMAT_R16G16B16_SFLOAT: return TinyImageFormat_R16G16B16_SFLOAT;
+	case TIF_VK_FORMAT_R16G16B16A16_UNORM: return TinyImageFormat_R16G16B16A16_UNORM;
+	case TIF_VK_FORMAT_R16G16B16A16_SNORM: return TinyImageFormat_R16G16B16A16_SNORM;
+	case TIF_VK_FORMAT_R16G16B16A16_USCALED: return TinyImageFormat_R16G16B16A16_USCALED;
+	case TIF_VK_FORMAT_R16G16B16A16_SSCALED: return TinyImageFormat_R16G16B16A16_SSCALED;
+	case TIF_VK_FORMAT_R16G16B16A16_UINT: return TinyImageFormat_R16G16B16A16_UINT;
+	case TIF_VK_FORMAT_R16G16B16A16_SINT: return TinyImageFormat_R16G16B16A16_SINT;
+	case TIF_VK_FORMAT_R16G16B16A16_SFLOAT: return TinyImageFormat_R16G16B16A16_SFLOAT;
+	case TIF_VK_FORMAT_R32_UINT: return TinyImageFormat_R32_UINT;
+	case TIF_VK_FORMAT_R32_SINT: return TinyImageFormat_R32_SINT;
+	case TIF_VK_FORMAT_R32_SFLOAT: return TinyImageFormat_R32_SFLOAT;
+	case TIF_VK_FORMAT_R32G32_UINT: return TinyImageFormat_R32G32_UINT;
+	case TIF_VK_FORMAT_R32G32_SINT: return TinyImageFormat_R32G32_SINT;
+	case TIF_VK_FORMAT_R32G32_SFLOAT: return TinyImageFormat_R32G32_SFLOAT;
+	case TIF_VK_FORMAT_R32G32B32_UINT: return TinyImageFormat_R32G32B32_UINT;
+	case TIF_VK_FORMAT_R32G32B32_SINT: return TinyImageFormat_R32G32B32_SINT;
+	case TIF_VK_FORMAT_R32G32B32_SFLOAT: return TinyImageFormat_R32G32B32_SFLOAT;
+	case TIF_VK_FORMAT_R32G32B32A32_UINT: return TinyImageFormat_R32G32B32A32_UINT;
+	case TIF_VK_FORMAT_R32G32B32A32_SINT: return TinyImageFormat_R32G32B32A32_SINT;
+	case TIF_VK_FORMAT_R32G32B32A32_SFLOAT: return TinyImageFormat_R32G32B32A32_SFLOAT;
+	case TIF_VK_FORMAT_R64_UINT: return TinyImageFormat_R64_UINT;
+	case TIF_VK_FORMAT_R64_SINT: return TinyImageFormat_R64_SINT;
+	case TIF_VK_FORMAT_R64_SFLOAT: return TinyImageFormat_R64_SFLOAT;
+	case TIF_VK_FORMAT_R64G64_UINT: return TinyImageFormat_R64G64_UINT;
+	case TIF_VK_FORMAT_R64G64_SINT: return TinyImageFormat_R64G64_SINT;
+	case TIF_VK_FORMAT_R64G64_SFLOAT: return TinyImageFormat_R64G64_SFLOAT;
+	case TIF_VK_FORMAT_R64G64B64_UINT: return TinyImageFormat_R64G64B64_UINT;
+	case TIF_VK_FORMAT_R64G64B64_SINT: return TinyImageFormat_R64G64B64_SINT;
+	case TIF_VK_FORMAT_R64G64B64_SFLOAT: return TinyImageFormat_R64G64B64_SFLOAT;
+	case TIF_VK_FORMAT_R64G64B64A64_UINT: return TinyImageFormat_R64G64B64A64_UINT;
+	case TIF_VK_FORMAT_R64G64B64A64_SINT: return TinyImageFormat_R64G64B64A64_SINT;
+	case TIF_VK_FORMAT_R64G64B64A64_SFLOAT: return TinyImageFormat_R64G64B64A64_SFLOAT;
+	case TIF_VK_FORMAT_B10G11R11_UFLOAT_PACK32: return TinyImageFormat_B10G11R11_UFLOAT_PACK32;
+	case TIF_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32: return TinyImageFormat_E5B9G9R9_UFLOAT_PACK32;
+	case TIF_VK_FORMAT_D16_UNORM: return TinyImageFormat_D16_UNORM;
+	case TIF_VK_FORMAT_X8_D24_UNORM_PACK32: return TinyImageFormat_X8_D24_UNORM_PACK32;
+	case TIF_VK_FORMAT_D32_SFLOAT: return TinyImageFormat_D32_SFLOAT;
+	case TIF_VK_FORMAT_S8_UINT: return TinyImageFormat_S8_UINT;
+	case TIF_VK_FORMAT_D16_UNORM_S8_UINT: return TinyImageFormat_D16_UNORM_S8_UINT;
+	case TIF_VK_FORMAT_D24_UNORM_S8_UINT: return TinyImageFormat_D24_UNORM_S8_UINT;
+	case TIF_VK_FORMAT_D32_SFLOAT_S8_UINT: return TinyImageFormat_D32_SFLOAT_S8_UINT;
+	case TIF_VK_FORMAT_BC1_RGB_UNORM_BLOCK: return TinyImageFormat_BC1_RGB_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC1_RGB_SRGB_BLOCK: return TinyImageFormat_BC1_RGB_SRGB_BLOCK;
+	case TIF_VK_FORMAT_BC1_RGBA_UNORM_BLOCK: return TinyImageFormat_BC1_RGBA_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC1_RGBA_SRGB_BLOCK: return TinyImageFormat_BC1_RGBA_SRGB_BLOCK;
+	case TIF_VK_FORMAT_BC2_UNORM_BLOCK: return TinyImageFormat_BC2_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC2_SRGB_BLOCK: return TinyImageFormat_BC2_SRGB_BLOCK;
+	case TIF_VK_FORMAT_BC3_UNORM_BLOCK: return TinyImageFormat_BC3_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC3_SRGB_BLOCK: return TinyImageFormat_BC3_SRGB_BLOCK;
+	case TIF_VK_FORMAT_BC4_UNORM_BLOCK: return TinyImageFormat_BC4_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC4_SNORM_BLOCK: return TinyImageFormat_BC4_SNORM_BLOCK;
+	case TIF_VK_FORMAT_BC5_UNORM_BLOCK: return TinyImageFormat_BC5_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC5_SNORM_BLOCK: return TinyImageFormat_BC5_SNORM_BLOCK;
+	case TIF_VK_FORMAT_BC6H_UFLOAT_BLOCK: return TinyImageFormat_BC6H_UFLOAT_BLOCK;
+	case TIF_VK_FORMAT_BC6H_SFLOAT_BLOCK: return TinyImageFormat_BC6H_SFLOAT_BLOCK;
+	case TIF_VK_FORMAT_BC7_UNORM_BLOCK: return TinyImageFormat_BC7_UNORM_BLOCK;
+	case TIF_VK_FORMAT_BC7_SRGB_BLOCK: return TinyImageFormat_BC7_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK: return TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK: return TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK: return TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK: return TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK: return TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK: return TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK;
+	case TIF_VK_FORMAT_EAC_R11_UNORM_BLOCK: return TinyImageFormat_EAC_R11_UNORM_BLOCK;
+	case TIF_VK_FORMAT_EAC_R11_SNORM_BLOCK: return TinyImageFormat_EAC_R11_SNORM_BLOCK;
+	case TIF_VK_FORMAT_EAC_R11G11_UNORM_BLOCK: return TinyImageFormat_EAC_R11G11_UNORM_BLOCK;
+	case TIF_VK_FORMAT_EAC_R11G11_SNORM_BLOCK: return TinyImageFormat_EAC_R11G11_SNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_4x4_UNORM_BLOCK: return TinyImageFormat_ASTC_4x4_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_4x4_SRGB_BLOCK: return TinyImageFormat_ASTC_4x4_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_5x4_UNORM_BLOCK: return TinyImageFormat_ASTC_5x4_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_5x4_SRGB_BLOCK: return TinyImageFormat_ASTC_5x4_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_5x5_UNORM_BLOCK: return TinyImageFormat_ASTC_5x5_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_5x5_SRGB_BLOCK: return TinyImageFormat_ASTC_5x5_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_6x5_UNORM_BLOCK: return TinyImageFormat_ASTC_6x5_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_6x5_SRGB_BLOCK: return TinyImageFormat_ASTC_6x5_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_6x6_UNORM_BLOCK: return TinyImageFormat_ASTC_6x6_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_6x6_SRGB_BLOCK: return TinyImageFormat_ASTC_6x6_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_8x5_UNORM_BLOCK: return TinyImageFormat_ASTC_8x5_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_8x5_SRGB_BLOCK: return TinyImageFormat_ASTC_8x5_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_8x6_UNORM_BLOCK: return TinyImageFormat_ASTC_8x6_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_8x6_SRGB_BLOCK: return TinyImageFormat_ASTC_8x6_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_8x8_UNORM_BLOCK: return TinyImageFormat_ASTC_8x8_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_8x8_SRGB_BLOCK: return TinyImageFormat_ASTC_8x8_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x5_UNORM_BLOCK: return TinyImageFormat_ASTC_10x5_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x5_SRGB_BLOCK: return TinyImageFormat_ASTC_10x5_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x6_UNORM_BLOCK: return TinyImageFormat_ASTC_10x6_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x6_SRGB_BLOCK: return TinyImageFormat_ASTC_10x6_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x8_UNORM_BLOCK: return TinyImageFormat_ASTC_10x8_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x8_SRGB_BLOCK: return TinyImageFormat_ASTC_10x8_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x10_UNORM_BLOCK: return TinyImageFormat_ASTC_10x10_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_10x10_SRGB_BLOCK: return TinyImageFormat_ASTC_10x10_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_12x10_UNORM_BLOCK: return TinyImageFormat_ASTC_12x10_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_12x10_SRGB_BLOCK: return TinyImageFormat_ASTC_12x10_SRGB_BLOCK;
+	case TIF_VK_FORMAT_ASTC_12x12_UNORM_BLOCK: return TinyImageFormat_ASTC_12x12_UNORM_BLOCK;
+	case TIF_VK_FORMAT_ASTC_12x12_SRGB_BLOCK: return TinyImageFormat_ASTC_12x12_SRGB_BLOCK;
 
-	case TIF_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG: return ImageFormat_PVR_2BPP_UNORM_BLOCK;
-	case TIF_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG: return ImageFormat_PVR_4BPP_UNORM_BLOCK;
-	case TIF_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG: return ImageFormat_PVR_2BPP_SRGB_BLOCK;
-	case TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG: return ImageFormat_PVR_4BPP_SRGB_BLOCK;
+	case TIF_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG: return TinyImageFormat_PVR_2BPP_UNORM_BLOCK;
+	case TIF_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG: return TinyImageFormat_PVR_4BPP_UNORM_BLOCK;
+	case TIF_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG: return TinyImageFormat_PVR_2BPP_SRGB_BLOCK;
+	case TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG: return TinyImageFormat_PVR_4BPP_SRGB_BLOCK;
 
 		/* PVR v2 not supported
-		case TIF_VK_FORMAT_PVRTC2_2BPP_UNORM_BLOCK_IMG: return ImageFormat_PVR_2BPP_UNORM_BLOCK;
-		case TIF_VK_FORMAT_PVRTC2_4BPP_UNORM_BLOCK_IMG: return ImageFormat_PVR_2BPP_UNORM_BLOCK;
-		case TIF_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG: return ImageFormat_PVRTC2_2BPP_SRGB_BLOCK_IMG;
-		case TIF_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG: return ImageFormat_PVRTC2_4BPP_SRGB_BLOCK_IMG;
+		case TIF_VK_FORMAT_PVRTC2_2BPP_UNORM_BLOCK_IMG: return TinyImageFormat_PVR_2BPP_UNORM_BLOCK;
+		case TIF_VK_FORMAT_PVRTC2_4BPP_UNORM_BLOCK_IMG: return TinyImageFormat_PVR_2BPP_UNORM_BLOCK;
+		case TIF_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG: return TinyImageFormat_PVRTC2_2BPP_SRGB_BLOCK_IMG;
+		case TIF_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG: return TinyImageFormat_PVRTC2_4BPP_SRGB_BLOCK_IMG;
 		*/
-	default: return ImageFormat_UNDEFINED;
+	default: return TinyImageFormat_UNDEFINED;
 	}
 }
 
-TinyImageFormat_VkFormat ImageFormat_ToVkFormat(ImageFormat fmt) {
+TinyTinyImageFormat_VkFormat TinyImageFormat_ToVkFormat(TinyImageFormat fmt) {
 	switch (fmt) {
 
-	case ImageFormat_UNDEFINED: return TIF_VK_FORMAT_UNDEFINED;
-	case ImageFormat_R4G4_UNORM_PACK8: return TIF_VK_FORMAT_R4G4_UNORM_PACK8;
-	case ImageFormat_R4G4B4A4_UNORM_PACK16: return TIF_VK_FORMAT_R4G4B4A4_UNORM_PACK16;
-	case ImageFormat_B4G4R4A4_UNORM_PACK16: return TIF_VK_FORMAT_B4G4R4A4_UNORM_PACK16;
-	case ImageFormat_R5G6B5_UNORM_PACK16: return TIF_VK_FORMAT_R5G6B5_UNORM_PACK16;
-	case ImageFormat_B5G6R5_UNORM_PACK16: return TIF_VK_FORMAT_B5G6R5_UNORM_PACK16;
-	case ImageFormat_R5G5B5A1_UNORM_PACK16: return TIF_VK_FORMAT_R5G5B5A1_UNORM_PACK16;
-	case ImageFormat_B5G5R5A1_UNORM_PACK16: return TIF_VK_FORMAT_B5G5R5A1_UNORM_PACK16;
-	case ImageFormat_A1R5G5B5_UNORM_PACK16: return TIF_VK_FORMAT_A1R5G5B5_UNORM_PACK16;
-	case ImageFormat_R8_UNORM: return TIF_VK_FORMAT_R8_UNORM;
-	case ImageFormat_R8_SNORM: return TIF_VK_FORMAT_R8_SNORM;
-	case ImageFormat_R8_USCALED: return TIF_VK_FORMAT_R8_USCALED;
-	case ImageFormat_R8_SSCALED: return TIF_VK_FORMAT_R8_SSCALED;
-	case ImageFormat_R8_UINT: return TIF_VK_FORMAT_R8_UINT;
-	case ImageFormat_R8_SINT: return TIF_VK_FORMAT_R8_SINT;
-	case ImageFormat_R8_SRGB: return TIF_VK_FORMAT_R8_SRGB;
-	case ImageFormat_R8G8_UNORM: return TIF_VK_FORMAT_R8G8_UNORM;
-	case ImageFormat_R8G8_SNORM: return TIF_VK_FORMAT_R8G8_SNORM;
-	case ImageFormat_R8G8_USCALED: return TIF_VK_FORMAT_R8G8_USCALED;
-	case ImageFormat_R8G8_SSCALED: return TIF_VK_FORMAT_R8G8_SSCALED;
-	case ImageFormat_R8G8_UINT: return TIF_VK_FORMAT_R8G8_UINT;
-	case ImageFormat_R8G8_SINT: return TIF_VK_FORMAT_R8G8_SINT;
-	case ImageFormat_R8G8_SRGB: return TIF_VK_FORMAT_R8G8_SRGB;
-	case ImageFormat_R8G8B8_UNORM: return TIF_VK_FORMAT_R8G8B8_UNORM;
-	case ImageFormat_R8G8B8_SNORM: return TIF_VK_FORMAT_R8G8B8_SNORM;
-	case ImageFormat_R8G8B8_USCALED: return TIF_VK_FORMAT_R8G8B8_USCALED;
-	case ImageFormat_R8G8B8_SSCALED: return TIF_VK_FORMAT_R8G8B8_SSCALED;
-	case ImageFormat_R8G8B8_UINT: return TIF_VK_FORMAT_R8G8B8_UINT;
-	case ImageFormat_R8G8B8_SINT: return TIF_VK_FORMAT_R8G8B8_SINT;
-	case ImageFormat_R8G8B8_SRGB: return TIF_VK_FORMAT_R8G8B8_SRGB;
-	case ImageFormat_B8G8R8_UNORM: return TIF_VK_FORMAT_B8G8R8_UNORM;
-	case ImageFormat_B8G8R8_SNORM: return TIF_VK_FORMAT_B8G8R8_SNORM;
-	case ImageFormat_B8G8R8_USCALED: return TIF_VK_FORMAT_B8G8R8_USCALED;
-	case ImageFormat_B8G8R8_SSCALED: return TIF_VK_FORMAT_B8G8R8_SSCALED;
-	case ImageFormat_B8G8R8_UINT: return TIF_VK_FORMAT_B8G8R8_UINT;
-	case ImageFormat_B8G8R8_SINT: return TIF_VK_FORMAT_B8G8R8_SINT;
-	case ImageFormat_B8G8R8_SRGB: return TIF_VK_FORMAT_B8G8R8_SRGB;
-	case ImageFormat_R8G8B8A8_UNORM: return TIF_VK_FORMAT_R8G8B8A8_UNORM;
-	case ImageFormat_R8G8B8A8_SNORM: return TIF_VK_FORMAT_R8G8B8A8_SNORM;
-	case ImageFormat_R8G8B8A8_USCALED: return TIF_VK_FORMAT_R8G8B8A8_USCALED;
-	case ImageFormat_R8G8B8A8_SSCALED: return TIF_VK_FORMAT_R8G8B8A8_SSCALED;
-	case ImageFormat_R8G8B8A8_UINT: return TIF_VK_FORMAT_R8G8B8A8_UINT;
-	case ImageFormat_R8G8B8A8_SINT: return TIF_VK_FORMAT_R8G8B8A8_SINT;
-	case ImageFormat_R8G8B8A8_SRGB: return TIF_VK_FORMAT_R8G8B8A8_SRGB;
-	case ImageFormat_B8G8R8A8_UNORM: return TIF_VK_FORMAT_B8G8R8A8_UNORM;
-	case ImageFormat_B8G8R8A8_SNORM: return TIF_VK_FORMAT_B8G8R8A8_SNORM;
-	case ImageFormat_B8G8R8A8_USCALED: return TIF_VK_FORMAT_B8G8R8A8_USCALED;
-	case ImageFormat_B8G8R8A8_SSCALED: return TIF_VK_FORMAT_B8G8R8A8_SSCALED;
-	case ImageFormat_B8G8R8A8_UINT: return TIF_VK_FORMAT_B8G8R8A8_UINT;
-	case ImageFormat_B8G8R8A8_SINT: return TIF_VK_FORMAT_B8G8R8A8_SINT;
-	case ImageFormat_B8G8R8A8_SRGB: return TIF_VK_FORMAT_B8G8R8A8_SRGB;
-	case ImageFormat_A8B8G8R8_UNORM_PACK32: return TIF_VK_FORMAT_A8B8G8R8_UNORM_PACK32;
-	case ImageFormat_A8B8G8R8_SNORM_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SNORM_PACK32;
-	case ImageFormat_A8B8G8R8_USCALED_PACK32: return TIF_VK_FORMAT_A8B8G8R8_USCALED_PACK32;
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SSCALED_PACK32;
-	case ImageFormat_A8B8G8R8_UINT_PACK32: return TIF_VK_FORMAT_A8B8G8R8_UINT_PACK32;
-	case ImageFormat_A8B8G8R8_SINT_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SINT_PACK32;
-	case ImageFormat_A8B8G8R8_SRGB_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SRGB_PACK32;
-	case ImageFormat_A2R10G10B10_UNORM_PACK32: return TIF_VK_FORMAT_A2R10G10B10_UNORM_PACK32;
-	case ImageFormat_A2R10G10B10_USCALED_PACK32: return TIF_VK_FORMAT_A2R10G10B10_USCALED_PACK32;
-	case ImageFormat_A2R10G10B10_UINT_PACK32: return TIF_VK_FORMAT_A2R10G10B10_UINT_PACK32;
-	case ImageFormat_A2B10G10R10_UNORM_PACK32: return TIF_VK_FORMAT_A2B10G10R10_UNORM_PACK32;
-	case ImageFormat_A2B10G10R10_USCALED_PACK32: return TIF_VK_FORMAT_A2B10G10R10_USCALED_PACK32;
-	case ImageFormat_A2B10G10R10_UINT_PACK32: return TIF_VK_FORMAT_A2B10G10R10_UINT_PACK32;
-	case ImageFormat_R16_UNORM: return TIF_VK_FORMAT_R16_UNORM;
-	case ImageFormat_R16_SNORM: return TIF_VK_FORMAT_R16_SNORM;
-	case ImageFormat_R16_USCALED: return TIF_VK_FORMAT_R16_USCALED;
-	case ImageFormat_R16_SSCALED: return TIF_VK_FORMAT_R16_SSCALED;
-	case ImageFormat_R16_UINT: return TIF_VK_FORMAT_R16_UINT;
-	case ImageFormat_R16_SINT: return TIF_VK_FORMAT_R16_SINT;
-	case ImageFormat_R16_SFLOAT: return TIF_VK_FORMAT_R16_SFLOAT;
-	case ImageFormat_R16G16_UNORM: return TIF_VK_FORMAT_R16G16_UNORM;
-	case ImageFormat_R16G16_SNORM: return TIF_VK_FORMAT_R16G16_SNORM;
-	case ImageFormat_R16G16_USCALED: return TIF_VK_FORMAT_R16G16_USCALED;
-	case ImageFormat_R16G16_SSCALED: return TIF_VK_FORMAT_R16G16_SSCALED;
-	case ImageFormat_R16G16_UINT: return TIF_VK_FORMAT_R16G16_UINT;
-	case ImageFormat_R16G16_SINT: return TIF_VK_FORMAT_R16G16_SINT;
-	case ImageFormat_R16G16_SFLOAT: return TIF_VK_FORMAT_R16G16_SFLOAT;
-	case ImageFormat_R16G16B16_UNORM: return TIF_VK_FORMAT_R16G16B16_UNORM;
-	case ImageFormat_R16G16B16_SNORM: return TIF_VK_FORMAT_R16G16B16_SNORM;
-	case ImageFormat_R16G16B16_USCALED: return TIF_VK_FORMAT_R16G16B16_USCALED;
-	case ImageFormat_R16G16B16_SSCALED: return TIF_VK_FORMAT_R16G16B16_SSCALED;
-	case ImageFormat_R16G16B16_UINT: return TIF_VK_FORMAT_R16G16B16_UINT;
-	case ImageFormat_R16G16B16_SINT: return TIF_VK_FORMAT_R16G16B16_SINT;
-	case ImageFormat_R16G16B16_SFLOAT: return TIF_VK_FORMAT_R16G16B16_SFLOAT;
-	case ImageFormat_R16G16B16A16_UNORM: return TIF_VK_FORMAT_R16G16B16A16_UNORM;
-	case ImageFormat_R16G16B16A16_SNORM: return TIF_VK_FORMAT_R16G16B16A16_SNORM;
-	case ImageFormat_R16G16B16A16_USCALED: return TIF_VK_FORMAT_R16G16B16A16_USCALED;
-	case ImageFormat_R16G16B16A16_SSCALED: return TIF_VK_FORMAT_R16G16B16A16_SSCALED;
-	case ImageFormat_R16G16B16A16_UINT: return TIF_VK_FORMAT_R16G16B16A16_UINT;
-	case ImageFormat_R16G16B16A16_SINT: return TIF_VK_FORMAT_R16G16B16A16_SINT;
-	case ImageFormat_R16G16B16A16_SFLOAT: return TIF_VK_FORMAT_R16G16B16A16_SFLOAT;
-	case ImageFormat_R32_UINT: return TIF_VK_FORMAT_R32_UINT;
-	case ImageFormat_R32_SINT: return TIF_VK_FORMAT_R32_SINT;
-	case ImageFormat_R32_SFLOAT: return TIF_VK_FORMAT_R32_SFLOAT;
-	case ImageFormat_R32G32_UINT: return TIF_VK_FORMAT_R32G32_UINT;
-	case ImageFormat_R32G32_SINT: return TIF_VK_FORMAT_R32G32_SINT;
-	case ImageFormat_R32G32_SFLOAT: return TIF_VK_FORMAT_R32G32_SFLOAT;
-	case ImageFormat_R32G32B32_UINT: return TIF_VK_FORMAT_R32G32B32_UINT;
-	case ImageFormat_R32G32B32_SINT: return TIF_VK_FORMAT_R32G32B32_SINT;
-	case ImageFormat_R32G32B32_SFLOAT: return TIF_VK_FORMAT_R32G32B32_SFLOAT;
-	case ImageFormat_R32G32B32A32_UINT: return TIF_VK_FORMAT_R32G32B32A32_UINT;
-	case ImageFormat_R32G32B32A32_SINT: return TIF_VK_FORMAT_R32G32B32A32_SINT;
-	case ImageFormat_R32G32B32A32_SFLOAT: return TIF_VK_FORMAT_R32G32B32A32_SFLOAT;
-	case ImageFormat_R64_UINT: return TIF_VK_FORMAT_R64_UINT;
-	case ImageFormat_R64_SINT: return TIF_VK_FORMAT_R64_SINT;
-	case ImageFormat_R64_SFLOAT: return TIF_VK_FORMAT_R64_SFLOAT;
-	case ImageFormat_R64G64_UINT: return TIF_VK_FORMAT_R64G64_UINT;
-	case ImageFormat_R64G64_SINT: return TIF_VK_FORMAT_R64G64_SINT;
-	case ImageFormat_R64G64_SFLOAT: return TIF_VK_FORMAT_R64G64_SFLOAT;
-	case ImageFormat_R64G64B64_UINT: return TIF_VK_FORMAT_R64G64B64_UINT;
-	case ImageFormat_R64G64B64_SINT: return TIF_VK_FORMAT_R64G64B64_SINT;
-	case ImageFormat_R64G64B64_SFLOAT: return TIF_VK_FORMAT_R64G64B64_SFLOAT;
-	case ImageFormat_R64G64B64A64_UINT: return TIF_VK_FORMAT_R64G64B64A64_UINT;
-	case ImageFormat_R64G64B64A64_SINT: return TIF_VK_FORMAT_R64G64B64A64_SINT;
-	case ImageFormat_R64G64B64A64_SFLOAT: return TIF_VK_FORMAT_R64G64B64A64_SFLOAT;
-	case ImageFormat_B10G11R11_UFLOAT_PACK32: return TIF_VK_FORMAT_B10G11R11_UFLOAT_PACK32;
-	case ImageFormat_E5B9G9R9_UFLOAT_PACK32: return TIF_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32;
-	case ImageFormat_D16_UNORM: return TIF_VK_FORMAT_D16_UNORM;
-	case ImageFormat_X8_D24_UNORM_PACK32: return TIF_VK_FORMAT_X8_D24_UNORM_PACK32;
-	case ImageFormat_D32_SFLOAT: return TIF_VK_FORMAT_D32_SFLOAT;
-	case ImageFormat_S8_UINT: return TIF_VK_FORMAT_S8_UINT;
-	case ImageFormat_D16_UNORM_S8_UINT: return TIF_VK_FORMAT_D16_UNORM_S8_UINT;
-	case ImageFormat_D24_UNORM_S8_UINT: return TIF_VK_FORMAT_D24_UNORM_S8_UINT;
-	case ImageFormat_D32_SFLOAT_S8_UINT: return TIF_VK_FORMAT_D32_SFLOAT_S8_UINT;
-	case ImageFormat_BC1_RGB_UNORM_BLOCK: return TIF_VK_FORMAT_BC1_RGB_UNORM_BLOCK;
-	case ImageFormat_BC1_RGB_SRGB_BLOCK: return TIF_VK_FORMAT_BC1_RGB_SRGB_BLOCK;
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK: return TIF_VK_FORMAT_BC1_RGBA_UNORM_BLOCK;
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK: return TIF_VK_FORMAT_BC1_RGBA_SRGB_BLOCK;
-	case ImageFormat_BC2_UNORM_BLOCK: return TIF_VK_FORMAT_BC2_UNORM_BLOCK;
-	case ImageFormat_BC2_SRGB_BLOCK: return TIF_VK_FORMAT_BC2_SRGB_BLOCK;
-	case ImageFormat_BC3_UNORM_BLOCK: return TIF_VK_FORMAT_BC3_UNORM_BLOCK;
-	case ImageFormat_BC3_SRGB_BLOCK: return TIF_VK_FORMAT_BC3_SRGB_BLOCK;
-	case ImageFormat_BC4_UNORM_BLOCK: return TIF_VK_FORMAT_BC4_UNORM_BLOCK;
-	case ImageFormat_BC4_SNORM_BLOCK: return TIF_VK_FORMAT_BC4_SNORM_BLOCK;
-	case ImageFormat_BC5_UNORM_BLOCK: return TIF_VK_FORMAT_BC5_UNORM_BLOCK;
-	case ImageFormat_BC5_SNORM_BLOCK: return TIF_VK_FORMAT_BC5_SNORM_BLOCK;
-	case ImageFormat_BC6H_UFLOAT_BLOCK: return TIF_VK_FORMAT_BC6H_UFLOAT_BLOCK;
-	case ImageFormat_BC6H_SFLOAT_BLOCK: return TIF_VK_FORMAT_BC6H_SFLOAT_BLOCK;
-	case ImageFormat_BC7_UNORM_BLOCK: return TIF_VK_FORMAT_BC7_UNORM_BLOCK;
-	case ImageFormat_BC7_SRGB_BLOCK: return TIF_VK_FORMAT_BC7_SRGB_BLOCK;
-	case ImageFormat_PVR_2BPP_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG;
-	case ImageFormat_PVR_2BPPA_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG;
-	case ImageFormat_PVR_4BPP_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG;
-	case ImageFormat_PVR_4BPPA_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG;
-	case ImageFormat_PVR_2BPP_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG;
-	case ImageFormat_PVR_2BPPA_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG;
-	case ImageFormat_PVR_4BPP_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG;
-	case ImageFormat_PVR_4BPPA_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG;
-	case ImageFormat_ETC2_R8G8B8_UNORM_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK;
-	case ImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK;
-	case ImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK;
-	case ImageFormat_ETC2_R8G8B8_SRGB_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK;
-	case ImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK;
-	case ImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK;
-	case ImageFormat_EAC_R11_UNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11_UNORM_BLOCK;
-	case ImageFormat_EAC_R11G11_UNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11G11_UNORM_BLOCK;
-	case ImageFormat_EAC_R11_SNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11_SNORM_BLOCK;
-	case ImageFormat_EAC_R11G11_SNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11G11_SNORM_BLOCK;
-	case ImageFormat_ASTC_4x4_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_4x4_UNORM_BLOCK;
-	case ImageFormat_ASTC_4x4_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_4x4_SRGB_BLOCK;
-	case ImageFormat_ASTC_5x4_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_5x4_UNORM_BLOCK;
-	case ImageFormat_ASTC_5x4_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_5x4_SRGB_BLOCK;
-	case ImageFormat_ASTC_5x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_5x5_UNORM_BLOCK;
-	case ImageFormat_ASTC_5x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_5x5_SRGB_BLOCK;
-	case ImageFormat_ASTC_6x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_6x5_UNORM_BLOCK;
-	case ImageFormat_ASTC_6x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_6x5_SRGB_BLOCK;
-	case ImageFormat_ASTC_6x6_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_6x6_UNORM_BLOCK;
-	case ImageFormat_ASTC_6x6_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_6x6_SRGB_BLOCK;
-	case ImageFormat_ASTC_8x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_8x5_UNORM_BLOCK;
-	case ImageFormat_ASTC_8x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_8x5_SRGB_BLOCK;
-	case ImageFormat_ASTC_8x6_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_8x6_UNORM_BLOCK;
-	case ImageFormat_ASTC_8x6_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_8x6_SRGB_BLOCK;
-	case ImageFormat_ASTC_8x8_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_8x8_UNORM_BLOCK;
-	case ImageFormat_ASTC_8x8_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_8x8_SRGB_BLOCK;
-	case ImageFormat_ASTC_10x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x5_UNORM_BLOCK;
-	case ImageFormat_ASTC_10x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x5_SRGB_BLOCK;
-	case ImageFormat_ASTC_10x6_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x6_UNORM_BLOCK;
-	case ImageFormat_ASTC_10x6_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x6_SRGB_BLOCK;
-	case ImageFormat_ASTC_10x8_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x8_UNORM_BLOCK;
-	case ImageFormat_ASTC_10x8_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x8_SRGB_BLOCK;
-	case ImageFormat_ASTC_10x10_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x10_UNORM_BLOCK;
-	case ImageFormat_ASTC_10x10_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x10_SRGB_BLOCK;
-	case ImageFormat_ASTC_12x10_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_12x10_UNORM_BLOCK;
-	case ImageFormat_ASTC_12x10_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_12x10_SRGB_BLOCK;
-	case ImageFormat_ASTC_12x12_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_12x12_UNORM_BLOCK;
-	case ImageFormat_ASTC_12x12_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_12x12_SRGB_BLOCK;
+	case TinyImageFormat_UNDEFINED: return TIF_VK_FORMAT_UNDEFINED;
+	case TinyImageFormat_R4G4_UNORM_PACK8: return TIF_VK_FORMAT_R4G4_UNORM_PACK8;
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16: return TIF_VK_FORMAT_R4G4B4A4_UNORM_PACK16;
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16: return TIF_VK_FORMAT_B4G4R4A4_UNORM_PACK16;
+	case TinyImageFormat_R5G6B5_UNORM_PACK16: return TIF_VK_FORMAT_R5G6B5_UNORM_PACK16;
+	case TinyImageFormat_B5G6R5_UNORM_PACK16: return TIF_VK_FORMAT_B5G6R5_UNORM_PACK16;
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16: return TIF_VK_FORMAT_R5G5B5A1_UNORM_PACK16;
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16: return TIF_VK_FORMAT_B5G5R5A1_UNORM_PACK16;
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16: return TIF_VK_FORMAT_A1R5G5B5_UNORM_PACK16;
+	case TinyImageFormat_R8_UNORM: return TIF_VK_FORMAT_R8_UNORM;
+	case TinyImageFormat_R8_SNORM: return TIF_VK_FORMAT_R8_SNORM;
+	case TinyImageFormat_R8_USCALED: return TIF_VK_FORMAT_R8_USCALED;
+	case TinyImageFormat_R8_SSCALED: return TIF_VK_FORMAT_R8_SSCALED;
+	case TinyImageFormat_R8_UINT: return TIF_VK_FORMAT_R8_UINT;
+	case TinyImageFormat_R8_SINT: return TIF_VK_FORMAT_R8_SINT;
+	case TinyImageFormat_R8_SRGB: return TIF_VK_FORMAT_R8_SRGB;
+	case TinyImageFormat_R8G8_UNORM: return TIF_VK_FORMAT_R8G8_UNORM;
+	case TinyImageFormat_R8G8_SNORM: return TIF_VK_FORMAT_R8G8_SNORM;
+	case TinyImageFormat_R8G8_USCALED: return TIF_VK_FORMAT_R8G8_USCALED;
+	case TinyImageFormat_R8G8_SSCALED: return TIF_VK_FORMAT_R8G8_SSCALED;
+	case TinyImageFormat_R8G8_UINT: return TIF_VK_FORMAT_R8G8_UINT;
+	case TinyImageFormat_R8G8_SINT: return TIF_VK_FORMAT_R8G8_SINT;
+	case TinyImageFormat_R8G8_SRGB: return TIF_VK_FORMAT_R8G8_SRGB;
+	case TinyImageFormat_R8G8B8_UNORM: return TIF_VK_FORMAT_R8G8B8_UNORM;
+	case TinyImageFormat_R8G8B8_SNORM: return TIF_VK_FORMAT_R8G8B8_SNORM;
+	case TinyImageFormat_R8G8B8_USCALED: return TIF_VK_FORMAT_R8G8B8_USCALED;
+	case TinyImageFormat_R8G8B8_SSCALED: return TIF_VK_FORMAT_R8G8B8_SSCALED;
+	case TinyImageFormat_R8G8B8_UINT: return TIF_VK_FORMAT_R8G8B8_UINT;
+	case TinyImageFormat_R8G8B8_SINT: return TIF_VK_FORMAT_R8G8B8_SINT;
+	case TinyImageFormat_R8G8B8_SRGB: return TIF_VK_FORMAT_R8G8B8_SRGB;
+	case TinyImageFormat_B8G8R8_UNORM: return TIF_VK_FORMAT_B8G8R8_UNORM;
+	case TinyImageFormat_B8G8R8_SNORM: return TIF_VK_FORMAT_B8G8R8_SNORM;
+	case TinyImageFormat_B8G8R8_USCALED: return TIF_VK_FORMAT_B8G8R8_USCALED;
+	case TinyImageFormat_B8G8R8_SSCALED: return TIF_VK_FORMAT_B8G8R8_SSCALED;
+	case TinyImageFormat_B8G8R8_UINT: return TIF_VK_FORMAT_B8G8R8_UINT;
+	case TinyImageFormat_B8G8R8_SINT: return TIF_VK_FORMAT_B8G8R8_SINT;
+	case TinyImageFormat_B8G8R8_SRGB: return TIF_VK_FORMAT_B8G8R8_SRGB;
+	case TinyImageFormat_R8G8B8A8_UNORM: return TIF_VK_FORMAT_R8G8B8A8_UNORM;
+	case TinyImageFormat_R8G8B8A8_SNORM: return TIF_VK_FORMAT_R8G8B8A8_SNORM;
+	case TinyImageFormat_R8G8B8A8_USCALED: return TIF_VK_FORMAT_R8G8B8A8_USCALED;
+	case TinyImageFormat_R8G8B8A8_SSCALED: return TIF_VK_FORMAT_R8G8B8A8_SSCALED;
+	case TinyImageFormat_R8G8B8A8_UINT: return TIF_VK_FORMAT_R8G8B8A8_UINT;
+	case TinyImageFormat_R8G8B8A8_SINT: return TIF_VK_FORMAT_R8G8B8A8_SINT;
+	case TinyImageFormat_R8G8B8A8_SRGB: return TIF_VK_FORMAT_R8G8B8A8_SRGB;
+	case TinyImageFormat_B8G8R8A8_UNORM: return TIF_VK_FORMAT_B8G8R8A8_UNORM;
+	case TinyImageFormat_B8G8R8A8_SNORM: return TIF_VK_FORMAT_B8G8R8A8_SNORM;
+	case TinyImageFormat_B8G8R8A8_USCALED: return TIF_VK_FORMAT_B8G8R8A8_USCALED;
+	case TinyImageFormat_B8G8R8A8_SSCALED: return TIF_VK_FORMAT_B8G8R8A8_SSCALED;
+	case TinyImageFormat_B8G8R8A8_UINT: return TIF_VK_FORMAT_B8G8R8A8_UINT;
+	case TinyImageFormat_B8G8R8A8_SINT: return TIF_VK_FORMAT_B8G8R8A8_SINT;
+	case TinyImageFormat_B8G8R8A8_SRGB: return TIF_VK_FORMAT_B8G8R8A8_SRGB;
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32: return TIF_VK_FORMAT_A8B8G8R8_UNORM_PACK32;
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SNORM_PACK32;
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32: return TIF_VK_FORMAT_A8B8G8R8_USCALED_PACK32;
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SSCALED_PACK32;
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32: return TIF_VK_FORMAT_A8B8G8R8_UINT_PACK32;
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SINT_PACK32;
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32: return TIF_VK_FORMAT_A8B8G8R8_SRGB_PACK32;
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32: return TIF_VK_FORMAT_A2R10G10B10_UNORM_PACK32;
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32: return TIF_VK_FORMAT_A2R10G10B10_USCALED_PACK32;
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32: return TIF_VK_FORMAT_A2R10G10B10_UINT_PACK32;
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32: return TIF_VK_FORMAT_A2B10G10R10_UNORM_PACK32;
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32: return TIF_VK_FORMAT_A2B10G10R10_USCALED_PACK32;
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32: return TIF_VK_FORMAT_A2B10G10R10_UINT_PACK32;
+	case TinyImageFormat_R16_UNORM: return TIF_VK_FORMAT_R16_UNORM;
+	case TinyImageFormat_R16_SNORM: return TIF_VK_FORMAT_R16_SNORM;
+	case TinyImageFormat_R16_USCALED: return TIF_VK_FORMAT_R16_USCALED;
+	case TinyImageFormat_R16_SSCALED: return TIF_VK_FORMAT_R16_SSCALED;
+	case TinyImageFormat_R16_UINT: return TIF_VK_FORMAT_R16_UINT;
+	case TinyImageFormat_R16_SINT: return TIF_VK_FORMAT_R16_SINT;
+	case TinyImageFormat_R16_SFLOAT: return TIF_VK_FORMAT_R16_SFLOAT;
+	case TinyImageFormat_R16G16_UNORM: return TIF_VK_FORMAT_R16G16_UNORM;
+	case TinyImageFormat_R16G16_SNORM: return TIF_VK_FORMAT_R16G16_SNORM;
+	case TinyImageFormat_R16G16_USCALED: return TIF_VK_FORMAT_R16G16_USCALED;
+	case TinyImageFormat_R16G16_SSCALED: return TIF_VK_FORMAT_R16G16_SSCALED;
+	case TinyImageFormat_R16G16_UINT: return TIF_VK_FORMAT_R16G16_UINT;
+	case TinyImageFormat_R16G16_SINT: return TIF_VK_FORMAT_R16G16_SINT;
+	case TinyImageFormat_R16G16_SFLOAT: return TIF_VK_FORMAT_R16G16_SFLOAT;
+	case TinyImageFormat_R16G16B16_UNORM: return TIF_VK_FORMAT_R16G16B16_UNORM;
+	case TinyImageFormat_R16G16B16_SNORM: return TIF_VK_FORMAT_R16G16B16_SNORM;
+	case TinyImageFormat_R16G16B16_USCALED: return TIF_VK_FORMAT_R16G16B16_USCALED;
+	case TinyImageFormat_R16G16B16_SSCALED: return TIF_VK_FORMAT_R16G16B16_SSCALED;
+	case TinyImageFormat_R16G16B16_UINT: return TIF_VK_FORMAT_R16G16B16_UINT;
+	case TinyImageFormat_R16G16B16_SINT: return TIF_VK_FORMAT_R16G16B16_SINT;
+	case TinyImageFormat_R16G16B16_SFLOAT: return TIF_VK_FORMAT_R16G16B16_SFLOAT;
+	case TinyImageFormat_R16G16B16A16_UNORM: return TIF_VK_FORMAT_R16G16B16A16_UNORM;
+	case TinyImageFormat_R16G16B16A16_SNORM: return TIF_VK_FORMAT_R16G16B16A16_SNORM;
+	case TinyImageFormat_R16G16B16A16_USCALED: return TIF_VK_FORMAT_R16G16B16A16_USCALED;
+	case TinyImageFormat_R16G16B16A16_SSCALED: return TIF_VK_FORMAT_R16G16B16A16_SSCALED;
+	case TinyImageFormat_R16G16B16A16_UINT: return TIF_VK_FORMAT_R16G16B16A16_UINT;
+	case TinyImageFormat_R16G16B16A16_SINT: return TIF_VK_FORMAT_R16G16B16A16_SINT;
+	case TinyImageFormat_R16G16B16A16_SFLOAT: return TIF_VK_FORMAT_R16G16B16A16_SFLOAT;
+	case TinyImageFormat_R32_UINT: return TIF_VK_FORMAT_R32_UINT;
+	case TinyImageFormat_R32_SINT: return TIF_VK_FORMAT_R32_SINT;
+	case TinyImageFormat_R32_SFLOAT: return TIF_VK_FORMAT_R32_SFLOAT;
+	case TinyImageFormat_R32G32_UINT: return TIF_VK_FORMAT_R32G32_UINT;
+	case TinyImageFormat_R32G32_SINT: return TIF_VK_FORMAT_R32G32_SINT;
+	case TinyImageFormat_R32G32_SFLOAT: return TIF_VK_FORMAT_R32G32_SFLOAT;
+	case TinyImageFormat_R32G32B32_UINT: return TIF_VK_FORMAT_R32G32B32_UINT;
+	case TinyImageFormat_R32G32B32_SINT: return TIF_VK_FORMAT_R32G32B32_SINT;
+	case TinyImageFormat_R32G32B32_SFLOAT: return TIF_VK_FORMAT_R32G32B32_SFLOAT;
+	case TinyImageFormat_R32G32B32A32_UINT: return TIF_VK_FORMAT_R32G32B32A32_UINT;
+	case TinyImageFormat_R32G32B32A32_SINT: return TIF_VK_FORMAT_R32G32B32A32_SINT;
+	case TinyImageFormat_R32G32B32A32_SFLOAT: return TIF_VK_FORMAT_R32G32B32A32_SFLOAT;
+	case TinyImageFormat_R64_UINT: return TIF_VK_FORMAT_R64_UINT;
+	case TinyImageFormat_R64_SINT: return TIF_VK_FORMAT_R64_SINT;
+	case TinyImageFormat_R64_SFLOAT: return TIF_VK_FORMAT_R64_SFLOAT;
+	case TinyImageFormat_R64G64_UINT: return TIF_VK_FORMAT_R64G64_UINT;
+	case TinyImageFormat_R64G64_SINT: return TIF_VK_FORMAT_R64G64_SINT;
+	case TinyImageFormat_R64G64_SFLOAT: return TIF_VK_FORMAT_R64G64_SFLOAT;
+	case TinyImageFormat_R64G64B64_UINT: return TIF_VK_FORMAT_R64G64B64_UINT;
+	case TinyImageFormat_R64G64B64_SINT: return TIF_VK_FORMAT_R64G64B64_SINT;
+	case TinyImageFormat_R64G64B64_SFLOAT: return TIF_VK_FORMAT_R64G64B64_SFLOAT;
+	case TinyImageFormat_R64G64B64A64_UINT: return TIF_VK_FORMAT_R64G64B64A64_UINT;
+	case TinyImageFormat_R64G64B64A64_SINT: return TIF_VK_FORMAT_R64G64B64A64_SINT;
+	case TinyImageFormat_R64G64B64A64_SFLOAT: return TIF_VK_FORMAT_R64G64B64A64_SFLOAT;
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32: return TIF_VK_FORMAT_B10G11R11_UFLOAT_PACK32;
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32: return TIF_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32;
+	case TinyImageFormat_D16_UNORM: return TIF_VK_FORMAT_D16_UNORM;
+	case TinyImageFormat_X8_D24_UNORM_PACK32: return TIF_VK_FORMAT_X8_D24_UNORM_PACK32;
+	case TinyImageFormat_D32_SFLOAT: return TIF_VK_FORMAT_D32_SFLOAT;
+	case TinyImageFormat_S8_UINT: return TIF_VK_FORMAT_S8_UINT;
+	case TinyImageFormat_D16_UNORM_S8_UINT: return TIF_VK_FORMAT_D16_UNORM_S8_UINT;
+	case TinyImageFormat_D24_UNORM_S8_UINT: return TIF_VK_FORMAT_D24_UNORM_S8_UINT;
+	case TinyImageFormat_D32_SFLOAT_S8_UINT: return TIF_VK_FORMAT_D32_SFLOAT_S8_UINT;
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK: return TIF_VK_FORMAT_BC1_RGB_UNORM_BLOCK;
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK: return TIF_VK_FORMAT_BC1_RGB_SRGB_BLOCK;
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK: return TIF_VK_FORMAT_BC1_RGBA_UNORM_BLOCK;
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK: return TIF_VK_FORMAT_BC1_RGBA_SRGB_BLOCK;
+	case TinyImageFormat_BC2_UNORM_BLOCK: return TIF_VK_FORMAT_BC2_UNORM_BLOCK;
+	case TinyImageFormat_BC2_SRGB_BLOCK: return TIF_VK_FORMAT_BC2_SRGB_BLOCK;
+	case TinyImageFormat_BC3_UNORM_BLOCK: return TIF_VK_FORMAT_BC3_UNORM_BLOCK;
+	case TinyImageFormat_BC3_SRGB_BLOCK: return TIF_VK_FORMAT_BC3_SRGB_BLOCK;
+	case TinyImageFormat_BC4_UNORM_BLOCK: return TIF_VK_FORMAT_BC4_UNORM_BLOCK;
+	case TinyImageFormat_BC4_SNORM_BLOCK: return TIF_VK_FORMAT_BC4_SNORM_BLOCK;
+	case TinyImageFormat_BC5_UNORM_BLOCK: return TIF_VK_FORMAT_BC5_UNORM_BLOCK;
+	case TinyImageFormat_BC5_SNORM_BLOCK: return TIF_VK_FORMAT_BC5_SNORM_BLOCK;
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK: return TIF_VK_FORMAT_BC6H_UFLOAT_BLOCK;
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK: return TIF_VK_FORMAT_BC6H_SFLOAT_BLOCK;
+	case TinyImageFormat_BC7_UNORM_BLOCK: return TIF_VK_FORMAT_BC7_UNORM_BLOCK;
+	case TinyImageFormat_BC7_SRGB_BLOCK: return TIF_VK_FORMAT_BC7_SRGB_BLOCK;
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG;
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG;
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG;
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG;
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG;
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG;
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG;
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK: return TIF_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG;
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK;
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK;
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK;
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK;
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK;
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK: return TIF_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK;
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11_UNORM_BLOCK;
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11G11_UNORM_BLOCK;
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11_SNORM_BLOCK;
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK: return TIF_VK_FORMAT_EAC_R11G11_SNORM_BLOCK;
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_4x4_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_4x4_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_5x4_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_5x4_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_5x5_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_5x5_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_6x5_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_6x5_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_6x6_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_6x6_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_8x5_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_8x5_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_8x6_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_8x6_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_8x8_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_8x8_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x5_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x5_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x6_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x6_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x8_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x8_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_10x10_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_10x10_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_12x10_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_12x10_SRGB_BLOCK;
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK: return TIF_VK_FORMAT_ASTC_12x12_UNORM_BLOCK;
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK: return TIF_VK_FORMAT_ASTC_12x12_SRGB_BLOCK;
 
-	case ImageFormat_A4R4G4B4_UNORM_PACK16:
-	case ImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
 	default: return TIF_VK_FORMAT_UNDEFINED;
 	}
 }
 
-ImageFormat ImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORMAT fmt) {
+TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyTinyImageFormat_DXGI_FORMAT fmt) {
 	switch (fmt) {
-	case TIF_DXGI_FORMAT_UNKNOWN: return ImageFormat_UNDEFINED;
-	case TIF_DXGI_FORMAT_R32G32B32A32_FLOAT: return ImageFormat_R32G32B32A32_SFLOAT;
-	case TIF_DXGI_FORMAT_R32G32B32A32_UINT: return ImageFormat_R32G32B32A32_UINT;
-	case TIF_DXGI_FORMAT_R32G32B32A32_SINT: return ImageFormat_R32G32B32A32_SINT;
-	case TIF_DXGI_FORMAT_R32G32B32_FLOAT: return ImageFormat_R32G32B32_SFLOAT;
-	case TIF_DXGI_FORMAT_R32G32B32_UINT: return ImageFormat_R32G32B32_UINT;
-	case TIF_DXGI_FORMAT_R32G32B32_SINT: return ImageFormat_R32G32B32_SINT;
-	case TIF_DXGI_FORMAT_R16G16B16A16_FLOAT: return ImageFormat_R16G16B16A16_SFLOAT;
-	case TIF_DXGI_FORMAT_R16G16B16A16_UNORM: return ImageFormat_R16G16B16A16_UNORM;
-	case TIF_DXGI_FORMAT_R16G16B16A16_UINT: return ImageFormat_R16G16B16A16_UINT;
-	case TIF_DXGI_FORMAT_R16G16B16A16_SNORM: return ImageFormat_R16G16B16A16_SNORM;
-	case TIF_DXGI_FORMAT_R16G16B16A16_SINT: return ImageFormat_R16G16B16A16_SINT;
-	case TIF_DXGI_FORMAT_R32G32_FLOAT: return ImageFormat_R32G32_SFLOAT;
-	case TIF_DXGI_FORMAT_R32G32_UINT: return ImageFormat_R32G32_UINT;
-	case TIF_DXGI_FORMAT_R32G32_SINT: return ImageFormat_R32G32_SINT;
-	case TIF_DXGI_FORMAT_D32_FLOAT_S8X24_UINT: return ImageFormat_D32_SFLOAT_S8_UINT;
-	case TIF_DXGI_FORMAT_R10G10B10A2_UNORM: return ImageFormat_A2B10G10R10_UNORM_PACK32;
-	case TIF_DXGI_FORMAT_R10G10B10A2_UINT: return ImageFormat_A2B10G10R10_UINT_PACK32;
-	case TIF_DXGI_FORMAT_R11G11B10_FLOAT: return ImageFormat_B10G11R11_UFLOAT_PACK32;
-	case TIF_DXGI_FORMAT_R8G8B8A8_UNORM: return ImageFormat_R8G8B8A8_UNORM;
-	case TIF_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB: return ImageFormat_A8B8G8R8_UNORM_PACK32;
-	case TIF_DXGI_FORMAT_R8G8B8A8_UINT: return ImageFormat_A8B8G8R8_UINT_PACK32;
-	case TIF_DXGI_FORMAT_R8G8B8A8_SNORM: return ImageFormat_A8B8G8R8_SNORM_PACK32;
-	case TIF_DXGI_FORMAT_R8G8B8A8_SINT: return ImageFormat_A8B8G8R8_SINT_PACK32;
-	case TIF_DXGI_FORMAT_R16G16_FLOAT: return ImageFormat_R16G16_SFLOAT;
-	case TIF_DXGI_FORMAT_R16G16_UNORM: return ImageFormat_R16G16_UNORM;
-	case TIF_DXGI_FORMAT_R16G16_UINT: return ImageFormat_R16G16_UINT;
-	case TIF_DXGI_FORMAT_R16G16_SNORM: return ImageFormat_R16G16_SNORM;
-	case TIF_DXGI_FORMAT_R16G16_SINT: return ImageFormat_R16G16_SINT;
-	case TIF_DXGI_FORMAT_D32_FLOAT: return ImageFormat_D32_SFLOAT;
-	case TIF_DXGI_FORMAT_R32_FLOAT: return ImageFormat_R32_SFLOAT;
-	case TIF_DXGI_FORMAT_R32_UINT: return ImageFormat_R32_UINT;
-	case TIF_DXGI_FORMAT_R32_SINT: return ImageFormat_R32_SINT;
-	case TIF_DXGI_FORMAT_D24_UNORM_S8_UINT: return ImageFormat_D24_UNORM_S8_UINT;
-	case TIF_DXGI_FORMAT_X24_TYPELESS_G8_UINT: return ImageFormat_D24_UNORM_S8_UINT;
-	case TIF_DXGI_FORMAT_R8G8_UNORM: return ImageFormat_R8G8_UNORM;
-	case TIF_DXGI_FORMAT_R8G8_UINT: return ImageFormat_R8G8_UINT;
-	case TIF_DXGI_FORMAT_R8G8_SNORM: return ImageFormat_R8G8_SNORM;
-	case TIF_DXGI_FORMAT_R8G8_SINT: return ImageFormat_R8G8_SINT;
-	case TIF_DXGI_FORMAT_R16_FLOAT: return ImageFormat_R16_SFLOAT;
-	case TIF_DXGI_FORMAT_D16_UNORM: return ImageFormat_D16_UNORM;
-	case TIF_DXGI_FORMAT_R16_UNORM: return ImageFormat_R16_UNORM;
-	case TIF_DXGI_FORMAT_R16_UINT: return ImageFormat_R16_UINT;
-	case TIF_DXGI_FORMAT_R16_SNORM: return ImageFormat_R16_SNORM;
-	case TIF_DXGI_FORMAT_R16_SINT: return ImageFormat_R16_SINT;
-	case TIF_DXGI_FORMAT_R8_UNORM: return ImageFormat_R8_UNORM;
-	case TIF_DXGI_FORMAT_R8_UINT: return ImageFormat_R8_UINT;
-	case TIF_DXGI_FORMAT_R8_SNORM: return ImageFormat_R8_SNORM;
-	case TIF_DXGI_FORMAT_R8_SINT: return ImageFormat_R8_SINT;
-	case TIF_DXGI_FORMAT_A8_UNORM: return ImageFormat_R8_UNORM;
-	case TIF_DXGI_FORMAT_R9G9B9E5_SHAREDEXP: return ImageFormat_E5B9G9R9_UFLOAT_PACK32;
-	case TIF_DXGI_FORMAT_BC1_UNORM: return ImageFormat_BC1_RGBA_UNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC1_UNORM_SRGB: return ImageFormat_BC1_RGBA_SRGB_BLOCK;
-	case TIF_DXGI_FORMAT_BC2_UNORM: return ImageFormat_BC2_UNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC2_UNORM_SRGB: return ImageFormat_BC2_SRGB_BLOCK;
-	case TIF_DXGI_FORMAT_BC3_UNORM: return ImageFormat_BC3_UNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC3_UNORM_SRGB: return ImageFormat_BC3_SRGB_BLOCK;
-	case TIF_DXGI_FORMAT_BC4_UNORM: return ImageFormat_BC4_UNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC4_SNORM: return ImageFormat_BC4_SNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC5_UNORM: return ImageFormat_BC5_UNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC5_SNORM: return ImageFormat_BC5_SNORM_BLOCK;
-	case TIF_DXGI_FORMAT_B5G6R5_UNORM: return ImageFormat_R5G6B5_UNORM_PACK16;
-	case TIF_DXGI_FORMAT_B5G5R5A1_UNORM: return ImageFormat_R5G5B5A1_UNORM_PACK16;
-	case TIF_DXGI_FORMAT_B8G8R8A8_UNORM: return ImageFormat_B8G8R8A8_UNORM;
-	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM: return ImageFormat_B8G8R8A8_UNORM;
-	case TIF_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB: return ImageFormat_B8G8R8A8_SRGB;
-	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM_SRGB: return ImageFormat_B8G8R8A8_SRGB;
-	case TIF_DXGI_FORMAT_BC6H_UF16: return ImageFormat_BC6H_UFLOAT_BLOCK;
-	case TIF_DXGI_FORMAT_BC6H_SF16: return ImageFormat_BC6H_SFLOAT_BLOCK;
-	case TIF_DXGI_FORMAT_BC7_UNORM: return ImageFormat_BC7_UNORM_BLOCK;
-	case TIF_DXGI_FORMAT_BC7_UNORM_SRGB: return ImageFormat_BC7_SRGB_BLOCK;
-	case TIF_DXGI_FORMAT_B4G4R4A4_UNORM: return ImageFormat_B4G4R4A4_UNORM_PACK16;
+	case TIF_DXGI_FORMAT_UNKNOWN: return TinyImageFormat_UNDEFINED;
+	case TIF_DXGI_FORMAT_R32G32B32A32_FLOAT: return TinyImageFormat_R32G32B32A32_SFLOAT;
+	case TIF_DXGI_FORMAT_R32G32B32A32_UINT: return TinyImageFormat_R32G32B32A32_UINT;
+	case TIF_DXGI_FORMAT_R32G32B32A32_SINT: return TinyImageFormat_R32G32B32A32_SINT;
+	case TIF_DXGI_FORMAT_R32G32B32_FLOAT: return TinyImageFormat_R32G32B32_SFLOAT;
+	case TIF_DXGI_FORMAT_R32G32B32_UINT: return TinyImageFormat_R32G32B32_UINT;
+	case TIF_DXGI_FORMAT_R32G32B32_SINT: return TinyImageFormat_R32G32B32_SINT;
+	case TIF_DXGI_FORMAT_R16G16B16A16_FLOAT: return TinyImageFormat_R16G16B16A16_SFLOAT;
+	case TIF_DXGI_FORMAT_R16G16B16A16_UNORM: return TinyImageFormat_R16G16B16A16_UNORM;
+	case TIF_DXGI_FORMAT_R16G16B16A16_UINT: return TinyImageFormat_R16G16B16A16_UINT;
+	case TIF_DXGI_FORMAT_R16G16B16A16_SNORM: return TinyImageFormat_R16G16B16A16_SNORM;
+	case TIF_DXGI_FORMAT_R16G16B16A16_SINT: return TinyImageFormat_R16G16B16A16_SINT;
+	case TIF_DXGI_FORMAT_R32G32_FLOAT: return TinyImageFormat_R32G32_SFLOAT;
+	case TIF_DXGI_FORMAT_R32G32_UINT: return TinyImageFormat_R32G32_UINT;
+	case TIF_DXGI_FORMAT_R32G32_SINT: return TinyImageFormat_R32G32_SINT;
+	case TIF_DXGI_FORMAT_D32_FLOAT_S8X24_UINT: return TinyImageFormat_D32_SFLOAT_S8_UINT;
+	case TIF_DXGI_FORMAT_R10G10B10A2_UNORM: return TinyImageFormat_A2B10G10R10_UNORM_PACK32;
+	case TIF_DXGI_FORMAT_R10G10B10A2_UINT: return TinyImageFormat_A2B10G10R10_UINT_PACK32;
+	case TIF_DXGI_FORMAT_R11G11B10_FLOAT: return TinyImageFormat_B10G11R11_UFLOAT_PACK32;
+	case TIF_DXGI_FORMAT_R8G8B8A8_UNORM: return TinyImageFormat_R8G8B8A8_UNORM;
+	case TIF_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB: return TinyImageFormat_A8B8G8R8_UNORM_PACK32;
+	case TIF_DXGI_FORMAT_R8G8B8A8_UINT: return TinyImageFormat_A8B8G8R8_UINT_PACK32;
+	case TIF_DXGI_FORMAT_R8G8B8A8_SNORM: return TinyImageFormat_A8B8G8R8_SNORM_PACK32;
+	case TIF_DXGI_FORMAT_R8G8B8A8_SINT: return TinyImageFormat_A8B8G8R8_SINT_PACK32;
+	case TIF_DXGI_FORMAT_R16G16_FLOAT: return TinyImageFormat_R16G16_SFLOAT;
+	case TIF_DXGI_FORMAT_R16G16_UNORM: return TinyImageFormat_R16G16_UNORM;
+	case TIF_DXGI_FORMAT_R16G16_UINT: return TinyImageFormat_R16G16_UINT;
+	case TIF_DXGI_FORMAT_R16G16_SNORM: return TinyImageFormat_R16G16_SNORM;
+	case TIF_DXGI_FORMAT_R16G16_SINT: return TinyImageFormat_R16G16_SINT;
+	case TIF_DXGI_FORMAT_D32_FLOAT: return TinyImageFormat_D32_SFLOAT;
+	case TIF_DXGI_FORMAT_R32_FLOAT: return TinyImageFormat_R32_SFLOAT;
+	case TIF_DXGI_FORMAT_R32_UINT: return TinyImageFormat_R32_UINT;
+	case TIF_DXGI_FORMAT_R32_SINT: return TinyImageFormat_R32_SINT;
+	case TIF_DXGI_FORMAT_D24_UNORM_S8_UINT: return TinyImageFormat_D24_UNORM_S8_UINT;
+	case TIF_DXGI_FORMAT_X24_TYPELESS_G8_UINT: return TinyImageFormat_D24_UNORM_S8_UINT;
+	case TIF_DXGI_FORMAT_R8G8_UNORM: return TinyImageFormat_R8G8_UNORM;
+	case TIF_DXGI_FORMAT_R8G8_UINT: return TinyImageFormat_R8G8_UINT;
+	case TIF_DXGI_FORMAT_R8G8_SNORM: return TinyImageFormat_R8G8_SNORM;
+	case TIF_DXGI_FORMAT_R8G8_SINT: return TinyImageFormat_R8G8_SINT;
+	case TIF_DXGI_FORMAT_R16_FLOAT: return TinyImageFormat_R16_SFLOAT;
+	case TIF_DXGI_FORMAT_D16_UNORM: return TinyImageFormat_D16_UNORM;
+	case TIF_DXGI_FORMAT_R16_UNORM: return TinyImageFormat_R16_UNORM;
+	case TIF_DXGI_FORMAT_R16_UINT: return TinyImageFormat_R16_UINT;
+	case TIF_DXGI_FORMAT_R16_SNORM: return TinyImageFormat_R16_SNORM;
+	case TIF_DXGI_FORMAT_R16_SINT: return TinyImageFormat_R16_SINT;
+	case TIF_DXGI_FORMAT_R8_UNORM: return TinyImageFormat_R8_UNORM;
+	case TIF_DXGI_FORMAT_R8_UINT: return TinyImageFormat_R8_UINT;
+	case TIF_DXGI_FORMAT_R8_SNORM: return TinyImageFormat_R8_SNORM;
+	case TIF_DXGI_FORMAT_R8_SINT: return TinyImageFormat_R8_SINT;
+	case TIF_DXGI_FORMAT_A8_UNORM: return TinyImageFormat_R8_UNORM;
+	case TIF_DXGI_FORMAT_R9G9B9E5_SHAREDEXP: return TinyImageFormat_E5B9G9R9_UFLOAT_PACK32;
+	case TIF_DXGI_FORMAT_BC1_UNORM: return TinyImageFormat_BC1_RGBA_UNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC1_UNORM_SRGB: return TinyImageFormat_BC1_RGBA_SRGB_BLOCK;
+	case TIF_DXGI_FORMAT_BC2_UNORM: return TinyImageFormat_BC2_UNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC2_UNORM_SRGB: return TinyImageFormat_BC2_SRGB_BLOCK;
+	case TIF_DXGI_FORMAT_BC3_UNORM: return TinyImageFormat_BC3_UNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC3_UNORM_SRGB: return TinyImageFormat_BC3_SRGB_BLOCK;
+	case TIF_DXGI_FORMAT_BC4_UNORM: return TinyImageFormat_BC4_UNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC4_SNORM: return TinyImageFormat_BC4_SNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC5_UNORM: return TinyImageFormat_BC5_UNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC5_SNORM: return TinyImageFormat_BC5_SNORM_BLOCK;
+	case TIF_DXGI_FORMAT_B5G6R5_UNORM: return TinyImageFormat_R5G6B5_UNORM_PACK16;
+	case TIF_DXGI_FORMAT_B5G5R5A1_UNORM: return TinyImageFormat_R5G5B5A1_UNORM_PACK16;
+	case TIF_DXGI_FORMAT_B8G8R8A8_UNORM: return TinyImageFormat_B8G8R8A8_UNORM;
+	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM: return TinyImageFormat_B8G8R8A8_UNORM;
+	case TIF_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB;
+	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB;
+	case TIF_DXGI_FORMAT_BC6H_UF16: return TinyImageFormat_BC6H_UFLOAT_BLOCK;
+	case TIF_DXGI_FORMAT_BC6H_SF16: return TinyImageFormat_BC6H_SFLOAT_BLOCK;
+	case TIF_DXGI_FORMAT_BC7_UNORM: return TinyImageFormat_BC7_UNORM_BLOCK;
+	case TIF_DXGI_FORMAT_BC7_UNORM_SRGB: return TinyImageFormat_BC7_SRGB_BLOCK;
+	case TIF_DXGI_FORMAT_B4G4R4A4_UNORM: return TinyImageFormat_B4G4R4A4_UNORM_PACK16;
 
-	default: return ImageFormat_UNDEFINED;
+	default: return TinyImageFormat_UNDEFINED;
 	}
 }
 
-TinyImageFormat_DXGI_FORMAT ImageFormat_ToDXGI_FORMAT(ImageFormat fmt) {
+TinyTinyImageFormat_DXGI_FORMAT TinyImageFormat_ToDXGI_FORMAT(TinyImageFormat fmt) {
 	switch (fmt) {
-	case ImageFormat_UNDEFINED: return TIF_DXGI_FORMAT_UNKNOWN;
-	case ImageFormat_R5G6B5_UNORM_PACK16: return TIF_DXGI_FORMAT_B5G6R5_UNORM;
-	case ImageFormat_B5G6R5_UNORM_PACK16: return TIF_DXGI_FORMAT_B5G6R5_UNORM;
-	case ImageFormat_A1R5G5B5_UNORM_PACK16: return TIF_DXGI_FORMAT_B5G5R5A1_UNORM;
-	case ImageFormat_R8_UNORM: return TIF_DXGI_FORMAT_R8_UNORM;
-	case ImageFormat_R8_SNORM: return TIF_DXGI_FORMAT_R8_SNORM;
-	case ImageFormat_R8_USCALED: return TIF_DXGI_FORMAT_R8_UINT;
-	case ImageFormat_R8_SSCALED: return TIF_DXGI_FORMAT_R8_SINT;
-	case ImageFormat_R8_UINT: return TIF_DXGI_FORMAT_R8_UINT;
-	case ImageFormat_R8_SINT: return TIF_DXGI_FORMAT_R8_SINT;
-	case ImageFormat_R8G8_UNORM: return TIF_DXGI_FORMAT_R8G8_UNORM;
-	case ImageFormat_R8G8_SNORM: return TIF_DXGI_FORMAT_R8G8_SNORM;
-	case ImageFormat_R8G8_USCALED: return TIF_DXGI_FORMAT_R8G8_UINT;
-	case ImageFormat_R8G8_SSCALED: return TIF_DXGI_FORMAT_R8G8_SINT;
-	case ImageFormat_R8G8_UINT: return TIF_DXGI_FORMAT_R8G8_UINT;
-	case ImageFormat_R8G8_SINT: return TIF_DXGI_FORMAT_R8G8_SINT;
-	case ImageFormat_R8G8B8A8_UNORM: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM;
-	case ImageFormat_R8G8B8A8_SNORM: return TIF_DXGI_FORMAT_R8G8B8A8_SNORM;
-	case ImageFormat_R8G8B8A8_USCALED: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
-	case ImageFormat_R8G8B8A8_SSCALED: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
-	case ImageFormat_R8G8B8A8_UINT: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
-	case ImageFormat_R8G8B8A8_SINT: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
-	case ImageFormat_R8G8B8A8_SRGB: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	case ImageFormat_B8G8R8A8_UNORM: return TIF_DXGI_FORMAT_B8G8R8A8_UNORM;
-	case ImageFormat_A8B8G8R8_UNORM_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM;
-	case ImageFormat_A8B8G8R8_SNORM_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_SNORM;
-	case ImageFormat_A8B8G8R8_USCALED_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
-	case ImageFormat_A8B8G8R8_SSCALED_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
-	case ImageFormat_A8B8G8R8_UINT_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
-	case ImageFormat_A8B8G8R8_SINT_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
-	case ImageFormat_A8B8G8R8_SRGB_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	case ImageFormat_A2B10G10R10_UNORM_PACK32: return TIF_DXGI_FORMAT_R10G10B10A2_UNORM;
-	case ImageFormat_A2B10G10R10_USCALED_PACK32: return TIF_DXGI_FORMAT_R10G10B10A2_UINT;
-	case ImageFormat_A2B10G10R10_UINT_PACK32: return TIF_DXGI_FORMAT_R10G10B10A2_UINT;
-	case ImageFormat_R16_UNORM: return TIF_DXGI_FORMAT_R16_UNORM;
-	case ImageFormat_R16_SNORM: return TIF_DXGI_FORMAT_R16_SNORM;
-	case ImageFormat_R16_USCALED: return TIF_DXGI_FORMAT_R16_UINT;
-	case ImageFormat_R16_SSCALED: return TIF_DXGI_FORMAT_R16_SINT;
-	case ImageFormat_R16_UINT: return TIF_DXGI_FORMAT_R16_UINT;
-	case ImageFormat_R16_SINT: return TIF_DXGI_FORMAT_R16_SINT;
-	case ImageFormat_R16_SFLOAT: return TIF_DXGI_FORMAT_R16_FLOAT;
-	case ImageFormat_R16G16_UNORM: return TIF_DXGI_FORMAT_R16G16_UNORM;
-	case ImageFormat_R16G16_SNORM: return TIF_DXGI_FORMAT_R16G16_SNORM;
-	case ImageFormat_R16G16_USCALED: return TIF_DXGI_FORMAT_R16G16_UINT;
-	case ImageFormat_R16G16_SSCALED: return TIF_DXGI_FORMAT_R16G16_SINT;
-	case ImageFormat_R16G16_UINT: return TIF_DXGI_FORMAT_R16G16_UINT;
-	case ImageFormat_R16G16_SINT: return TIF_DXGI_FORMAT_R16G16_SINT;
-	case ImageFormat_R16G16_SFLOAT: return TIF_DXGI_FORMAT_R16G16_FLOAT;
-	case ImageFormat_R16G16B16A16_UNORM: return TIF_DXGI_FORMAT_R16G16B16A16_UNORM;
-	case ImageFormat_R16G16B16A16_SNORM: return TIF_DXGI_FORMAT_R16G16B16A16_SNORM;
-	case ImageFormat_R16G16B16A16_USCALED: return TIF_DXGI_FORMAT_R16G16B16A16_UINT;
-	case ImageFormat_R16G16B16A16_SSCALED: return TIF_DXGI_FORMAT_R16G16B16A16_SINT;
-	case ImageFormat_R16G16B16A16_UINT: return TIF_DXGI_FORMAT_R16G16B16A16_UINT;
-	case ImageFormat_R16G16B16A16_SINT: return TIF_DXGI_FORMAT_R16G16B16A16_SINT;
-	case ImageFormat_R16G16B16A16_SFLOAT: return TIF_DXGI_FORMAT_R16G16B16A16_FLOAT;
-	case ImageFormat_R32_UINT: return TIF_DXGI_FORMAT_R32_UINT;
-	case ImageFormat_R32_SINT: return TIF_DXGI_FORMAT_R32_SINT;
-	case ImageFormat_R32_SFLOAT: return TIF_DXGI_FORMAT_R32_FLOAT;
-	case ImageFormat_R32G32_UINT: return TIF_DXGI_FORMAT_R32G32_UINT;
-	case ImageFormat_R32G32_SINT: return TIF_DXGI_FORMAT_R32G32_SINT;
-	case ImageFormat_R32G32_SFLOAT: return TIF_DXGI_FORMAT_R32G32_FLOAT;
-	case ImageFormat_R32G32B32_UINT: return TIF_DXGI_FORMAT_R32G32B32_UINT;
-	case ImageFormat_R32G32B32_SINT: return TIF_DXGI_FORMAT_R32G32B32_SINT;
-	case ImageFormat_R32G32B32_SFLOAT: return TIF_DXGI_FORMAT_R32G32B32_FLOAT;
-	case ImageFormat_R32G32B32A32_UINT: return TIF_DXGI_FORMAT_R32G32B32A32_UINT;
-	case ImageFormat_R32G32B32A32_SINT: return TIF_DXGI_FORMAT_R32G32B32A32_SINT;
-	case ImageFormat_R32G32B32A32_SFLOAT: return TIF_DXGI_FORMAT_R32G32B32A32_FLOAT;
-	case ImageFormat_B10G11R11_UFLOAT_PACK32: return TIF_DXGI_FORMAT_R11G11B10_FLOAT;
-	case ImageFormat_E5B9G9R9_UFLOAT_PACK32: return TIF_DXGI_FORMAT_R9G9B9E5_SHAREDEXP;
-	case ImageFormat_D16_UNORM: return TIF_DXGI_FORMAT_D16_UNORM;
-	case ImageFormat_X8_D24_UNORM_PACK32: return TIF_DXGI_FORMAT_D24_UNORM_S8_UINT;
-	case ImageFormat_D32_SFLOAT: return TIF_DXGI_FORMAT_D32_FLOAT;
-	case ImageFormat_D24_UNORM_S8_UINT: return TIF_DXGI_FORMAT_D24_UNORM_S8_UINT;
-	case ImageFormat_D32_SFLOAT_S8_UINT: return TIF_DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
-	case ImageFormat_BC1_RGB_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM;
-	case ImageFormat_BC1_RGB_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM_SRGB;
-	case ImageFormat_BC1_RGBA_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM;
-	case ImageFormat_BC1_RGBA_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM_SRGB;
-	case ImageFormat_BC2_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC2_UNORM;
-	case ImageFormat_BC2_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC2_UNORM_SRGB;
-	case ImageFormat_BC3_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC3_UNORM;
-	case ImageFormat_BC3_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC3_UNORM_SRGB;
-	case ImageFormat_BC4_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC4_UNORM;
-	case ImageFormat_BC4_SNORM_BLOCK: return TIF_DXGI_FORMAT_BC4_SNORM;
-	case ImageFormat_BC5_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC5_UNORM;
-	case ImageFormat_BC5_SNORM_BLOCK: return TIF_DXGI_FORMAT_BC5_SNORM;
-	case ImageFormat_BC6H_UFLOAT_BLOCK: return TIF_DXGI_FORMAT_BC6H_UF16;
-	case ImageFormat_BC6H_SFLOAT_BLOCK: return TIF_DXGI_FORMAT_BC6H_SF16;
-	case ImageFormat_BC7_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC7_UNORM;
-	case ImageFormat_BC7_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC7_UNORM_SRGB;
-	case ImageFormat_A4R4G4B4_UNORM_PACK16: return TIF_DXGI_FORMAT_B4G4R4A4_UNORM;
-	case ImageFormat_A8R8G8B8_UNORM_PACK32: return TIF_DXGI_FORMAT_B8G8R8A8_UNORM;
+	case TinyImageFormat_UNDEFINED: return TIF_DXGI_FORMAT_UNKNOWN;
+	case TinyImageFormat_R5G6B5_UNORM_PACK16: return TIF_DXGI_FORMAT_B5G6R5_UNORM;
+	case TinyImageFormat_B5G6R5_UNORM_PACK16: return TIF_DXGI_FORMAT_B5G6R5_UNORM;
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16: return TIF_DXGI_FORMAT_B5G5R5A1_UNORM;
+	case TinyImageFormat_R8_UNORM: return TIF_DXGI_FORMAT_R8_UNORM;
+	case TinyImageFormat_R8_SNORM: return TIF_DXGI_FORMAT_R8_SNORM;
+	case TinyImageFormat_R8_USCALED: return TIF_DXGI_FORMAT_R8_UINT;
+	case TinyImageFormat_R8_SSCALED: return TIF_DXGI_FORMAT_R8_SINT;
+	case TinyImageFormat_R8_UINT: return TIF_DXGI_FORMAT_R8_UINT;
+	case TinyImageFormat_R8_SINT: return TIF_DXGI_FORMAT_R8_SINT;
+	case TinyImageFormat_R8G8_UNORM: return TIF_DXGI_FORMAT_R8G8_UNORM;
+	case TinyImageFormat_R8G8_SNORM: return TIF_DXGI_FORMAT_R8G8_SNORM;
+	case TinyImageFormat_R8G8_USCALED: return TIF_DXGI_FORMAT_R8G8_UINT;
+	case TinyImageFormat_R8G8_SSCALED: return TIF_DXGI_FORMAT_R8G8_SINT;
+	case TinyImageFormat_R8G8_UINT: return TIF_DXGI_FORMAT_R8G8_UINT;
+	case TinyImageFormat_R8G8_SINT: return TIF_DXGI_FORMAT_R8G8_SINT;
+	case TinyImageFormat_R8G8B8A8_UNORM: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM;
+	case TinyImageFormat_R8G8B8A8_SNORM: return TIF_DXGI_FORMAT_R8G8B8A8_SNORM;
+	case TinyImageFormat_R8G8B8A8_USCALED: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
+	case TinyImageFormat_R8G8B8A8_SSCALED: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
+	case TinyImageFormat_R8G8B8A8_UINT: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
+	case TinyImageFormat_R8G8B8A8_SINT: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
+	case TinyImageFormat_R8G8B8A8_SRGB: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	case TinyImageFormat_B8G8R8A8_UNORM: return TIF_DXGI_FORMAT_B8G8R8A8_UNORM;
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM;
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_SNORM;
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UINT;
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_SINT;
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32: return TIF_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32: return TIF_DXGI_FORMAT_R10G10B10A2_UNORM;
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32: return TIF_DXGI_FORMAT_R10G10B10A2_UINT;
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32: return TIF_DXGI_FORMAT_R10G10B10A2_UINT;
+	case TinyImageFormat_R16_UNORM: return TIF_DXGI_FORMAT_R16_UNORM;
+	case TinyImageFormat_R16_SNORM: return TIF_DXGI_FORMAT_R16_SNORM;
+	case TinyImageFormat_R16_USCALED: return TIF_DXGI_FORMAT_R16_UINT;
+	case TinyImageFormat_R16_SSCALED: return TIF_DXGI_FORMAT_R16_SINT;
+	case TinyImageFormat_R16_UINT: return TIF_DXGI_FORMAT_R16_UINT;
+	case TinyImageFormat_R16_SINT: return TIF_DXGI_FORMAT_R16_SINT;
+	case TinyImageFormat_R16_SFLOAT: return TIF_DXGI_FORMAT_R16_FLOAT;
+	case TinyImageFormat_R16G16_UNORM: return TIF_DXGI_FORMAT_R16G16_UNORM;
+	case TinyImageFormat_R16G16_SNORM: return TIF_DXGI_FORMAT_R16G16_SNORM;
+	case TinyImageFormat_R16G16_USCALED: return TIF_DXGI_FORMAT_R16G16_UINT;
+	case TinyImageFormat_R16G16_SSCALED: return TIF_DXGI_FORMAT_R16G16_SINT;
+	case TinyImageFormat_R16G16_UINT: return TIF_DXGI_FORMAT_R16G16_UINT;
+	case TinyImageFormat_R16G16_SINT: return TIF_DXGI_FORMAT_R16G16_SINT;
+	case TinyImageFormat_R16G16_SFLOAT: return TIF_DXGI_FORMAT_R16G16_FLOAT;
+	case TinyImageFormat_R16G16B16A16_UNORM: return TIF_DXGI_FORMAT_R16G16B16A16_UNORM;
+	case TinyImageFormat_R16G16B16A16_SNORM: return TIF_DXGI_FORMAT_R16G16B16A16_SNORM;
+	case TinyImageFormat_R16G16B16A16_USCALED: return TIF_DXGI_FORMAT_R16G16B16A16_UINT;
+	case TinyImageFormat_R16G16B16A16_SSCALED: return TIF_DXGI_FORMAT_R16G16B16A16_SINT;
+	case TinyImageFormat_R16G16B16A16_UINT: return TIF_DXGI_FORMAT_R16G16B16A16_UINT;
+	case TinyImageFormat_R16G16B16A16_SINT: return TIF_DXGI_FORMAT_R16G16B16A16_SINT;
+	case TinyImageFormat_R16G16B16A16_SFLOAT: return TIF_DXGI_FORMAT_R16G16B16A16_FLOAT;
+	case TinyImageFormat_R32_UINT: return TIF_DXGI_FORMAT_R32_UINT;
+	case TinyImageFormat_R32_SINT: return TIF_DXGI_FORMAT_R32_SINT;
+	case TinyImageFormat_R32_SFLOAT: return TIF_DXGI_FORMAT_R32_FLOAT;
+	case TinyImageFormat_R32G32_UINT: return TIF_DXGI_FORMAT_R32G32_UINT;
+	case TinyImageFormat_R32G32_SINT: return TIF_DXGI_FORMAT_R32G32_SINT;
+	case TinyImageFormat_R32G32_SFLOAT: return TIF_DXGI_FORMAT_R32G32_FLOAT;
+	case TinyImageFormat_R32G32B32_UINT: return TIF_DXGI_FORMAT_R32G32B32_UINT;
+	case TinyImageFormat_R32G32B32_SINT: return TIF_DXGI_FORMAT_R32G32B32_SINT;
+	case TinyImageFormat_R32G32B32_SFLOAT: return TIF_DXGI_FORMAT_R32G32B32_FLOAT;
+	case TinyImageFormat_R32G32B32A32_UINT: return TIF_DXGI_FORMAT_R32G32B32A32_UINT;
+	case TinyImageFormat_R32G32B32A32_SINT: return TIF_DXGI_FORMAT_R32G32B32A32_SINT;
+	case TinyImageFormat_R32G32B32A32_SFLOAT: return TIF_DXGI_FORMAT_R32G32B32A32_FLOAT;
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32: return TIF_DXGI_FORMAT_R11G11B10_FLOAT;
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32: return TIF_DXGI_FORMAT_R9G9B9E5_SHAREDEXP;
+	case TinyImageFormat_D16_UNORM: return TIF_DXGI_FORMAT_D16_UNORM;
+	case TinyImageFormat_X8_D24_UNORM_PACK32: return TIF_DXGI_FORMAT_D24_UNORM_S8_UINT;
+	case TinyImageFormat_D32_SFLOAT: return TIF_DXGI_FORMAT_D32_FLOAT;
+	case TinyImageFormat_D24_UNORM_S8_UINT: return TIF_DXGI_FORMAT_D24_UNORM_S8_UINT;
+	case TinyImageFormat_D32_SFLOAT_S8_UINT: return TIF_DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM;
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM_SRGB;
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM;
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC1_UNORM_SRGB;
+	case TinyImageFormat_BC2_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC2_UNORM;
+	case TinyImageFormat_BC2_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC2_UNORM_SRGB;
+	case TinyImageFormat_BC3_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC3_UNORM;
+	case TinyImageFormat_BC3_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC3_UNORM_SRGB;
+	case TinyImageFormat_BC4_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC4_UNORM;
+	case TinyImageFormat_BC4_SNORM_BLOCK: return TIF_DXGI_FORMAT_BC4_SNORM;
+	case TinyImageFormat_BC5_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC5_UNORM;
+	case TinyImageFormat_BC5_SNORM_BLOCK: return TIF_DXGI_FORMAT_BC5_SNORM;
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK: return TIF_DXGI_FORMAT_BC6H_UF16;
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK: return TIF_DXGI_FORMAT_BC6H_SF16;
+	case TinyImageFormat_BC7_UNORM_BLOCK: return TIF_DXGI_FORMAT_BC7_UNORM;
+	case TinyImageFormat_BC7_SRGB_BLOCK: return TIF_DXGI_FORMAT_BC7_UNORM_SRGB;
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16: return TIF_DXGI_FORMAT_B4G4R4A4_UNORM;
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32: return TIF_DXGI_FORMAT_B8G8R8A8_UNORM;
 	default: return TIF_DXGI_FORMAT_UNKNOWN;
 	}
 }

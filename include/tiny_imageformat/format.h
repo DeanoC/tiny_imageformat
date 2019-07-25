@@ -3,7 +3,7 @@
 #if !defined IF_START_MACRO
 
 #define GFX_IMAGEFORMAT_FORMAT_H_ 1
-#define IF_START_MACRO typedef enum ImageFormat {
+#define IF_START_MACRO typedef enum TinyImageFormat {
 
 #else
 
@@ -16,11 +16,11 @@
 #endif
 
 #if !defined IF_MOD_MACRO
-#define IF_MOD_MACRO(x) ImageFormat_##x,
+#define IF_MOD_MACRO(x) TinyImageFormat_##x,
 #endif
 
 #if !defined IF_END_MACRO
-#define IF_END_MACRO } ImageFormat;
+#define IF_END_MACRO } TinyImageFormat;
 #endif
 
 IF_START_MACRO
