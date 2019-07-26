@@ -41,8 +41,8 @@ AL2O3_EXTERN_C char const *TinyImageFormat_Name(TinyImageFormat const fmt);
 AL2O3_EXTERN_C TinyImageFormat TinyImageFormat_FromName(char const *name);
 
 #ifdef __cplusplus
-constexpr size_t TinyImageFormat_Count() {
-	size_t count = 0;
+constexpr uint32_t TinyImageFormat_Count() {
+	uint32_t count = 0;
 #define IF_START_MACRO
 #define IF_MOD_MACRO(x) count++;
 #define IF_END_MACRO
@@ -50,7 +50,7 @@ constexpr size_t TinyImageFormat_Count() {
 	return count;
 }
 #else
-AL2O3_EXTERN_C size_t TinyImageFormat_Count();
+AL2O3_EXTERN_C uint32_t TinyImageFormat_Count();
 #endif
 
 AL2O3_EXTERN_C inline bool TinyImageFormat_IsDepth(TinyImageFormat const fmt) {
@@ -1005,6 +1005,63 @@ AL2O3_EXTERN_C inline uint32_t TinyImageFormat_ChannelBitWidth(enum TinyImageFor
 		}
 
 	case TinyImageFormat_UNDEFINED:return 0;
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:break;
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:break;
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:break;
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:break;
+	case TinyImageFormat_BC2_UNORM_BLOCK:break;
+	case TinyImageFormat_BC2_SRGB_BLOCK:break;
+	case TinyImageFormat_BC3_UNORM_BLOCK:break;
+	case TinyImageFormat_BC3_SRGB_BLOCK:break;
+	case TinyImageFormat_BC7_UNORM_BLOCK:break;
+	case TinyImageFormat_BC7_SRGB_BLOCK:break;
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:break;
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:break;
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:break;
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:break;
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:break;
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:break;
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:break;
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:break;
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:break;
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:break;
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:break;
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:break;
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:break;
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:break;
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:break;
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:break;
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:break;
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:break;
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:break;
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK:break;
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:break;
 	}
 	LOGERRORF("channelBitWidth: %s not handled", TinyImageFormat_Name(fmt));
 	return 0;
@@ -2633,16 +2690,16 @@ AL2O3_EXTERN_C TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless
 #include "string.h" // for stricmp
 #endif
 
-static uint8_t s_TinyImageFormat_Swizzle_RGBA[4] = { 0, 1, 2, 3};
-static uint8_t s_TinyImageFormat_Swizzle_ARGB[4] = { 3, 0, 1, 2};
-static uint8_t s_TinyImageFormat_Swizzle_BGRA[4] = { 2, 1, 0, 3};
-static uint8_t s_TinyImageFormat_Swizzle_ABGR[4] = { 3, 2, 1, 0};
+static int8_t s_TinyImageFormat_Swizzle_RGBA[4] = { 0, 1, 2, 3};
+static int8_t s_TinyImageFormat_Swizzle_ARGB[4] = { 3, 0, 1, 2};
+static int8_t s_TinyImageFormat_Swizzle_BGRA[4] = { 2, 1, 0, 3};
+static int8_t s_TinyImageFormat_Swizzle_ABGR[4] = { 3, 2, 1, 0};
 
-static uint8_t s_TinyImageFormat_Swizzle_000A[4] = {-1,-1,-1, 0};
-static uint8_t s_TinyImageFormat_Swizzle_R001[4] = { 0,-1,-1,-2};
-static uint8_t s_TinyImageFormat_Swizzle_RG01[4] = { 0, 1,-1,-2};
-static uint8_t s_TinyImageFormat_Swizzle_RGB1[4] = { 0, 1, 2,-2};
-static uint8_t s_TinyImageFormat_Swizzle_BGR1[4] = { 2, 1, 0,-2};
+static int8_t s_TinyImageFormat_Swizzle_000A[4] = {-1,-1,-1, 0};
+static int8_t s_TinyImageFormat_Swizzle_R001[4] = { 0,-1,-1,-2};
+static int8_t s_TinyImageFormat_Swizzle_RG01[4] = { 0, 1,-1,-2};
+static int8_t s_TinyImageFormat_Swizzle_RGB1[4] = { 0, 1, 2,-2};
+static int8_t s_TinyImageFormat_Swizzle_BGR1[4] = { 2, 1, 0,-2};
 
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGBA = s_TinyImageFormat_Swizzle_RGBA;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_ARGB = s_TinyImageFormat_Swizzle_ARGB;
@@ -2673,8 +2730,8 @@ AL2O3_EXTERN_C TinyImageFormat TinyImageFormat_FromName(char const *name) {
 }
 
 #ifndef __cplusplus
-AL2O3_EXTERN_C size_t TinyImageFormat_Count() {
-	static size_t s_count = 0;
+AL2O3_EXTERN_C uint32_t TinyImageFormat_Count() {
+	static uint32_t s_count = 0;
 	if (s_count == 0) {
 #define IF_START_MACRO
 #define IF_MOD_MACRO(x) s_count++;
@@ -3383,6 +3440,7 @@ AL2O3_EXTERN_C TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless
 	case TIF_DXGI_FORMAT_V208:
 	case TIF_DXGI_FORMAT_V408:
 	case TIF_DXGI_FORMAT_UNKNOWN: return TIF_DXGI_FORMAT_UNKNOWN;
+	case TIF_DXGI_FORMAT_FORCE_UINT:break;
 	}
 	ASSERT(false);
 	return TIF_DXGI_FORMAT_UNKNOWN;
@@ -3434,13 +3492,14 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 //	case TinyImageFormat_R8G8B8A8_UINT:
 //	case TinyImageFormat_R8G8B8A8_SINT:
 //	case TinyImageFormat_R8G8B8A8_SRGB:
-//	case TinyImageFormat_B8G8R8A8_UNORM:
-//	case TinyImageFormat_B8G8R8A8_SNORM:
-//	case TinyImageFormat_B8G8R8A8_USCALED:
-//	case TinyImageFormat_B8G8R8A8_SSCALED:
-//	case TinyImageFormat_B8G8R8A8_UINT:
-//	case TinyImageFormat_B8G8R8A8_SINT:
-//	case TinyImageFormat_B8G8R8A8_SRGB:
+
+	case TinyImageFormat_B8G8R8A8_UNORM: 							return TIF_MTLPixelFormatBGRA8Unorm;
+//	case TinyImageFormat_B8G8R8A8_SNORM:							return TIF_MTLPixelFormatBGRA8Snorm;
+//	case TinyImageFormat_B8G8R8A8_USCALED:						return TIF_MTLPixelFormatBGRA8Uint;
+//	case TinyImageFormat_B8G8R8A8_SSCALED:						return TIF_MTLPixelFormatBGRA8Sint;
+//	case TinyImageFormat_B8G8R8A8_UINT:								return TIF_MTLPixelFormatBGRA8Uint;
+//	case TinyImageFormat_B8G8R8A8_SINT:								return TIF_MTLPixelFormatBGRA8Sint;
+	case TinyImageFormat_B8G8R8A8_SRGB:								return TIF_MTLPixelFormatBGRA8Unorm_sRGB;
 	case TinyImageFormat_A8B8G8R8_UNORM_PACK32: 			return TIF_MTLPixelFormatRGBA8Unorm;
 	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:				return TIF_MTLPixelFormatRGBA8Snorm;
 	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:			return TIF_MTLPixelFormatRGBA8Uint;
