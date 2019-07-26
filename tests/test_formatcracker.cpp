@@ -16,7 +16,7 @@ TEST_CASE("Format Count (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsDepth (C)", "[Image]") {
 
-	for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+	for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "D16") != nullptr;
@@ -32,7 +32,7 @@ TEST_CASE("Format Cracker IsDepth (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsStencil (C)", "[Image]") {
 
-	for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+	for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "S8") != nullptr;
@@ -46,7 +46,7 @@ TEST_CASE("Format Cracker IsStencil (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsDepthStencil (C)", "[Image]") {
 
-  for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+  for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "D16") != nullptr;
@@ -63,7 +63,7 @@ TEST_CASE("Format Cracker IsDepthStencil (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 
-  for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+  for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "SFLOAT") != nullptr;
@@ -78,7 +78,7 @@ TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 
-  for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+  for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBeNormalised = strstr(name, "UNORM") != nullptr;
@@ -91,7 +91,7 @@ TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 }
 
 TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
-  for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+  for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "SNORM") != nullptr;
@@ -108,7 +108,7 @@ TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsSRGB (C)", "[Image]") {
 
-  for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+  for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "SRGB") != nullptr;
@@ -122,7 +122,7 @@ TEST_CASE("Format Cracker IsSRGB (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 
-	for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+	for (uint32_t i = 0; i < TinyImageFormat_Count(); ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "BLOCK") != nullptr;
