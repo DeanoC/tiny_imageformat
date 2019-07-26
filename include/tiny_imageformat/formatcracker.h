@@ -186,7 +186,9 @@ AL2O3_EXTERN_C inline bool TinyImageFormat_IsNormalised(TinyImageFormat const fm
 	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
 
 	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
-	case TinyImageFormat_A8R8G8B8_UNORM_PACK32: return true;
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
+	case TinyImageFormat_A8_UNORM:
+		return true;
 	default:return false;
 	}
 }
@@ -2709,6 +2711,7 @@ AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_000A = s_TinyImageFormat_Sw
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_R001 = s_TinyImageFormat_Swizzle_R001;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RG01 = s_TinyImageFormat_Swizzle_RG01;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGB1 = s_TinyImageFormat_Swizzle_RGB1;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_BGR1 = s_TinyImageFormat_Swizzle_BGR1;
 
 AL2O3_EXTERN_C char const *TinyImageFormat_Name(enum TinyImageFormat const fmt) {
 #define IF_START_MACRO switch(fmt) {

@@ -16,46 +16,32 @@ TEST_CASE("Format Count (C)", "[Image]") {
 
 TEST_CASE("Format Cracker IsDepth (C)", "[Image]") {
 
-  for (int i = 0; i < TinyImageFormat_Count(); ++i) {
-    enum TinyImageFormat fmt = (TinyImageFormat) i;
-    switch (fmt) {
-      case TinyImageFormat_D16_UNORM:
-      case TinyImageFormat_X8_D24_UNORM_PACK32:
-      case TinyImageFormat_D32_SFLOAT:
-      case TinyImageFormat_D16_UNORM_S8_UINT:
-      case TinyImageFormat_D24_UNORM_S8_UINT:
-      case TinyImageFormat_D32_SFLOAT_S8_UINT: {
-        REQUIRE(TinyImageFormat_IsDepth(fmt));
-        break;
-      };
-      default:REQUIRE(TinyImageFormat_IsDepth(fmt) == false);
-        break;
-    }
-  }
+	for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+		TinyImageFormat fmt = (TinyImageFormat) i;
+		char const *name = TinyImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "D16") != nullptr;
+		shouldBe |= strstr(name, "D24") != nullptr;
+		shouldBe |= strstr(name, "D32") != nullptr;
+
+		if (TinyImageFormat_IsDepth(fmt) != shouldBe) {
+			LOGINFOF("TinyImageFormat_IsDepth failed %s", name);
+		}
+		CHECK(TinyImageFormat_IsDepth(fmt) == shouldBe);
+	}
 }
 
 TEST_CASE("Format Cracker IsStencil (C)", "[Image]") {
 
-#define IF_START_MACRO int formatCount = 0;
-#define IF_MOD_MACRO(x) formatCount++;
-#define IF_END_MACRO
-#include "tiny_imageformat/format.h"
+	for (int i = 0; i < TinyImageFormat_Count(); ++i) {
+		TinyImageFormat fmt = (TinyImageFormat) i;
+		char const *name = TinyImageFormat_Name(fmt);
+		bool shouldBe = strstr(name, "S8") != nullptr;
 
-  for (int i = 0; i < formatCount; ++i) {
-    enum TinyImageFormat fmt = (TinyImageFormat) i;
-    switch (fmt) {
-      case TinyImageFormat_S8_UINT:
-      case TinyImageFormat_D16_UNORM_S8_UINT:
-      case TinyImageFormat_D24_UNORM_S8_UINT:
-      case TinyImageFormat_D32_SFLOAT_S8_UINT: {
-        REQUIRE(TinyImageFormat_IsStencil(fmt));
-        break;
-      };
-
-      default:REQUIRE(TinyImageFormat_IsStencil(fmt) == false);
-        break;
-    }
-  }
+		if (TinyImageFormat_IsStencil(fmt) != shouldBe) {
+			LOGINFOF("TinyImageFormat_IsStencil failed %s", name);
+		}
+		CHECK(TinyImageFormat_IsStencil(fmt) == shouldBe);
+	}
 }
 
 TEST_CASE("Format Cracker IsDepthStencil (C)", "[Image]") {
@@ -151,35 +137,39 @@ TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 TEST_CASE("Format Cracker Min (C)", "[Image]") {
 
   // random sample a few to check
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 0) == 0);
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 1) == 0);
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 2) == 0);
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 3) == 0);
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 0) == Approx(0));
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 1) == Approx(0));
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 2) == Approx(0));
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UINT_PACK32, 3) == Approx(0));
 
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 0) == -128);
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 1) == -128);
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 2) == -128);
-  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 3) == -128);
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 0) == Approx(-128));
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 1) == Approx(-128));
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 2) == Approx(-128));
+  REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SINT_PACK32, 3) == Approx(-128));
 
   REQUIRE(TinyImageFormat_Min(TinyImageFormat_R32G32B32A32_SFLOAT, 0) == Approx(FLT_MIN));
   REQUIRE(TinyImageFormat_Min(TinyImageFormat_R32G32B32A32_SFLOAT, 1) == Approx(FLT_MIN));
   REQUIRE(TinyImageFormat_Min(TinyImageFormat_R32G32B32A32_SFLOAT, 2) == Approx(FLT_MIN));
   REQUIRE(TinyImageFormat_Min(TinyImageFormat_R32G32B32A32_SFLOAT, 3) == Approx(FLT_MIN));
 
+	REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_UNORM_PACK32, 0) == Approx(0.0));
+	REQUIRE(TinyImageFormat_Min(TinyImageFormat_A8B8G8R8_SNORM_PACK32, 0) == Approx(-1.0));
+
+
 }
 
 TEST_CASE("Format Cracker Max (C)", "[Image]") {
 
   // random sample a few to check
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 0) == 255);
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 1) == 255);
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 2) == 255);
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 3) == 255);
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 0) == Approx(255));
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 1) == Approx(255));
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 2) == Approx(255));
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UINT_PACK32, 3) == Approx(255));
 
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 0) == 127);
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 1) == 127);
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 2) == 127);
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 3) == 127);
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 0) == Approx(127));
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 1) == Approx(127));
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 2) == Approx(127));
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SINT_PACK32, 3) == Approx(127));
 
   REQUIRE(TinyImageFormat_Max(TinyImageFormat_R32G32B32A32_SFLOAT, 0) == Approx(FLT_MAX));
   REQUIRE(TinyImageFormat_Max(TinyImageFormat_R32G32B32A32_SFLOAT, 1) == Approx(FLT_MAX));
@@ -187,7 +177,10 @@ TEST_CASE("Format Cracker Max (C)", "[Image]") {
   REQUIRE(TinyImageFormat_Max(TinyImageFormat_R32G32B32A32_SFLOAT, 3) == Approx(FLT_MAX));
 
   REQUIRE(TinyImageFormat_Max(TinyImageFormat_D32_SFLOAT_S8_UINT, 0) == Approx(FLT_MAX));
-  REQUIRE(TinyImageFormat_Max(TinyImageFormat_D32_SFLOAT_S8_UINT, 1) == 255);
+  REQUIRE(TinyImageFormat_Max(TinyImageFormat_D32_SFLOAT_S8_UINT, 1) == Approx(255));
+
+	REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_UNORM_PACK32, 0) == Approx(1.0));
+	REQUIRE(TinyImageFormat_Max(TinyImageFormat_A8B8G8R8_SNORM_PACK32, 0) == Approx(1.0));
 
 }
 
@@ -195,12 +188,13 @@ TEST_CASE("Format Cracker Swizzle (C)", "[Image]") {
 
   // random sample a few to check
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_R32G32B32A32_SFLOAT) == TinyImageFormat_Swizzle_RGBA);
-  REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_R4G4_UNORM_PACK8) == TinyImageFormat_Swizzle_RGBA);
+  REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_R4G4_UNORM_PACK8) == TinyImageFormat_Swizzle_RG01);
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_R5G5B5A1_UNORM_PACK16) == TinyImageFormat_Swizzle_RGBA);
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_A1R5G5B5_UNORM_PACK16) == TinyImageFormat_Swizzle_ARGB);
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_A2R10G10B10_USCALED_PACK32) == TinyImageFormat_Swizzle_ARGB);
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_B4G4R4A4_UNORM_PACK16) == TinyImageFormat_Swizzle_BGRA);
-  REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_B8G8R8_SRGB) == TinyImageFormat_Swizzle_BGRA);
+  REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_B8G8R8_SRGB) == TinyImageFormat_Swizzle_BGR1);
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_B8G8R8A8_USCALED) == TinyImageFormat_Swizzle_BGRA);
   REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_A8B8G8R8_SINT_PACK32) == TinyImageFormat_Swizzle_ABGR);
+	REQUIRE(TinyImageFormat_Swizzle(TinyImageFormat_A8_UNORM) == TinyImageFormat_Swizzle_000A);
 }
