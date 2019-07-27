@@ -3488,13 +3488,14 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 //	case TinyImageFormat_B8G8R8_UINT:
 //	case TinyImageFormat_B8G8R8_SINT:
 //	case TinyImageFormat_B8G8R8_SRGB:
-//	case TinyImageFormat_R8G8B8A8_UNORM:
-//	case TinyImageFormat_R8G8B8A8_SNORM:
-//	case TinyImageFormat_R8G8B8A8_USCALED:
-//	case TinyImageFormat_R8G8B8A8_SSCALED:
-//	case TinyImageFormat_R8G8B8A8_UINT:
-//	case TinyImageFormat_R8G8B8A8_SINT:
-//	case TinyImageFormat_R8G8B8A8_SRGB:
+
+	case TinyImageFormat_R8G8B8A8_UNORM:		return TIF_MTLPixelFormatRGBA8Unorm;
+	case TinyImageFormat_R8G8B8A8_SNORM:		return TIF_MTLPixelFormatRGBA8Snorm;
+	case TinyImageFormat_R8G8B8A8_USCALED:	return TIF_MTLPixelFormatRGBA8Uint;
+	case TinyImageFormat_R8G8B8A8_SSCALED:	return TIF_MTLPixelFormatRGBA8Sint;
+	case TinyImageFormat_R8G8B8A8_UINT:			return TIF_MTLPixelFormatRGBA8Uint;
+	case TinyImageFormat_R8G8B8A8_SINT:			return TIF_MTLPixelFormatRGBA8Sint;
+	case TinyImageFormat_R8G8B8A8_SRGB:			return TIF_MTLPixelFormatRGBA8Unorm_sRGB;
 
 	case TinyImageFormat_B8G8R8A8_UNORM: 							return TIF_MTLPixelFormatBGRA8Unorm;
 //	case TinyImageFormat_B8G8R8A8_SNORM:							return TIF_MTLPixelFormatBGRA8Snorm;
