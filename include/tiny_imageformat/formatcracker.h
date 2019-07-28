@@ -3451,15 +3451,7 @@ AL2O3_EXTERN_C TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless
 
 AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(TinyImageFormat fmt) {
 	switch (fmt) {
-	case TinyImageFormat_UNDEFINED: return TIF_MTLPixelFormatInvalid;
-//	case TinyImageFormat_R4G4_UNORM_PACK8: return TIF_MTLPixelFormatR4G4;
-	case TinyImageFormat_R4G4B4A4_UNORM_PACK16: return TIF_MTLPixelFormatABGR4Unorm;
-//	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
-	case TinyImageFormat_R5G6B5_UNORM_PACK16: return TIF_MTLPixelFormatB5G6R5Unorm;;
-//	case TinyImageFormat_B5G6R5_UNORM_PACK16: return TIF_MTLPixelFormatB5G6R5Unorm;
-	case TinyImageFormat_R5G5B5A1_UNORM_PACK16: return TIF_MTLPixelFormatA1BGR5Unorm;
-//	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
-//	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_A8_UNORM: 									return TIF_MTLPixelFormatA8Unorm;
 	case TinyImageFormat_R8_UNORM: 		return TIF_MTLPixelFormatR8Unorm;
 	case TinyImageFormat_R8_SNORM: 		return TIF_MTLPixelFormatR8Snorm;
 	case TinyImageFormat_R8_USCALED: 	return TIF_MTLPixelFormatR8Uint;
@@ -3467,6 +3459,16 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 	case TinyImageFormat_R8_UINT: 		return TIF_MTLPixelFormatR8Uint;
 	case TinyImageFormat_R8_SINT: 		return TIF_MTLPixelFormatR8Sint;
 	case TinyImageFormat_R8_SRGB: 		return TIF_MTLPixelFormatR8Unorm_sRGB;
+	case TinyImageFormat_UNDEFINED: return TIF_MTLPixelFormatInvalid;
+//	case TinyImageFormat_R4G4_UNORM_PACK8: return TIF_MTLPixelFormatR4G4;
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16: return TIF_MTLPixelFormatABGR4Unorm;
+//	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:			return TIF_MTLBRGA4
+//	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16: return TIF_MTLPixelFormatB5G6R5Unorm;;
+//	case TinyImageFormat_B5G6R5_UNORM_PACK16: return TIF_MTLPixelFormatB5G6R5Unorm;
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16: return TIF_MTLPixelFormatA1BGR5Unorm;
+//	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+//	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
 	case TinyImageFormat_R8G8_UNORM:		return TIF_MTLPixelFormatRG8Unorm;
 	case TinyImageFormat_R8G8_SNORM:		return TIF_MTLPixelFormatRG8Snorm;
 	case TinyImageFormat_R8G8_USCALED:	return TIF_MTLPixelFormatRG8Uint;
@@ -3511,6 +3513,8 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 	case TinyImageFormat_A8B8G8R8_UINT_PACK32:				return TIF_MTLPixelFormatRGBA8Uint;
 	case TinyImageFormat_A8B8G8R8_SINT_PACK32:				return TIF_MTLPixelFormatRGBA8Sint;
 	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:				return TIF_MTLPixelFormatRGBA8Unorm_sRGB;
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:			return TIF_MTLPixelFormatBGRA8Unorm;
+
 	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:		return TIF_MTLPixelFormatBGR10A2Unorm;
 //	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:	return TIF_MTLPixelFormatBGR10A2Uint;
 //	case TinyImageFormat_A2R10G10B10_UINT_PACK32:			return TIF_MTLPixelFormatBGR10A2Uint;
@@ -3578,6 +3582,7 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 //	case TinyImageFormat_D16_UNORM_S8_UINT:				return TIF_MTLPixelFormatDepth16;
 	case TinyImageFormat_D24_UNORM_S8_UINT:				return TIF_MTLPixelFormatDepth24Unorm_Stencil8;
 	case TinyImageFormat_D32_SFLOAT_S8_UINT:			return TIF_MTLPixelFormatDepth32Float_Stencil8;
+
 	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:			return TIF_MTLPixelFormatBC1_RGBA;
 	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:			return TIF_MTLPixelFormatBC1_RGBA_sRGB;
 	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:		return TIF_MTLPixelFormatBC1_RGBA;
@@ -3640,9 +3645,6 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:			return TIF_MTLPixelFormatASTC_12x10_sRGB;
 	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:		return TIF_MTLPixelFormatASTC_12x12_LDR;
 	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK:			return TIF_MTLPixelFormatASTC_12x12_sRGB;
-//	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:			return TIF_MTLBRGA4
-	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:			return TIF_MTLPixelFormatBGRA8Unorm;
-
 	default:
 		return TIF_MTLPixelFormatInvalid;
 	}
@@ -3650,7 +3652,7 @@ AL2O3_EXTERN_C TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(T
 }
 AL2O3_EXTERN_C TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPixelFormat fmt) {
 	switch (fmt) {
-	case TIF_MTLPixelFormatA8Unorm: return TinyImageFormat_R8_UNORM;
+	case TIF_MTLPixelFormatA8Unorm: return TinyImageFormat_A8_UNORM;
 	case TIF_MTLPixelFormatR8Unorm: return TinyImageFormat_R8_UNORM;
 	case TIF_MTLPixelFormatR8Unorm_sRGB: return TinyImageFormat_R8_SRGB;
 	case TIF_MTLPixelFormatR8Snorm: return TinyImageFormat_R8_SNORM;
