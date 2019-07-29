@@ -1463,7 +1463,7 @@ AL2O3_EXTERN_C inline double TinyImageFormat_Max(enum TinyImageFormat const fmt,
 	case TinyImageFormat_R8G8_UINT:
 	case TinyImageFormat_R8_UINT:
 	case TinyImageFormat_S8_UINT:
-		 return UINT8_MAX;
+		return UINT8_MAX;
 
 	case TinyImageFormat_R8G8B8A8_SSCALED:
 	case TinyImageFormat_B8G8R8A8_SSCALED:
@@ -2099,7 +2099,6 @@ AL2O3_EXTERN_C inline Image_Swizzle TinyImageFormat_Swizzle(TinyImageFormat fmt_
 	case TinyImageFormat_R8G8B8_SINT:
 	case TinyImageFormat_R8G8B8_SSCALED:
 	case TinyImageFormat_R5G6B5_UNORM_PACK16:
-	case TinyImageFormat_B5G6R5_UNORM_PACK16:
 	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
 	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
 	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
@@ -2113,6 +2112,7 @@ AL2O3_EXTERN_C inline Image_Swizzle TinyImageFormat_Swizzle(TinyImageFormat fmt_
 	case TinyImageFormat_B8G8R8_SSCALED:
 	case TinyImageFormat_B8G8R8_SINT:
 	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
 	case TinyImageFormat_B10G11R11_UFLOAT_PACK32:
 		return TinyImageFormat_Swizzle_BGR1;
 
