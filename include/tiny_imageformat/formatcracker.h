@@ -1963,6 +1963,15 @@ AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_R001;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RG01;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGB1;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_BGR1;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_RGBA;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_ARGB;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_BGRA;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_ABGR;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_000A;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_R001;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_RG01;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_RGB1;
+AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Unswizzle_BGR1;
 
 AL2O3_EXTERN_C inline Image_Swizzle TinyImageFormat_Swizzle(TinyImageFormat fmt_) {
 	switch (fmt_) {
@@ -2182,6 +2191,226 @@ AL2O3_EXTERN_C inline Image_Swizzle TinyImageFormat_Swizzle(TinyImageFormat fmt_
 
 	LOGERRORF("swizzleFormat %s not handled", TinyImageFormat_Name(fmt_));
 	return TinyImageFormat_Swizzle_RGBA;
+}
+
+AL2O3_EXTERN_C inline Image_Swizzle TinyImageFormat_Unswizzle(TinyImageFormat fmt_) {
+	switch (fmt_) {
+	case TinyImageFormat_UNDEFINED:
+
+	case TinyImageFormat_R64G64B64A64_UINT:
+	case TinyImageFormat_R64G64B64A64_SINT:
+	case TinyImageFormat_R64G64B64A64_SFLOAT:
+	case TinyImageFormat_R32G32B32A32_UINT:
+	case TinyImageFormat_R32G32B32A32_SINT:
+	case TinyImageFormat_R32G32B32A32_SFLOAT:
+	case TinyImageFormat_R16G16B16A16_USCALED:
+	case TinyImageFormat_R16G16B16A16_UINT:
+	case TinyImageFormat_R4G4B4A4_UNORM_PACK16:
+	case TinyImageFormat_R16G16B16A16_UNORM:
+	case TinyImageFormat_R16G16B16A16_SNORM:
+	case TinyImageFormat_R16G16B16A16_SSCALED:
+	case TinyImageFormat_R16G16B16A16_SINT:
+	case TinyImageFormat_R16G16B16A16_SFLOAT:
+	case TinyImageFormat_R8G8B8A8_UNORM:
+	case TinyImageFormat_R8G8B8A8_USCALED:
+	case TinyImageFormat_R8G8B8A8_UINT:
+	case TinyImageFormat_R8G8B8A8_SRGB:
+	case TinyImageFormat_R8G8B8A8_SNORM:
+	case TinyImageFormat_R8G8B8A8_SSCALED:
+	case TinyImageFormat_R8G8B8A8_SINT:
+	case TinyImageFormat_R5G5B5A1_UNORM_PACK16:
+	case TinyImageFormat_BC1_RGBA_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGBA_SRGB_BLOCK:
+	case TinyImageFormat_BC2_UNORM_BLOCK:
+	case TinyImageFormat_BC2_SRGB_BLOCK:
+	case TinyImageFormat_BC3_UNORM_BLOCK:
+	case TinyImageFormat_BC3_SRGB_BLOCK:
+	case TinyImageFormat_BC6H_UFLOAT_BLOCK:
+	case TinyImageFormat_BC6H_SFLOAT_BLOCK:
+	case TinyImageFormat_BC7_UNORM_BLOCK:
+	case TinyImageFormat_BC7_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A1_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8A8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_4x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_4x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x4_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x4_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_5x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_5x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_6x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_6x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_8x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_8x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x5_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x5_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x6_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x6_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x8_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x8_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_10x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_10x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x10_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x10_SRGB_BLOCK:
+	case TinyImageFormat_ASTC_12x12_UNORM_BLOCK:
+	case TinyImageFormat_ASTC_12x12_SRGB_BLOCK:
+		return TinyImageFormat_Unswizzle_RGBA;
+
+	case TinyImageFormat_A2R10G10B10_UNORM_PACK32:
+	case TinyImageFormat_A2R10G10B10_USCALED_PACK32:
+	case TinyImageFormat_A2R10G10B10_UINT_PACK32:
+	case TinyImageFormat_A1R5G5B5_UNORM_PACK16:
+	case TinyImageFormat_A4R4G4B4_UNORM_PACK16:
+	case TinyImageFormat_A8R8G8B8_UNORM_PACK32:
+		return TinyImageFormat_Unswizzle_ARGB;
+
+	case TinyImageFormat_A2B10G10R10_UNORM_PACK32:
+	case TinyImageFormat_A2B10G10R10_USCALED_PACK32:
+	case TinyImageFormat_A2B10G10R10_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SRGB_PACK32:
+	case TinyImageFormat_A8B8G8R8_USCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_UNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_UINT_PACK32:
+	case TinyImageFormat_A8B8G8R8_SNORM_PACK32:
+	case TinyImageFormat_A8B8G8R8_SSCALED_PACK32:
+	case TinyImageFormat_A8B8G8R8_SINT_PACK32:
+	case TinyImageFormat_E5B9G9R9_UFLOAT_PACK32:
+		return TinyImageFormat_Unswizzle_ABGR;
+
+	case TinyImageFormat_B8G8R8A8_UNORM:
+	case TinyImageFormat_B8G8R8A8_USCALED:
+	case TinyImageFormat_B8G8R8A8_UINT:
+	case TinyImageFormat_B8G8R8A8_SRGB:
+	case TinyImageFormat_B8G8R8A8_SNORM:
+	case TinyImageFormat_B8G8R8A8_SSCALED:
+	case TinyImageFormat_B8G8R8A8_SINT:
+	case TinyImageFormat_B4G4R4A4_UNORM_PACK16:
+	case TinyImageFormat_B5G5R5A1_UNORM_PACK16:
+		return TinyImageFormat_Unswizzle_BGRA;
+
+		// TODO check PVR swizzle order!
+	case TinyImageFormat_PVR_2BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPP_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPP_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPP_SRGB_BLOCK:
+		return TinyImageFormat_Unswizzle_RGB1;
+	case TinyImageFormat_PVR_2BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_UNORM_BLOCK:
+	case TinyImageFormat_PVR_2BPPA_SRGB_BLOCK:
+	case TinyImageFormat_PVR_4BPPA_SRGB_BLOCK:
+		return TinyImageFormat_Unswizzle_RGBA;
+
+	case TinyImageFormat_R64G64B64_UINT:
+	case TinyImageFormat_R64G64B64_SINT:
+	case TinyImageFormat_R64G64B64_SFLOAT:
+	case TinyImageFormat_R32G32B32_UINT:
+	case TinyImageFormat_R32G32B32_SINT:
+	case TinyImageFormat_R32G32B32_SFLOAT:
+	case TinyImageFormat_R16G16B16_UNORM:
+	case TinyImageFormat_R16G16B16_USCALED:
+	case TinyImageFormat_R16G16B16_UINT:
+	case TinyImageFormat_R16G16B16_SNORM:
+	case TinyImageFormat_R16G16B16_SSCALED:
+	case TinyImageFormat_R16G16B16_SINT:
+	case TinyImageFormat_R16G16B16_SFLOAT:
+	case TinyImageFormat_R8G8B8_USCALED:
+	case TinyImageFormat_R8G8B8_UNORM:
+	case TinyImageFormat_R8G8B8_UINT:
+	case TinyImageFormat_R8G8B8_SRGB:
+	case TinyImageFormat_R8G8B8_SNORM:
+	case TinyImageFormat_R8G8B8_SINT:
+	case TinyImageFormat_R8G8B8_SSCALED:
+	case TinyImageFormat_R5G6B5_UNORM_PACK16:
+	case TinyImageFormat_BC1_RGB_UNORM_BLOCK:
+	case TinyImageFormat_BC1_RGB_SRGB_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_UNORM_BLOCK:
+	case TinyImageFormat_ETC2_R8G8B8_SRGB_BLOCK:
+		return TinyImageFormat_Unswizzle_RGB1;
+
+	case TinyImageFormat_B8G8R8_SNORM:
+	case TinyImageFormat_B8G8R8_UNORM:
+	case TinyImageFormat_B8G8R8_USCALED:
+	case TinyImageFormat_B8G8R8_UINT:
+	case TinyImageFormat_B8G8R8_SSCALED:
+	case TinyImageFormat_B8G8R8_SINT:
+	case TinyImageFormat_B8G8R8_SRGB:
+	case TinyImageFormat_B5G6R5_UNORM_PACK16:
+	case TinyImageFormat_B10G11R11_UFLOAT_PACK32:
+		return TinyImageFormat_Unswizzle_BGR1;
+
+
+	case TinyImageFormat_R64G64_UINT:
+	case TinyImageFormat_R64G64_SINT:
+	case TinyImageFormat_R64G64_SFLOAT:
+	case TinyImageFormat_R32G32_UINT:
+	case TinyImageFormat_R32G32_SINT:
+	case TinyImageFormat_R32G32_SFLOAT:
+	case TinyImageFormat_R16G16_UNORM:
+	case TinyImageFormat_R16G16_USCALED:
+	case TinyImageFormat_R16G16_UINT:
+	case TinyImageFormat_R16G16_SSCALED:
+	case TinyImageFormat_R16G16_SNORM:
+	case TinyImageFormat_R16G16_SINT:
+	case TinyImageFormat_R16G16_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT_S8_UINT:
+	case TinyImageFormat_R8G8_UNORM:
+	case TinyImageFormat_R8G8_USCALED:
+	case TinyImageFormat_R8G8_UINT:
+	case TinyImageFormat_R8G8_SRGB:
+	case TinyImageFormat_R8G8_SNORM:
+	case TinyImageFormat_R8G8_SINT:
+	case TinyImageFormat_R8G8_SSCALED:
+	case TinyImageFormat_X8_D24_UNORM_PACK32:
+	case TinyImageFormat_D24_UNORM_S8_UINT:
+	case TinyImageFormat_D16_UNORM_S8_UINT:
+	case TinyImageFormat_R4G4_UNORM_PACK8:
+	case TinyImageFormat_BC5_UNORM_BLOCK:
+	case TinyImageFormat_BC5_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11G11_SNORM_BLOCK:
+		return TinyImageFormat_Unswizzle_RG01;
+
+	case TinyImageFormat_R64_UINT:
+	case TinyImageFormat_R64_SINT:
+	case TinyImageFormat_R64_SFLOAT:
+	case TinyImageFormat_R32_UINT:
+	case TinyImageFormat_R32_SINT:
+	case TinyImageFormat_R32_SFLOAT:
+	case TinyImageFormat_D32_SFLOAT:
+	case TinyImageFormat_R16_UNORM:
+	case TinyImageFormat_D16_UNORM:
+	case TinyImageFormat_R16_USCALED:
+	case TinyImageFormat_R16_UINT:
+	case TinyImageFormat_R16_SNORM:
+	case TinyImageFormat_R16_SSCALED:
+	case TinyImageFormat_R16_SINT:
+	case TinyImageFormat_R16_SFLOAT:
+	case TinyImageFormat_R8_USCALED:
+	case TinyImageFormat_R8_UNORM:
+	case TinyImageFormat_R8_UINT:
+	case TinyImageFormat_S8_UINT:
+	case TinyImageFormat_R8_SRGB:
+	case TinyImageFormat_R8_SNORM:
+	case TinyImageFormat_R8_SSCALED:
+	case TinyImageFormat_R8_SINT:
+	case TinyImageFormat_BC4_UNORM_BLOCK:
+	case TinyImageFormat_BC4_SNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_UNORM_BLOCK:
+	case TinyImageFormat_EAC_R11_SNORM_BLOCK:
+		return TinyImageFormat_Unswizzle_R001;
+	case TinyImageFormat_A8_UNORM:
+		return TinyImageFormat_Unswizzle_000A;
+	}
+
+	LOGERRORF("UnswizzleFormat %s not handled", TinyImageFormat_Name(fmt_));
+	return TinyImageFormat_Unswizzle_RGBA;
 }
 
 #ifndef TINYIMAGEFORMAT_DXGIFORMAT
@@ -2692,16 +2921,16 @@ AL2O3_EXTERN_C TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless
 #include "string.h" // for stricmp
 #endif
 
-static int8_t s_TinyImageFormat_Swizzle_RGBA[4] = { 0, 1, 2, 3};
-static int8_t s_TinyImageFormat_Swizzle_ARGB[4] = { 3, 0, 1, 2};
-static int8_t s_TinyImageFormat_Swizzle_BGRA[4] = { 2, 1, 0, 3};
-static int8_t s_TinyImageFormat_Swizzle_ABGR[4] = { 3, 2, 1, 0};
-
-static int8_t s_TinyImageFormat_Swizzle_000A[4] = {-1,-1,-1, 0};
-static int8_t s_TinyImageFormat_Swizzle_R001[4] = { 0,-1,-1,-2};
-static int8_t s_TinyImageFormat_Swizzle_RG01[4] = { 0, 1,-1,-2};
-static int8_t s_TinyImageFormat_Swizzle_RGB1[4] = { 0, 1, 2,-2};
-static int8_t s_TinyImageFormat_Swizzle_BGR1[4] = { 2, 1, 0,-2};
+// where should a channel come from/to during put/fetch
+static int8_t s_TinyImageFormat_Swizzle_RGBA[4] = { 0, 1, 2, 3 };
+static int8_t s_TinyImageFormat_Swizzle_ARGB[4] = { 1, 2, 3, 0 };
+static int8_t s_TinyImageFormat_Swizzle_BGRA[4] = { 2, 1, 0, 3 };
+static int8_t s_TinyImageFormat_Swizzle_ABGR[4] = { 3, 2, 1, 0 };
+static int8_t s_TinyImageFormat_Swizzle_000A[4] = {-1,-1,-1, 0 };
+static int8_t s_TinyImageFormat_Swizzle_R001[4] = { 0,-1,-1,-2 };
+static int8_t s_TinyImageFormat_Swizzle_RG01[4] = { 0, 1,-1,-2 };
+static int8_t s_TinyImageFormat_Swizzle_RGB1[4] = { 0, 1, 2,-2 };
+static int8_t s_TinyImageFormat_Swizzle_BGR1[4] = { 2, 1, 0,-2 };
 
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGBA = s_TinyImageFormat_Swizzle_RGBA;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_ARGB = s_TinyImageFormat_Swizzle_ARGB;
@@ -2712,6 +2941,7 @@ AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_R001 = s_TinyImageFormat_Sw
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RG01 = s_TinyImageFormat_Swizzle_RG01;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_RGB1 = s_TinyImageFormat_Swizzle_RGB1;
 AL2O3_EXTERN_C Image_Swizzle TinyImageFormat_Swizzle_BGR1 = s_TinyImageFormat_Swizzle_BGR1;
+
 
 AL2O3_EXTERN_C char const *TinyImageFormat_Name(enum TinyImageFormat const fmt) {
 #define IF_START_MACRO switch(fmt) {
