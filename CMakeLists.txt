@@ -12,16 +12,30 @@ SET_MIN_VERSIONS()
 set(LibName tiny_imageformat)
 project(${LibName})
 
+set(MAKE_GENERATOR TRUE)
+if(MAKE_GENERATOR)
+	set(GeneratorSrc
+			src/formatgen.cpp
+			src/formatgen.h
+			src/formatbits.h
+			src/otherimageenums.h
+			)
+
+	set(GeneratorDeps
+			al2o3_platform
+			al2o3_cmath
+			al2o3_os
+			al2o3_vfile
+			)
+	ADD_CONSOLE_APP(generate_${LibName} "${GeneratorSrc}" "${GeneratorDeps}")
+endif()
+
 set(Interface
-		format.h
-		formatcracker.h		)
+		tinyimageformat.h )
 set(Src
-		formatcracker.c
-		)
+		dummy.c)
 
 set(Deps
-		al2o3_platform
-		al2o3_cmath
 		)
 ADD_LIB(${LibName} "${Interface}" "${Src}" "${Deps}")
 
@@ -30,5 +44,8 @@ set( Tests
 		test_formatcracker.cpp
 		)
 set( TestDeps
-		al2o3_catch2 )
+		al2o3_catch2
+		utils_simple_logmanager
+		)
 ADD_LIB_TESTS(${LibName} "${Interface}" "${Tests}" "${TestDeps}")
+
