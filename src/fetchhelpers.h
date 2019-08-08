@@ -1,22 +1,5 @@
 RAW_INCLUDE_START( R"=====( )
 
-// Helpers
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_PixelCountOfBlock(TinyImageFormat const fmt) {
-	return TinyImageFormat_WidthOfBlock(fmt) * TinyImageFormat_HeightOfBlock(fmt) * TinyImageFormat_DepthOfBlock(fmt);
-}
-
-TIF_CONSTEXPR inline double TinyImageFormat_Min(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	return TinyImageFormat_MinAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
-}
-
-TIF_CONSTEXPR inline double TinyImageFormat_Max(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	return TinyImageFormat_MaxAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
-}
-
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidth(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	return TinyImageFormat_ChannelBitWidthAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
-}
-
 inline double TinyImageFormat_UFloat10ToDouble(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
@@ -181,6 +164,21 @@ inline double TinyImageFormat_HalfAsUintToDouble(uint16_t h_) {
 	}
 
 	o.u |= (h.u & 0x8000) << 16;    // sign bit
+	return (double) o.f;
+}
+
+inline double TinyImageFormat_BFloatAsUintToDouble(uint16_t h_) {
+	union {
+		struct {
+			uint16_t u;
+			uint16_t x;
+		};
+		float f;
+	} o;
+
+	o.u = h_;
+	o.x = 0;
+
 	return (double) o.f;
 }
 

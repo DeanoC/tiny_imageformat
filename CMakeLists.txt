@@ -16,9 +16,15 @@ set(MAKE_GENERATOR TRUE)
 if(MAKE_GENERATOR)
 	set(GeneratorSrc
 			src/formatgen.cpp
+			src/formatgen_base.cpp
+			src/formatgen_query.cpp
+			src/formatgen_fetch.cpp
 			src/formatgen.h
-			src/formatbits.h
+			src/formatgen_func.h
+			src/formatgen_macros.h
+			src/queryhelpers.h
 			src/otherimageenums.h
+			src/doc.h
 			)
 
 	set(GeneratorDeps

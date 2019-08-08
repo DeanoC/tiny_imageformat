@@ -135,9 +135,9 @@ RAW_INCLUDE_START( R"=====( )
  *
  * Pixel Decoder Functions
  * -----------------------
- * CanFetchLogicalPixel( fmt ) - Can FetchLogicalPixel work with this format?
- * FetchLogicalPixel(fmt, in pointer out pixel) -
- * 							- returns 4 double values encoded at the in pointer
+ * CanFetchLogicalPixels( fmt ) - Can FetchLogicalPixels work with this format?
+ * FetchLogicalPixels(fmt, in pointer, out pixels) -
+ * 							- pixels should be a pointer to 4 * PixelCounfOfBlack doubles
  * 							- does full decode and remapping into logical channels
  * 							- include constants etc. so returned result can be used directly
  *

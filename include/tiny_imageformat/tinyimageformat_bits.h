@@ -31,6 +31,9 @@ typedef enum TinyImageFormat_Namespace {
 typedef enum TinyImageFormat_Pack_Special {
 	TinyImageFormat_PACK_SPECIAL_NONE = 0ULL,
 	TinyImageFormat_PACK_SPECIAL_PACK = 1ULL,
+	TinyImageFormat_PACK_SPECIAL_MULTI2 = 2ULL,
+	TinyImageFormat_PACK_SPECIAL_MULTI4 = 3ULL,
+	TinyImageFormat_PACK_SPECIAL_MULTI8 = 4ULL,
 } TinyImageFormat_Pack_Special;
 
 typedef enum TinyImageFormat_Pack_Bits {
@@ -71,6 +74,7 @@ typedef enum TinyImageFormat_Pack_Type {
 	TinyImageFormat_PACK_TYPE_UFLOAT = 5ULL,
 	TinyImageFormat_PACK_TYPE_SFLOAT = 6ULL,
 	TinyImageFormat_PACK_TYPE_SRGB = 7ULL,
+	TinyImageFormat_PACK_TYPE_SBFLOAT = 8ULL,
 } TinyImageFormat_Pack_Type;
 
 typedef enum TinyImageFormat_DepthStencil_Total_Size {
@@ -216,11 +220,11 @@ typedef enum TinyImageFormat_Bits {
 	TinyImageFormat_NAMESPACE_REQUIRED_BITS = 12ULL,
 	TinyImageFormat_NAMESPACE_MASK = (1 << TinyImageFormat_NAMESPACE_REQUIRED_BITS) - 1,
 
-	TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS = 2ULL,
+	TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS = 3ULL,
 	TinyImageFormat_PACK_BITS_REQUIRED_BITS = 5ULL,
 	TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS = 3ULL,
 
-	TinyImageFormat_PACK_TYPE_REQUIRED_BITS = 3ULL,
+	TinyImageFormat_PACK_TYPE_REQUIRED_BITS = 4ULL,
 	TinyImageFormat_PACK_NUM_CHANNELS = 4ULL,
 
 	TinyImageFormat_PACK_SPECIAL_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
