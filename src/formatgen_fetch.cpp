@@ -348,11 +348,11 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 
 	sprintf(nextPixelBuffer, "%s\t\t\t\tout+=%d;\n", nextPixelBuffer, 4 * repeat);
 
+	uint64_t shifter = 0;
 	for (uint32_t j = 0; j < repeat; j++) {
 		uint64_t vt = v >> TinyImageFormat_PACK_TYPE_SHIFT;
 		uint64_t vs = v >> TinyImageFormat_PACK_SWIZZLE_SHIFT;
 
-		uint64_t shifter = 0;
 		for (int i = TinyImageFormat_PACK_NUM_CHANNELS - 1; i >= 0; --i) {
 			uint32_t const chanBitWidth = ChannelWidth(name, v, TinyImageFormat_PACK_NUM_CHANNELS - i - 1);
 
