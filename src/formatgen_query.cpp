@@ -376,86 +376,6 @@ uint32_t DepthOfBlock(char const *name, uint64_t v) {
 	return SizeOfBlock(name, v, 2);
 }
 
-static uint32_t BitSizeOfBlock(char const *name, uint64_t v) {
-	if (v == 0)
-		return 0;
-
-	if (IsInPacked(name, v)) {
-		uint64_t vspec = v >> TinyImageFormat_PACK_SPECIAL_SHIFT;
-
-		auto special = (TinyImageFormat_Pack_Special const) (vspec & Mask(TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS));
-		v = v >> TinyImageFormat_PACK_BITS_SHIFT;
-		uint32_t count = 0;
-		for (uint32_t chan = 0; chan < TinyImageFormat_PACK_NUM_CHANNELS; ++chan) {
-			uint64_t const bits = (v & Mask(TinyImageFormat_PACK_BITS_REQUIRED_BITS));
-			if (bits <= TinyImageFormat_PACK_BITS_12)
-				count += (uint32_t) bits;
-			else {
-				switch (bits) {
-				case TinyImageFormat_PACK_BITS_16: count += 16;
-					break;
-				case TinyImageFormat_PACK_BITS_24: count += 24;
-					break;
-				case TinyImageFormat_PACK_BITS_32: count += 32;
-					break;
-				case TinyImageFormat_PACK_BITS_64: count += 64;
-					break;
-				default: ASSERT(false);
-				}
-			}
-			v = v >> TinyImageFormat_PACK_BITS_REQUIRED_BITS;
-		}
-
-		switch (special) {
-		case TinyImageFormat_PACK_SPECIAL_NONE:break;
-		case TinyImageFormat_PACK_SPECIAL_PACK:break;
-		case TinyImageFormat_PACK_SPECIAL_MULTI2:count *= 2;
-			break;
-		case TinyImageFormat_PACK_SPECIAL_MULTI4:count *= 4;
-			break;
-		case TinyImageFormat_PACK_SPECIAL_MULTI8:count *= 8;
-			break;
-		}
-
-		return count;
-	}
-
-	if (IsInDepthStencil(name, v)) {
-		v = v >> TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_SHIFT;
-		uint64_t const bits = (v & Mask(TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_REQUIRED_BITS));
-		switch (bits) {
-		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_8: return 8;
-		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_16: return 16;
-		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_32: return 32;
-		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_64: return 64;
-		default: ASSERT(false);
-		}
-	}
-
-	if (IsInDXTC(name, v)) {
-		v = v >> TinyImageFormat_DXTC_BLOCKBYTES_SHIFT;
-		uint64_t const bytes = (v & Mask(TinyImageFormat_DXTC_BLOCKBYTES_REQUIRED_BITS));
-		switch (bytes) {
-		case TinyImageFormat_DXTC_BLOCKBYTES_8: return 8 * 8;
-		case TinyImageFormat_DXTC_BLOCKBYTES_16: return 16 * 8;
-		default: ASSERT(false);
-		}
-	}
-
-	if (IsInPVRTC(name, v)) {
-		return 64;
-	}
-
-	if (IsInETC(name, v)) {
-		return 32;
-	}
-
-	if (IsInASTC(name, v)) {
-		return 128;
-	}
-
-	return 8;
-}
 
 uint32_t ChannelCount(char const *name, uint64_t v) {
 	if (v == 0)
@@ -527,64 +447,6 @@ uint32_t ChannelCount(char const *name, uint64_t v) {
 
 	ASSERT(false);
 	return 0;
-}
-
-static bool IsHomogenous(char const *name, uint64_t v) {
-	if (v == 0)
-		return false;
-
-	if (IsInPacked(name, v)) {
-
-		uint64_t const backupV = v;
-		int64_t rtype = -1;
-		v = v >> TinyImageFormat_PACK_TYPE_SHIFT;
-
-		// homogenous packed format has the same type for each channel
-		for (uint32_t i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
-			uint64_t const type = (v & Mask(TinyImageFormat_PACK_TYPE_REQUIRED_BITS));
-			if (type == TinyImageFormat_PACK_TYPE_NONE) {
-				v = v >> TinyImageFormat_PACK_TYPE_REQUIRED_BITS;
-				continue;
-			}
-			if (rtype == -1) {
-				rtype = (int64_t) type;
-			}
-			if (rtype != (int64_t) type)
-				return false;
-			v = v >> TinyImageFormat_PACK_TYPE_REQUIRED_BITS;
-		}
-		// and bit width
-		v = backupV;
-		v = v >> TinyImageFormat_PACK_BITS_SHIFT;
-		rtype = -1;
-		for (uint32_t i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
-			uint64_t const bits = (v & Mask(TinyImageFormat_PACK_BITS_REQUIRED_BITS));
-			if (bits == TinyImageFormat_PACK_BITS_0) {
-				v = v >> TinyImageFormat_PACK_BITS_REQUIRED_BITS;
-				continue;
-			}
-
-			if (rtype == -1) {
-				rtype = (int64_t) bits;
-			}
-			if (rtype != (int64_t) bits)
-				return false;
-			v = v >> TinyImageFormat_PACK_BITS_REQUIRED_BITS;
-		}
-		return true;
-	}
-
-	if (IsInDepthStencil(name, v)) {
-		if (ChannelCount(name, v) > 1) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	// rather than work out which submits of compressed blocks are
-	// homogenous or not we say false
-	return false;
 }
 
 uint32_t ChannelBitWidth(char const *name, uint64_t v, uint32_t chan) {
@@ -715,14 +577,171 @@ uint32_t ChannelBitWidth(char const *name, uint64_t v, uint32_t chan) {
 		case TinyImageFormat_CLUT_BITS_2:return 2;
 		case TinyImageFormat_CLUT_BITS_4:return 4;
 		case TinyImageFormat_CLUT_BITS_8:return 8;
-		case TinyImageFormat_CLUT_BITS_16:return 16;
-		case TinyImageFormat_CLUT_BITS_32:return 32;
 		}
 		ASSERT(false);
 	}
 
 	return 8;
 }
+
+static uint32_t BitSizeOfBlock(char const *name, uint64_t v) {
+	if (v == 0)
+		return 0;
+
+	if (IsInPacked(name, v)) {
+		uint64_t vspec = v >> TinyImageFormat_PACK_SPECIAL_SHIFT;
+
+		auto special = (TinyImageFormat_Pack_Special const) (vspec & Mask(TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS));
+		v = v >> TinyImageFormat_PACK_BITS_SHIFT;
+		uint32_t count = 0;
+		for (uint32_t chan = 0; chan < TinyImageFormat_PACK_NUM_CHANNELS; ++chan) {
+			uint64_t const bits = (v & Mask(TinyImageFormat_PACK_BITS_REQUIRED_BITS));
+			if (bits <= TinyImageFormat_PACK_BITS_12)
+				count += (uint32_t) bits;
+			else {
+				switch (bits) {
+				case TinyImageFormat_PACK_BITS_16: count += 16;
+					break;
+				case TinyImageFormat_PACK_BITS_24: count += 24;
+					break;
+				case TinyImageFormat_PACK_BITS_32: count += 32;
+					break;
+				case TinyImageFormat_PACK_BITS_64: count += 64;
+					break;
+				default: ASSERT(false);
+				}
+			}
+			v = v >> TinyImageFormat_PACK_BITS_REQUIRED_BITS;
+		}
+
+		switch (special) {
+		case TinyImageFormat_PACK_SPECIAL_NONE:break;
+		case TinyImageFormat_PACK_SPECIAL_PACK:break;
+		case TinyImageFormat_PACK_SPECIAL_MULTI2:count *= 2;
+			break;
+		case TinyImageFormat_PACK_SPECIAL_MULTI4:count *= 4;
+			break;
+		case TinyImageFormat_PACK_SPECIAL_MULTI8:count *= 8;
+			break;
+		}
+
+		return count;
+	}
+
+	if (IsInDepthStencil(name, v)) {
+		v = v >> TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_SHIFT;
+		uint64_t const bits = (v & Mask(TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_REQUIRED_BITS));
+		switch (bits) {
+		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_8: return 8;
+		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_16: return 16;
+		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_32: return 32;
+		case TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_64: return 64;
+		default: ASSERT(false);
+		}
+	}
+
+	if (IsInDXTC(name, v)) {
+		v = v >> TinyImageFormat_DXTC_BLOCKBYTES_SHIFT;
+		uint64_t const bytes = (v & Mask(TinyImageFormat_DXTC_BLOCKBYTES_REQUIRED_BITS));
+		switch (bytes) {
+		case TinyImageFormat_DXTC_BLOCKBYTES_8: return 8 * 8;
+		case TinyImageFormat_DXTC_BLOCKBYTES_16: return 16 * 8;
+		default: ASSERT(false);
+		}
+	}
+
+	if (IsInPVRTC(name, v)) {
+		return 64;
+	}
+
+	if (IsInETC(name, v)) {
+		return 32;
+	}
+
+	if (IsInASTC(name, v)) {
+		return 128;
+	}
+
+	if(IsInCLUT(name, v)) {
+		uint32_t bitsize = 0;
+		for(int i=0;i < ChannelCount(name, v);++i) {
+			bitsize += ChannelBitWidth(name, v, i);
+		}
+
+		uint64_t vbs = v >> TinyImageFormat_CLUT_BLOCKSIZE_SHIFT;
+		auto blockSize = (TinyImageFormat_CLUT_BlockSize const )(vbs & Mask( TinyImageFormat_CLUT_BLOCKSIZE_REQUIRED_BITS));
+		uint32_t repeat = 1;
+		switch(blockSize) {
+		case TinyImageFormat_CLUT_BLOCKSIZE_1: repeat = 1; break;
+		case TinyImageFormat_CLUT_BLOCKSIZE_2: repeat = 2; break;
+		case TinyImageFormat_CLUT_BLOCKSIZE_4: repeat = 4; break;
+		case TinyImageFormat_CLUT_BLOCKSIZE_8: repeat = 8; break;
+		}
+
+		return bitsize * repeat;
+	}
+
+	return 8;
+}
+
+static bool IsHomogenous(char const *name, uint64_t v) {
+	if (v == 0)
+		return false;
+
+	if (IsInPacked(name, v)) {
+
+		uint64_t const backupV = v;
+		int64_t rtype = -1;
+		v = v >> TinyImageFormat_PACK_TYPE_SHIFT;
+
+		// homogenous packed format has the same type for each channel
+		for (uint32_t i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+			uint64_t const type = (v & Mask(TinyImageFormat_PACK_TYPE_REQUIRED_BITS));
+			if (type == TinyImageFormat_PACK_TYPE_NONE) {
+				v = v >> TinyImageFormat_PACK_TYPE_REQUIRED_BITS;
+				continue;
+			}
+			if (rtype == -1) {
+				rtype = (int64_t) type;
+			}
+			if (rtype != (int64_t) type)
+				return false;
+			v = v >> TinyImageFormat_PACK_TYPE_REQUIRED_BITS;
+		}
+		// and bit width
+		v = backupV;
+		v = v >> TinyImageFormat_PACK_BITS_SHIFT;
+		rtype = -1;
+		for (uint32_t i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+			uint64_t const bits = (v & Mask(TinyImageFormat_PACK_BITS_REQUIRED_BITS));
+			if (bits == TinyImageFormat_PACK_BITS_0) {
+				v = v >> TinyImageFormat_PACK_BITS_REQUIRED_BITS;
+				continue;
+			}
+
+			if (rtype == -1) {
+				rtype = (int64_t) bits;
+			}
+			if (rtype != (int64_t) bits)
+				return false;
+			v = v >> TinyImageFormat_PACK_BITS_REQUIRED_BITS;
+		}
+		return true;
+	}
+
+	if (IsInDepthStencil(name, v)) {
+		if (ChannelCount(name, v) > 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// rather than work out which submits of compressed blocks are
+	// homogenous or not we say false
+	return false;
+}
+
 
 int8_t PhysicalChannelToLogical(char const *name, uint64_t const v, uint32_t chan) {
 	if (v == 0)
@@ -748,9 +767,9 @@ int8_t PhysicalChannelToLogical(char const *name, uint64_t const v, uint32_t cha
 		if (chan >= ChannelCount(name, v)) {
 			return TinyImageFormat_LC_0;
 		}
-		uint64_t v2 = v >> TinyImageFormat_DEPTH_STENCIL_SWIZZLE_SHIFT;
-		v2 = v2 >> (chan * TinyImageFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS);
-		uint64_t swiz = (v2 & Mask(TinyImageFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS));
+		uint64_t vs = v >> TinyImageFormat_DEPTH_STENCIL_SWIZZLE_SHIFT;
+		vs = vs >> (chan * TinyImageFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS);
+		auto swiz = (TinyImageFormat_DepthStencil_Swizzle const) (vs & Mask(TinyImageFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS));
 
 		switch (swiz) {
 		case TinyImageFormat_DEPTH_STENCIL_SWIZZLE_D: return TinyImageFormat_LC_Depth;
@@ -760,17 +779,33 @@ int8_t PhysicalChannelToLogical(char const *name, uint64_t const v, uint32_t cha
 		}
 	}
 	if (IsInCLUT(name, v)) {
-		return chan; // no swizzling for palettes
-	}
-
-	// all compressed formats are in RGBA
-	if (chan >= ChannelCount(name, v)) {
-		if (chan == 3)
-			return TinyImageFormat_LC_1;
-		else
+		if (chan >= ChannelCount(name, v)) {
 			return TinyImageFormat_LC_0;
+		}
+		uint64_t vt = v >> TinyImageFormat_CLUT_TYPE_SHIFT;
+		vt = vt >> (chan * TinyImageFormat_CLUT_TYPE_REQUIRED_BITS);
+		auto type = (TinyImageFormat_CLUT_Type const)(vt & Mask(TinyImageFormat_CLUT_TYPE_REQUIRED_BITS));
+		switch(type) {
+		case TinyImageFormat_CLUT_TYPE_NONE: 		return TinyImageFormat_LC_0;
+		case TinyImageFormat_CLUT_TYPE_RGB: 		return TinyImageFormat_LC_Red;
+		case TinyImageFormat_CLUT_TYPE_SINGLE: 	return TinyImageFormat_LC_Red;
+		case TinyImageFormat_CLUT_TYPE_EXPLICIT_ALPHA:	return TinyImageFormat_LC_Alpha;
+		}
 	}
 
+	if(IsInETC(name, v) || IsInPVRTC(name,v) || IsInDXTC(name,v) || IsInASTC(name,v)) {
+		// all compressed formats are in RGBA
+		if (chan >= ChannelCount(name, v)) {
+			if (chan == 3)
+				return TinyImageFormat_LC_1;
+			else
+				return TinyImageFormat_LC_0;
+		} else {
+			return chan;
+		}
+	}
+
+	ASSERT(false);
 	return chan;
 }
 
@@ -922,8 +957,12 @@ static double Min(char const *name, uint64_t v, uint32_t const chan) {
 
 	}
 
-	if (IsInASTC(name, v))
+	if(IsInASTC(name, v))
 		return 0.0;
+
+	if(IsInCLUT(name, v)) {
+		return 0.0;
+	}
 
 	return 0.0;
 }
@@ -1092,6 +1131,10 @@ double MaxActual(char const *name, uint64_t v, uint32_t const chan, bool ignoreN
 	if (IsInASTC(name, v))
 		return 1.0;
 
+	if (IsInCLUT(name, v))
+		return 1.0;
+
+	ASSERT(false);
 	return 8;
 }
 double Max(char const *name, uint64_t v, uint32_t const chan) {

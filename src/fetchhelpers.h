@@ -1,6 +1,6 @@
 RAW_INCLUDE_START( R"=====( )
 
-inline double TinyImageFormat_UFloat10ToDouble(uint16_t v) {
+inline float TinyImageFormat_UFloat10ToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -43,10 +43,10 @@ inline double TinyImageFormat_UFloat10ToDouble(uint16_t v) {
 	} else {
 		t.u = ((ei.e + 112) << 23) | (ei.m << 18);
 	}
-	return (double)t.f;
+	return t.f;
 }
 
-inline double TinyImageFormat_UFloat11ToDouble(uint16_t v) {
+inline float TinyImageFormat_UFloat11ToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -88,10 +88,10 @@ inline double TinyImageFormat_UFloat11ToDouble(uint16_t v) {
 	} else {
 		t.u = ((ei.e + 112) << 23) | (ei.m << 17);
 	}
-	return (double)t.f;
+	return t.f;
 }
 
-inline void TinyImageFormat_SharedE5B9G9R9UFloatToDoubles(uint32_t v, double out[4]) {
+inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union
 	{
@@ -113,14 +113,14 @@ inline void TinyImageFormat_SharedE5B9G9R9UFloatToDoubles(uint32_t v, double out
 	ei.v = v;
 	t.u = 0x33800000 + (ei.e << 23);
 
-	out[0] = (double)(t.f * (float)(ei.rm));
-	out[1] = (double)(t.f * (float)(ei.gm));
-	out[2] = (double)(t.f * (float)(ei.bm));
-	out[3] = 1.0;
+	out[0] = t.f * (float)(ei.rm);
+	out[1] = t.f * (float)(ei.gm);
+	out[2] = t.f * (float)(ei.bm);
+	out[3] = 1.0f;
 }
 
 //HalfToFloat from Rygorous public domain code
-inline double TinyImageFormat_HalfAsUintToDouble(uint16_t h_) {
+inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
 
 	const uint32_t shifted_exp = 0x7c00 << 13; // exponent mask after shift
 	union {
@@ -164,10 +164,10 @@ inline double TinyImageFormat_HalfAsUintToDouble(uint16_t h_) {
 	}
 
 	o.u |= (h.u & 0x8000) << 16;    // sign bit
-	return (double) o.f;
+	return o.f;
 }
 
-inline double TinyImageFormat_BFloatAsUintToDouble(uint16_t h_) {
+inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
 	union {
 		struct {
 			uint16_t u;
@@ -179,7 +179,7 @@ inline double TinyImageFormat_BFloatAsUintToDouble(uint16_t h_) {
 	o.u = h_;
 	o.x = 0;
 
-	return (double) o.f;
+	return o.f;
 }
 
 RAW_INCLUDE_END( )=====" )

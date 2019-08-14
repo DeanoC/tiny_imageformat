@@ -205,8 +205,6 @@ typedef enum TinyImageFormat_CLUT_Bits {
 	TinyImageFormat_CLUT_BITS_2 = 2ULL,
 	TinyImageFormat_CLUT_BITS_4 = 3ULL,
 	TinyImageFormat_CLUT_BITS_8 = 4ULL,
-	TinyImageFormat_CLUT_BITS_16 = 5ULL,
-	TinyImageFormat_CLUT_BITS_32 = 6ULL,
 } TinyImageFormat_CLUT_Bits;
 
 typedef enum TinyImageFormat_CLUT_Type {
