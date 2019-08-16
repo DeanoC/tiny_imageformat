@@ -9,13 +9,9 @@
 int8_t PhysicalChannelToLogical(char const *name, uint64_t const v, uint32_t chan);
 void LogicalToPhysicalChannels(const char *name, uint64_t v, int8_t out[4]);
 double MaxActual(char const *name, uint64_t v, uint32_t const chan, bool ignoreNormFormats);
-
-uint32_t WidthOfBlock(char const *name, uint64_t v);
-uint32_t HeightOfBlock(char const *name, uint64_t v);
-uint32_t DepthOfBlock(char const *name, uint64_t v);
 uint32_t ChannelCount(char const *name, uint64_t v);
 
-static uint32_t ChannelWidth(char const *name, uint64_t const v, uint32_t chan) {
+uint32_t ChannelWidth(char const *name, uint64_t const v, uint32_t chan) {
 
 	if(IsInPacked(name, v)) {
 		uint64_t vbc = v >> TinyImageFormat_PACK_BITS_SHIFT;
@@ -108,20 +104,6 @@ static uint32_t ChannelWidth(char const *name, uint64_t const v, uint32_t chan) 
 
 	ASSERT(false);
 	return 0;
-}
-
-void GenMaxPixelCountOfBlock(VFile_Handle file) {
-	char buffer[2048];
-
-#define  TinyImageFormat_START_MACRO uint32_t maxPixelCountOfBlock = 0;
-#define  TinyImageFormat_MOD_MACRO(x, y) { uint32_t tmp = WidthOfBlock(#x, y) * HeightOfBlock(#x, y) * DepthOfBlock(#x, y); \
-                            if(tmp > maxPixelCountOfBlock) maxPixelCountOfBlock = tmp; };
-#define  TinyImageFormat_END_MACRO
-#include "formatgen.h"
-	char const formatCountF[] = "#define TinyImageFormat_MaxPixelCountOfBlock %uU \n\n";
-
-	sprintf(buffer, formatCountF, maxPixelCountOfBlock);
-	VFile_Write(file, buffer, strlen(buffer));
 }
 
 bool FetchLogicalPixelsPackedNotSpecial(char const *name,
@@ -387,7 +369,6 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 
 				switch (type) {
 				case TinyImageFormat_PACK_TYPE_UNORM:
-				case TinyImageFormat_PACK_TYPE_SNORM:
 					sprintf(output,
 									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f);\n",
 									output,
@@ -398,8 +379,18 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 									outputCast,
 									normalFactor);
 					break;
+				case TinyImageFormat_PACK_TYPE_SNORM:
+					sprintf(output,
+									"%s\t\t\t\tout[%d] = (((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f)) - 1;\n",
+									output,
+									j * 4 + swizzle,
+									outputCast,
+									shifter,
+									Mask(chanBitWidth),
+									outputCast,
+									normalFactor);
+					break;
 				case TinyImageFormat_PACK_TYPE_UINT:
-				case TinyImageFormat_PACK_TYPE_SINT:
 					sprintf(output,
 									"%s\t\t\t\tout[%d] = (%s)((val >> %lld) & 0x%llx);\n",
 									output,
@@ -407,6 +398,16 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 									outputCast,
 									shifter,
 									Mask(chanBitWidth));
+					break;
+				case TinyImageFormat_PACK_TYPE_SINT:
+					sprintf(output,
+									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx) - %1.8f;\n",
+									output,
+									j * 4 + swizzle,
+									outputCast,
+									shifter,
+									Mask(chanBitWidth),
+									maxFactor);
 					break;
 				case TinyImageFormat_PACK_TYPE_SRGB:
 					sprintf(output,
@@ -825,8 +826,6 @@ void IncludeFetchHelpers(VFile_Handle file) {
 }
 
 void GenFetch(VFile_Handle file) {
-	GenMaxPixelCountOfBlock(file);
-
 	IncludeFetchHelpers(file);
 	GetSRGBTableFuncton(file);
 	GenCanFetchLogicalPixelsF(file);

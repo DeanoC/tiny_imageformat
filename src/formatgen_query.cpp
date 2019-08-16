@@ -8,6 +8,7 @@
 #include "../include/tiny_imageformat/tinyimageformat_bits.h"
 #include "formatgen.h"
 
+
 bool IsDepthOnly(char const *name, uint64_t v) {
 	if (!IsInDepthStencil(name, v))
 		return false;
@@ -376,6 +377,19 @@ uint32_t DepthOfBlock(char const *name, uint64_t v) {
 	return SizeOfBlock(name, v, 2);
 }
 
+void GenMaxPixelCountOfBlock(VFile_Handle file) {
+	char buffer[2048];
+
+#define  TinyImageFormat_START_MACRO uint32_t maxPixelCountOfBlock = 0;
+#define  TinyImageFormat_MOD_MACRO(x, y) { uint32_t tmp = WidthOfBlock(#x, y) * HeightOfBlock(#x, y) * DepthOfBlock(#x, y); \
+                            if(tmp > maxPixelCountOfBlock) maxPixelCountOfBlock = tmp; };
+#define  TinyImageFormat_END_MACRO
+#include "formatgen.h"
+	char const formatCountF[] = "#define TinyImageFormat_MaxPixelCountOfBlock %uU \n\n";
+
+	sprintf(buffer, formatCountF, maxPixelCountOfBlock);
+	VFile_Write(file, buffer, strlen(buffer));
+}
 
 uint32_t ChannelCount(char const *name, uint64_t v) {
 	if (v == 0)
@@ -1456,6 +1470,7 @@ void IncludeQueryHelpers(VFile_Handle file) {
 
 void GenQuerys(VFile_Handle file) {
 
+	GenMaxPixelCountOfBlock(file);
 	GEN_BOOL_FUNC(file, false, IsDepthOnly);
 	GEN_BOOL_FUNC(file, false, IsStencilOnly);
 	GEN_BOOL_FUNC(file, false, IsDepthAndStencil);

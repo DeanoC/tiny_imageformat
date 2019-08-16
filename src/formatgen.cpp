@@ -22,6 +22,7 @@ void GenStructs(VFile_Handle file);
 void GenCount(VFile_Handle file);
 void GenQuerys(VFile_Handle file);
 void GenFetch(VFile_Handle file);
+void GenPut(VFile_Handle file);
 
 void IncludeDocs(VFile_Handle file) {
 #define RAW_INCLUDE_START(x) x
@@ -92,6 +93,9 @@ int main(int argc, char const *argv[]) {
 			"#ifndef  TinyImageFormat_HAVE_BOOL\n"
 			"#include <stdbool.h>	// for bool\n"
 			"#endif\n"
+			"#ifndef  TinyImageFormat_HAVE_POWF\n"
+			"#include <math.h>	// for powf\n"
+			"#endif\n"
 			"#ifndef  TinyImageFormat_ASSERT\n"
 			"#include <assert.h>\n"
 			"#define  TinyImageFormat_ASSERT assert\n"
@@ -119,6 +123,8 @@ int main(int argc, char const *argv[]) {
 
 		IncludeOtherImageEnums(file);
 		GenFetch(file);
+		GenPut(file);
+
 		VFile_Write(file, suffix, strlen(suffix));
 
 		VFile_Close(file);
@@ -161,6 +167,17 @@ int main(int argc, char const *argv[]) {
 			VFile_Close(fetchfile);
 		}
 
+		{
+			VFile_Handle fetchfile = VFile_FromFile("tinyimageformat_put.h", Os_FM_Write);
+			VFile_Write(fetchfile, header, strlen(header));
+			VFile_Write(fetchfile, multiheader2, strlen(multiheader2));
+			VFile_Write(fetchfile, header2, strlen(header2));
+
+			GenPut(fetchfile);
+
+			VFile_Write(fetchfile, suffix, strlen(suffix));
+			VFile_Close(fetchfile);
+		}
 		{
 			VFile_Handle otherfile = VFile_FromFile("tinyimageformat_apis.h", Os_FM_Write);
 			VFile_Write(otherfile, header, strlen(header));

@@ -19,10 +19,15 @@ if(MAKE_GENERATOR)
 			src/formatgen_base.cpp
 			src/formatgen_query.cpp
 			src/formatgen_fetch.cpp
+			src/formatgen_put.cpp
 			src/formatgen.h
 			src/formatgen_func.h
 			src/formatgen_macros.h
+
 			src/queryhelpers.h
+			src/fetchhelpers.h
+			src/puthelpers.h
+
 			src/otherimageenums.h
 			src/doc.h
 			)
