@@ -31,13 +31,13 @@ bool PutLogicalPixelsPacked(char const *name,
 
 	// special case
 	if (v == TinyImageFormat_E5B9G9R9_UFLOAT) {
-		/*		if (outputFloatWidth == 32) {
-					char const decoder[] = "\n\t\t\t\tTinyImageFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);\n"
-																 "\t\t\t\tin->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);\n"
-																 "\t\t\t\tout += 4;\n";
+				if (inputFloatWidth == 32) {
+					char const decoder[] = "\n\t\t\t\tTinyImageFormat_FloatRGBToRGB9E5AsUint32( (float const*)in, (uint32_t*)out->pixel);\n"
+																 "\t\t\t\tout->pixel = (void const*)(((uint32_t const*)out->pixel) + 1);\n"
+																 "\t\t\t\tin += 4;\n";
 					sprintf(output, decoder);
 					return true;
-				} else*/ {
+				} else {
 			return false;
 		}
 	}
@@ -65,6 +65,8 @@ bool PutLogicalPixelsPacked(char const *name,
 		break;
 	}
 	bitWidth *= repeat;
+
+	char const UFloatXOp[] = "%s\t\t\t\t*op%d |= (%sTinyImageFormat_FloatToUFloat%dAsUint((float)in[%d])) << %lld;\n";
 
 	char const *loadOut;
 	char const *nextPixelBuffer;
@@ -168,15 +170,28 @@ bool PutLogicalPixelsPacked(char const *name,
 									shifter);
 					break;
 				case TinyImageFormat_PACK_TYPE_SINT:
-					sprintf(output,
-									"%s\t\t\t\t*op%d |= ((%s(in[%d] + %1.2ff)) & 0x%llx) << %lld;\n",
-									output,
-									loadIndex,
-									castBuffer,
-									j * 4 + swizzle,
-									maxFactor + 1,
-									Mask(chanBitWidth),
-									shifter);
+					if (chanBitWidth == 32) {
+						sprintf(output,
+										"%s\t\t\t\t*op%d |= ((%s((double)in[%d] + %1.2f)) & 0x%llx) << %lld;\n",
+										output,
+										loadIndex,
+										castBuffer,
+										j * 4 + swizzle,
+										maxFactor + 1,
+										Mask(chanBitWidth),
+										shifter);
+
+					} else {
+						sprintf(output,
+										"%s\t\t\t\t*op%d |= ((%s(in[%d] + %1.2ff)) & 0x%llx) << %lld;\n",
+										output,
+										loadIndex,
+										castBuffer,
+										j * 4 + swizzle,
+										maxFactor + 1,
+										Mask(chanBitWidth),
+										shifter);
+					}
 					break;
 				case TinyImageFormat_PACK_TYPE_UINT:
 					sprintf(output,
@@ -190,7 +205,7 @@ bool PutLogicalPixelsPacked(char const *name,
 					break;
 				case TinyImageFormat_PACK_TYPE_SRGB:
 					sprintf(output,
-									"%s\t\t\t\t*op%d |= (%sTinyImageFormat_Float2SRGB((float)in[%d])) << %lld;\n",
+									"%s\t\t\t\t*op%d |= (%sTinyImageFormat_FloatToSRGB((float)in[%d])) << %lld;\n",
 									output,
 									loadIndex,
 									castBuffer,
@@ -198,34 +213,24 @@ bool PutLogicalPixelsPacked(char const *name,
 									shifter);
 					break;
 				case TinyImageFormat_PACK_TYPE_UFLOAT:
-					/*					if (chanBitWidth == 10) {
-											sprintf(output,
-															"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_UFloat10ToFloat((val >> %lld) & 0x%llx);\n",
-															output,
-															j * 4 + swizzle,
-															outputCast,
-															shifter,
-															Mask(chanBitWidth));
-										} else if (chanBitWidth == 11) {
-											sprintf(output,
-															"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_UFloat11ToFloat((val >> %lld) & 0x%llx);\n",
-															output,
-															j * 4 + swizzle,
-															outputCast,
-															shifter,
-															Mask(chanBitWidth));
-										} else {
-											ASSERT(false);
-										}*/
+						sprintf(output,
+										UFloatXOp,
+										output,
+										loadIndex,
+										castBuffer,
+										chanBitWidth,
+										j * 4 + swizzle,
+										shifter);
 					break;
 				case TinyImageFormat_PACK_TYPE_SFLOAT:
 					if (chanBitWidth == 16) {
-						/*						sprintf(output,
-																"%s\t\t\t\t*op%d |= TinyImageFormat_FloatToHalfAsUint((float)in[%d]) << %lld;\n",
-																output,
-																loadIndex,
-																j * 4 + swizzle,
-																shifter);*/
+						sprintf(output,
+											"%s\t\t\t\t*op%d |= (%sTinyImageFormat_FloatToHalfAsUint((float)in[%d])) << %lld;\n",
+											output,
+											loadIndex,
+											castBuffer,
+											j * 4 + swizzle,
+											shifter);
 					} else if (chanBitWidth == 32) {
 						sprintf(output,
 										"%s\t\t\t\tfloat in%d = (float)in[%d];\n"

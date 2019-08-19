@@ -24,96 +24,6 @@
 
 
 
-inline float TinyImageFormat_UFloat10ToFloat(uint16_t v) {
-	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
-	union {
-		struct {
-			uint16_t x : 6; // not used
-			uint16_t e : 5;
-			uint16_t m : 5;
-		};
-		uint16_t v;
-	} ei;
-
-	union {
-			uint32_t u;
-			float f;
-	} t;
-
-	ei.v = v;
-
-	double out = 0.0;
-	if (ei.e == 31) {
-		if (ei.m == 0) {
-			t.u = 0xFF100000; // + infinity
-		} else {
-			t.u = 0xFF100002; // float qNAN with payload = 1
-		}
-	} else if (ei.e == 0) {
-		if(ei.m == 0) {
-			t.f = 0.0f;
-		} else {
-			// Normalized float
-			uint32_t exp = 1;
-			uint32_t man = ei.m;
-			do
-			{
-				exp--;
-				man <<= 1;
-			} while ((man & 0x20) == 0);
-			man &= 0x1F;
-			t.u = ((exp + 112) << 23) | (man << 18);
-		}
-	} else {
-		t.u = ((ei.e + 112) << 23) | (ei.m << 18);
-	}
-	return t.f;
-}
-
-inline float TinyImageFormat_UFloat11ToFloat(uint16_t v) {
-	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
-	union {
-		struct {
-			uint16_t x : 5; // not used
-			uint16_t e : 5;
-			uint16_t m : 6;
-		};
-		uint16_t v;
-	} ei;
-
-	union {
-			uint32_t u;
-			float f;
-	} t;
-
-	ei.v = v;
-
-	if (ei.e == 31) {
-		if (ei.m == 0) {
-			t.u = 0xFF100000; // + infinity
-		} else {
-			t.u = 0xFF100002; // float qNAN with payload = 1
-		}
-	} else if (ei.e == 0) {
-		if(ei.m == 0) {
-			t.f = 0.0f;
-		} else {
-			// Normalized float
-			uint32_t exp = 1;
-			uint32_t man = ei.m;
-			do
-			{
-				exp--;
-				man <<= 1;
-			} while ((man & 0x40) == 0);
-			man &= 0x3F;
-			t.u = ((exp + 112) << 23) | (man << 17);
-		}
-	} else {
-		t.u = ((ei.e + 112) << 23) | (ei.m << 17);
-	}
-	return t.f;
-}
 
 inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
@@ -194,8 +104,8 @@ inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
 inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
 	union {
 		struct {
-			uint16_t u;
 			uint16_t x;
+			uint16_t u;
 		};
 		float f;
 	} o;
@@ -204,6 +114,181 @@ inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
 	o.x = 0;
 
 	return o.f;
+}
+
+inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
+{
+	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
+
+	union {
+		uint32_t u;
+		float f;
+		struct {
+			uint32_t Mantissa : 23;
+			uint32_t Exponent : 8;
+			uint32_t Sign : 1;
+		};
+	} o;
+
+	o.Mantissa = Value & 0x3F;
+	o.Exponent = Value & 0x3C0;
+	o.Sign = 0;
+
+	if (o.Exponent != 0)  // The value is normalized
+	{
+		o.Exponent = (uint32_t)((Value >> 6) & 0xF);
+	}
+	else if (o.Mantissa != 0)     // The value is denormalized
+	{
+		// Normalize the value in the resulting float
+		o.Exponent = 1;
+		do
+		{
+				o.Exponent--;
+				o.Mantissa <<= 1;
+		} while ((o.Mantissa & 0x40) == 0);
+		o.Mantissa &= 0x3F;
+	}
+	else
+	{
+		// The value is zero
+		o.u = 0;
+	}
+
+	return o.f;
+}
+
+inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
+{
+	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
+
+	union {
+		uint32_t u;
+		float f;
+		struct {
+			uint32_t Mantissa : 23;
+			uint32_t Exponent : 8;
+			uint32_t Sign : 1;
+		};
+	} o;
+
+	o.Mantissa = Value & 0x7F;
+	o.Exponent = Value & 0x380;
+	o.Sign = 0;
+
+	if (o.Exponent != 0)  // The value is normalized
+	{
+		o.Exponent = (uint32_t)((Value >> 7) & 0x7);
+	}
+	else if (o.Mantissa != 0)     // The value is denormalized
+	{
+		// Normalize the value in the resulting float
+		o.Exponent = 1;
+		do
+		{
+				o.Exponent--;
+				o.Mantissa <<= 1;
+		} while ((o.Mantissa & 0x80) == 0);
+		o.Mantissa &= 0x7F;
+	}
+	else
+	{
+		// The value is zero
+		o.u = 0;
+	}
+
+	return o.f;
+}
+
+inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
+	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
+	union {
+		struct {
+			uint16_t e : 5;
+			uint16_t m : 5;
+			uint16_t x : 6; // not used
+		};
+		uint16_t v;
+	} ei;
+
+	union {
+			uint32_t u;
+			float f;
+	} t;
+
+	ei.v = v;
+
+	double out = 0.0;
+	if (ei.e == 31) {
+		if (ei.m == 0) {
+			t.u = 0xFF100000; // + infinity
+		} else {
+			t.u = 0xFF100002; // float qNAN with payload = 1
+		}
+	} else if (ei.e == 0) {
+		if(ei.m == 0) {
+			t.f = 0.0f;
+		} else {
+			// Normalized float
+			uint32_t exp = 1;
+			uint32_t man = ei.m;
+			do
+			{
+				exp--;
+				man <<= 1;
+			} while ((man & 0x20) == 0);
+			man &= 0x1F;
+			t.u = ((exp + 112) << 23) | (man << 18);
+		}
+	} else {
+		t.u = ((ei.e + 112) << 23) | (ei.m << 18);
+	}
+	return t.f;
+}
+
+inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
+	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
+	union {
+		struct {
+			uint16_t e : 5;
+			uint16_t m : 6;
+			uint16_t x : 5; // not used
+		};
+		uint16_t v;
+	} ei;
+
+	union {
+			uint32_t u;
+			float f;
+	} t;
+
+	ei.v = v;
+
+	if (ei.e == 31) {
+		if (ei.m == 0) {
+			t.u = 0xFF100000; // + infinity
+		} else {
+			t.u = 0xFF100002; // float qNAN with payload = 1
+		}
+	} else if (ei.e == 0) {
+		if(ei.m == 0) {
+			t.f = 0.0f;
+		} else {
+			// Normalized float
+			uint32_t exp = 1;
+			uint32_t man = ei.m;
+			do
+			{
+				exp--;
+				man <<= 1;
+			} while ((man & 0x40) == 0);
+			man &= 0x3F;
+			t.u = ((exp + 112) << 23) | (man << 17);
+		}
+	} else {
+		t.u = ((ei.e + 112) << 23) | (ei.m << 17);
+	}
+	return t.f;
 }
 
 TIF_CONSTEXPR float TinyImageFormat_LookupSRGB(uint8_t lookup) {
@@ -629,19 +714,19 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
+				out[0] = ((float)((val >> 0) & 0x3)) * ((float)0.33f);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
-				out[4] = ((float)((val >> 2) & 0x3)) * ((float)0.33333333);
+				out[4] = ((float)((val >> 2) & 0x3)) * ((float)0.33f);
 				out[5] = (float)0.00000000;
 				out[6] = (float)0.00000000;
 				out[7] = (float)1.00000000;
-				out[8] = ((float)((val >> 4) & 0x3)) * ((float)0.33333333);
+				out[8] = ((float)((val >> 4) & 0x3)) * ((float)0.33f);
 				out[9] = (float)0.00000000;
 				out[10] = (float)0.00000000;
 				out[11] = (float)1.00000000;
-				out[12] = ((float)((val >> 6) & 0x3)) * ((float)0.33333333);
+				out[12] = ((float)((val >> 6) & 0x3)) * ((float)0.33f);
 				out[13] = (float)0.00000000;
 				out[14] = (float)0.00000000;
 				out[15] = (float)1.00000000;
@@ -652,11 +737,11 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
+				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
-				out[4] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
+				out[4] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
 				out[5] = (float)0.00000000;
 				out[6] = (float)0.00000000;
 				out[7] = (float)1.00000000;
@@ -667,8 +752,8 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R4G4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
+				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
@@ -678,8 +763,8 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
-				out[1] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
+				out[1] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
@@ -708,12 +793,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
+				out[0] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 1);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
 		case TinyImageFormat_R8_UINT:
@@ -728,12 +813,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int8_t const *)in->pixel)[0]);
+				out[0] = ((float)(((uint8_t const *)in->pixel)[0])) - 128.00000000;
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 1);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
 		case TinyImageFormat_R8_SRGB:
@@ -749,9 +834,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B2G3R3_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
-				out[1] = ((float)((val >> 2) & 0x7)) * ((float)0.14285714);
-				out[0] = ((float)((val >> 5) & 0x7)) * ((float)0.14285714);
+				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33f);
+				out[1] = ((float)((val >> 2) & 0x7)) * ((float)0.14f);
+				out[0] = ((float)((val >> 5) & 0x7)) * ((float)0.14f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 				out+=4;
@@ -760,10 +845,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R4G4B4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[2] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
-				out[3] = ((float)((val >> 12) & 0xf)) * ((float)0.06666667);
+				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[2] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
+				out[3] = ((float)((val >> 12) & 0xf)) * ((float)0.07f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -771,9 +856,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R4G4B4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[2] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
+				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[2] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -782,10 +867,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B4G4R4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[0] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
-				out[3] = ((float)((val >> 12) & 0xf)) * ((float)0.06666667);
+				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[0] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
+				out[3] = ((float)((val >> 12) & 0xf)) * ((float)0.07f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -793,9 +878,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B4G4R4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[0] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
+				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[0] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -804,10 +889,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_A4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
-				out[2] = ((float)((val >> 12) & 0xf)) * ((float)0.06666667);
+				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
+				out[2] = ((float)((val >> 12) & 0xf)) * ((float)0.07f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -815,9 +900,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_X4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
-				out[2] = ((float)((val >> 12) & 0xf)) * ((float)0.06666667);
+				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
+				out[2] = ((float)((val >> 12) & 0xf)) * ((float)0.07f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -826,10 +911,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_A4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
-				out[2] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
-				out[0] = ((float)((val >> 12) & 0xf)) * ((float)0.06666667);
+				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.07f);
+				out[2] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
+				out[0] = ((float)((val >> 12) & 0xf)) * ((float)0.07f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -837,9 +922,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_X4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
-				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.06666667);
-				out[0] = ((float)((val >> 12) & 0xf)) * ((float)0.06666667);
+				out[2] = ((float)((val >> 4) & 0xf)) * ((float)0.07f);
+				out[1] = ((float)((val >> 8) & 0xf)) * ((float)0.07f);
+				out[0] = ((float)((val >> 12) & 0xf)) * ((float)0.07f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -848,9 +933,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R5G6B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 5) & 0x3f)) * ((float)0.01587302);
-				out[2] = ((float)((val >> 11) & 0x1f)) * ((float)0.03225806);
+				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 5) & 0x3f)) * ((float)0.02f);
+				out[2] = ((float)((val >> 11) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -859,9 +944,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B5G6R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 5) & 0x3f)) * ((float)0.01587302);
-				out[0] = ((float)((val >> 11) & 0x1f)) * ((float)0.03225806);
+				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 5) & 0x3f)) * ((float)0.02f);
+				out[0] = ((float)((val >> 11) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -870,9 +955,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R5G5B5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03225806);
-				out[2] = ((float)((val >> 10) & 0x1f)) * ((float)0.03225806);
+				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03f);
+				out[2] = ((float)((val >> 10) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)((val >> 15) & 0x1);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -881,9 +966,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B5G5R5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03225806);
-				out[0] = ((float)((val >> 10) & 0x1f)) * ((float)0.03225806);
+				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03f);
+				out[0] = ((float)((val >> 10) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)((val >> 15) & 0x1);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -893,9 +978,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x1);
-				out[2] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03225806);
-				out[0] = ((float)((val >> 11) & 0x1f)) * ((float)0.03225806);
+				out[2] = ((float)((val >> 1) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03f);
+				out[0] = ((float)((val >> 11) & 0x1f)) * ((float)0.03f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -904,9 +989,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x1);
-				out[0] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03225806);
-				out[2] = ((float)((val >> 11) & 0x1f)) * ((float)0.03225806);
+				out[0] = ((float)((val >> 1) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03f);
+				out[2] = ((float)((val >> 11) & 0x1f)) * ((float)0.03f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -914,9 +999,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R5G5B5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03225806);
-				out[2] = ((float)((val >> 10) & 0x1f)) * ((float)0.03225806);
+				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03f);
+				out[2] = ((float)((val >> 10) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -925,9 +1010,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B5G5R5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03225806);
-				out[0] = ((float)((val >> 10) & 0x1f)) * ((float)0.03225806);
+				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 5) & 0x1f)) * ((float)0.03f);
+				out[0] = ((float)((val >> 10) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -936,9 +1021,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_X1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[0] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03225806);
-				out[2] = ((float)((val >> 11) & 0x1f)) * ((float)0.03225806);
+				out[0] = ((float)((val >> 1) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03f);
+				out[2] = ((float)((val >> 11) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -947,9 +1032,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_X1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
-				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03225806);
-				out[0] = ((float)((val >> 11) & 0x1f)) * ((float)0.03225806);
+				out[2] = ((float)((val >> 1) & 0x1f)) * ((float)0.03f);
+				out[1] = ((float)((val >> 6) & 0x1f)) * ((float)0.03f);
+				out[0] = ((float)((val >> 11) & 0x1f)) * ((float)0.03f);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
@@ -958,10 +1043,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B2G3R3A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
-				out[1] = ((float)((val >> 2) & 0x7)) * ((float)0.14285714);
-				out[0] = ((float)((val >> 5) & 0x7)) * ((float)0.14285714);
-				out[3] = ((float)((val >> 8) & 0xff)) * ((float)0.00392157);
+				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33f);
+				out[1] = ((float)((val >> 2) & 0x7)) * ((float)0.14f);
+				out[0] = ((float)((val >> 5) & 0x7)) * ((float)0.14f);
+				out[3] = ((float)((val >> 8) & 0xff)) * ((float)0.00f);
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -978,12 +1063,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8G8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
-				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
+				out[0] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
+				out[1] = (((float)((uint8_t const *)in->pixel)[1]) * (float)0.00787402)-1;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_G8R8_UNORM:
@@ -998,12 +1083,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[1] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
-				out[0] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
+				out[1] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
+				out[0] = (((float)((uint8_t const *)in->pixel)[1]) * (float)0.00787402)-1;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_R8G8_UINT:
@@ -1018,12 +1103,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8G8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int8_t const *)in->pixel)[0]);
-				out[1] = (float)(((int8_t const *)in->pixel)[1]);
+				out[0] = ((float)(((uint8_t const *)in->pixel)[0])) - 128.00000000;
+				out[1] = ((float)(((uint8_t const *)in->pixel)[1])) - 128.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_R8G8_SRGB:
@@ -1048,12 +1133,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
+				out[0] = (((float)((uint16_t const *)in->pixel)[0]) * (float)0.00003052)-1;
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 1);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
 		case TinyImageFormat_R16_UINT:
@@ -1068,12 +1153,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int16_t const *)in->pixel)[0]);
+				out[0] = ((float)(((uint16_t const *)in->pixel)[0])) - 32768.00000000;
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 1);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
 		case TinyImageFormat_R16_SFLOAT:
@@ -1108,12 +1193,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8G8B8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
-				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
-				out[2] = ((float)((int8_t const *)in->pixel)[2]) * (float)0.00787402;
+				out[0] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
+				out[1] = (((float)((uint8_t const *)in->pixel)[1]) * (float)0.00787402)-1;
+				out[2] = (((float)((uint8_t const *)in->pixel)[2]) * (float)0.00787402)-1;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_R8G8B8_UINT:
@@ -1128,12 +1213,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8G8B8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int8_t const *)in->pixel)[0]);
-				out[1] = (float)(((int8_t const *)in->pixel)[1]);
-				out[2] = (float)(((int8_t const *)in->pixel)[2]);
+				out[0] = ((float)(((uint8_t const *)in->pixel)[0])) - 128.00000000;
+				out[1] = ((float)(((uint8_t const *)in->pixel)[1])) - 128.00000000;
+				out[2] = ((float)(((uint8_t const *)in->pixel)[2])) - 128.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_R8G8B8_SRGB:
@@ -1158,12 +1243,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_B8G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
-				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
-				out[0] = ((float)((int8_t const *)in->pixel)[2]) * (float)0.00787402;
+				out[2] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
+				out[1] = (((float)((uint8_t const *)in->pixel)[1]) * (float)0.00787402)-1;
+				out[0] = (((float)((uint8_t const *)in->pixel)[2]) * (float)0.00787402)-1;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_B8G8R8_UINT:
@@ -1178,12 +1263,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_B8G8R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = (float)(((int8_t const *)in->pixel)[0]);
-				out[1] = (float)(((int8_t const *)in->pixel)[1]);
-				out[0] = (float)(((int8_t const *)in->pixel)[2]);
+				out[2] = ((float)(((uint8_t const *)in->pixel)[0])) - 128.00000000;
+				out[1] = ((float)(((uint8_t const *)in->pixel)[1])) - 128.00000000;
+				out[0] = ((float)(((uint8_t const *)in->pixel)[2])) - 128.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_B8G8R8_SRGB:
@@ -1208,12 +1293,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8G8B8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
-				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
-				out[2] = ((float)((int8_t const *)in->pixel)[2]) * (float)0.00787402;
-				out[3] = ((float)((int8_t const *)in->pixel)[3]) * (float)0.00787402;
+				out[0] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
+				out[1] = (((float)((uint8_t const *)in->pixel)[1]) * (float)0.00787402)-1;
+				out[2] = (((float)((uint8_t const *)in->pixel)[2]) * (float)0.00787402)-1;
+				out[3] = (((float)((uint8_t const *)in->pixel)[3]) * (float)0.00787402)-1;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_R8G8B8A8_UINT:
@@ -1228,12 +1313,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R8G8B8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int8_t const *)in->pixel)[0]);
-				out[1] = (float)(((int8_t const *)in->pixel)[1]);
-				out[2] = (float)(((int8_t const *)in->pixel)[2]);
-				out[3] = (float)(((int8_t const *)in->pixel)[3]);
+				out[0] = ((float)(((uint8_t const *)in->pixel)[0])) - 128.00000000;
+				out[1] = ((float)(((uint8_t const *)in->pixel)[1])) - 128.00000000;
+				out[2] = ((float)(((uint8_t const *)in->pixel)[2])) - 128.00000000;
+				out[3] = ((float)(((uint8_t const *)in->pixel)[3])) - 128.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_R8G8B8A8_SRGB:
@@ -1258,12 +1343,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_B8G8R8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
-				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
-				out[0] = ((float)((int8_t const *)in->pixel)[2]) * (float)0.00787402;
-				out[3] = ((float)((int8_t const *)in->pixel)[3]) * (float)0.00787402;
+				out[2] = (((float)((uint8_t const *)in->pixel)[0]) * (float)0.00787402)-1;
+				out[1] = (((float)((uint8_t const *)in->pixel)[1]) * (float)0.00787402)-1;
+				out[0] = (((float)((uint8_t const *)in->pixel)[2]) * (float)0.00787402)-1;
+				out[3] = (((float)((uint8_t const *)in->pixel)[3]) * (float)0.00787402)-1;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_B8G8R8A8_UINT:
@@ -1278,12 +1363,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_B8G8R8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = (float)(((int8_t const *)in->pixel)[0]);
-				out[1] = (float)(((int8_t const *)in->pixel)[1]);
-				out[0] = (float)(((int8_t const *)in->pixel)[2]);
-				out[3] = (float)(((int8_t const *)in->pixel)[3]);
+				out[2] = ((float)(((uint8_t const *)in->pixel)[0])) - 128.00000000;
+				out[1] = ((float)(((uint8_t const *)in->pixel)[1])) - 128.00000000;
+				out[0] = ((float)(((uint8_t const *)in->pixel)[2])) - 128.00000000;
+				out[3] = ((float)(((uint8_t const *)in->pixel)[3])) - 128.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_B8G8R8A8_SRGB:
@@ -1338,22 +1423,22 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16G16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
-				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
+				out[0] = (((float)((uint16_t const *)in->pixel)[0]) * (float)0.00003052)-1;
+				out[1] = (((float)((uint16_t const *)in->pixel)[1]) * (float)0.00003052)-1;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_G16R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[1] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
-				out[0] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
+				out[1] = (((float)((uint16_t const *)in->pixel)[0]) * (float)0.00003052)-1;
+				out[0] = (((float)((uint16_t const *)in->pixel)[1]) * (float)0.00003052)-1;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_R16G16_UINT:
@@ -1368,12 +1453,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16G16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int16_t const *)in->pixel)[0]);
-				out[1] = (float)(((int16_t const *)in->pixel)[1]);
+				out[0] = ((float)(((uint16_t const *)in->pixel)[0])) - 32768.00000000;
+				out[1] = ((float)(((uint16_t const *)in->pixel)[1])) - 32768.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_R16G16_SFLOAT:
@@ -1408,12 +1493,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int32_t const *)in->pixel)[0]);
+				out[0] = (float)((double)(((uint32_t const *)in->pixel)[0]) - 2147483648.00000000);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int32_t const*)in->pixel) + 1);
+				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 			}
 			return true;
 		case TinyImageFormat_R32_SFLOAT:
@@ -1429,10 +1514,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_A2R10G10B10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
-				out[0] = ((float)((val >> 2) & 0x3ff)) * ((float)0.00097752);
-				out[1] = ((float)((val >> 12) & 0x3ff)) * ((float)0.00097752);
-				out[2] = ((float)((val >> 22) & 0x3ff)) * ((float)0.00097752);
+				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33f);
+				out[0] = ((float)((val >> 2) & 0x3ff)) * ((float)0.00f);
+				out[1] = ((float)((val >> 12) & 0x3ff)) * ((float)0.00f);
+				out[2] = ((float)((val >> 22) & 0x3ff)) * ((float)0.00f);
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -1451,10 +1536,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_A2B10G10R10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
-				out[2] = ((float)((val >> 2) & 0x3ff)) * ((float)0.00097752);
-				out[1] = ((float)((val >> 12) & 0x3ff)) * ((float)0.00097752);
-				out[0] = ((float)((val >> 22) & 0x3ff)) * ((float)0.00097752);
+				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33f);
+				out[2] = ((float)((val >> 2) & 0x3ff)) * ((float)0.00f);
+				out[1] = ((float)((val >> 12) & 0x3ff)) * ((float)0.00f);
+				out[0] = ((float)((val >> 22) & 0x3ff)) * ((float)0.00f);
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -1473,10 +1558,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_R10G10B10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[0] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00097752);
-				out[1] = ((float)((val >> 10) & 0x3ff)) * ((float)0.00097752);
-				out[2] = ((float)((val >> 20) & 0x3ff)) * ((float)0.00097752);
-				out[3] = ((float)((val >> 30) & 0x3)) * ((float)0.33333333);
+				out[0] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00f);
+				out[1] = ((float)((val >> 10) & 0x3ff)) * ((float)0.00f);
+				out[2] = ((float)((val >> 20) & 0x3ff)) * ((float)0.00f);
+				out[3] = ((float)((val >> 30) & 0x3)) * ((float)0.33f);
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -1484,10 +1569,10 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B10G10R10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[2] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00097752);
-				out[1] = ((float)((val >> 10) & 0x3ff)) * ((float)0.00097752);
-				out[0] = ((float)((val >> 20) & 0x3ff)) * ((float)0.00097752);
-				out[3] = ((float)((val >> 30) & 0x3)) * ((float)0.33333333);
+				out[2] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00f);
+				out[1] = ((float)((val >> 10) & 0x3ff)) * ((float)0.00f);
+				out[0] = ((float)((val >> 20) & 0x3ff)) * ((float)0.00f);
+				out[3] = ((float)((val >> 30) & 0x3)) * ((float)0.33f);
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
 			}
@@ -1506,9 +1591,9 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 		case TinyImageFormat_B10G11R11_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[2] = (float)TinyImageFormat_UFloat10ToFloat((val >> 0) & 0x3ff);
-				out[1] = (float)TinyImageFormat_UFloat11ToFloat((val >> 10) & 0x7ff);
-				out[0] = (float)TinyImageFormat_UFloat11ToFloat((val >> 21) & 0x7ff);
+				out[2] = (float)TinyImageFormat_UFloat10AsUintToFloat((val >> 0) & 0x3ff);
+				out[1] = (float)TinyImageFormat_UFloat11AsUintToFloat((val >> 10) & 0x7ff);
+				out[0] = (float)TinyImageFormat_UFloat11AsUintToFloat((val >> 21) & 0x7ff);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
@@ -1533,12 +1618,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16G16B16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
-				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
-				out[2] = ((float)((int16_t const *)in->pixel)[2]) * (float)0.00003052;
+				out[0] = (((float)((uint16_t const *)in->pixel)[0]) * (float)0.00003052)-1;
+				out[1] = (((float)((uint16_t const *)in->pixel)[1]) * (float)0.00003052)-1;
+				out[2] = (((float)((uint16_t const *)in->pixel)[2]) * (float)0.00003052)-1;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_R16G16B16_UINT:
@@ -1553,12 +1638,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16G16B16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int16_t const *)in->pixel)[0]);
-				out[1] = (float)(((int16_t const *)in->pixel)[1]);
-				out[2] = (float)(((int16_t const *)in->pixel)[2]);
+				out[0] = ((float)(((uint16_t const *)in->pixel)[0])) - 32768.00000000;
+				out[1] = ((float)(((uint16_t const *)in->pixel)[1])) - 32768.00000000;
+				out[2] = ((float)(((uint16_t const *)in->pixel)[2])) - 32768.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_R16G16B16_SFLOAT:
@@ -1593,12 +1678,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16G16B16A16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
-				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
-				out[2] = ((float)((int16_t const *)in->pixel)[2]) * (float)0.00003052;
-				out[3] = ((float)((int16_t const *)in->pixel)[3]) * (float)0.00003052;
+				out[0] = (((float)((uint16_t const *)in->pixel)[0]) * (float)0.00003052)-1;
+				out[1] = (((float)((uint16_t const *)in->pixel)[1]) * (float)0.00003052)-1;
+				out[2] = (((float)((uint16_t const *)in->pixel)[2]) * (float)0.00003052)-1;
+				out[3] = (((float)((uint16_t const *)in->pixel)[3]) * (float)0.00003052)-1;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_R16G16B16A16_UINT:
@@ -1613,12 +1698,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R16G16B16A16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int16_t const *)in->pixel)[0]);
-				out[1] = (float)(((int16_t const *)in->pixel)[1]);
-				out[2] = (float)(((int16_t const *)in->pixel)[2]);
-				out[3] = (float)(((int16_t const *)in->pixel)[3]);
+				out[0] = ((float)(((uint16_t const *)in->pixel)[0])) - 32768.00000000;
+				out[1] = ((float)(((uint16_t const *)in->pixel)[1])) - 32768.00000000;
+				out[2] = ((float)(((uint16_t const *)in->pixel)[2])) - 32768.00000000;
+				out[3] = ((float)(((uint16_t const *)in->pixel)[3])) - 32768.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int16_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_R16G16B16A16_SFLOAT:
@@ -1653,12 +1738,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R32G32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int32_t const *)in->pixel)[0]);
-				out[1] = (float)(((int32_t const *)in->pixel)[1]);
+				out[0] = (float)((double)(((uint32_t const *)in->pixel)[0]) - 2147483648.00000000);
+				out[1] = (float)((double)(((uint32_t const *)in->pixel)[1]) - 2147483648.00000000);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int32_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_R32G32_SFLOAT:
@@ -1683,12 +1768,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R32G32B32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int32_t const *)in->pixel)[0]);
-				out[1] = (float)(((int32_t const *)in->pixel)[1]);
-				out[2] = (float)(((int32_t const *)in->pixel)[2]);
+				out[0] = (float)((double)(((uint32_t const *)in->pixel)[0]) - 2147483648.00000000);
+				out[1] = (float)((double)(((uint32_t const *)in->pixel)[1]) - 2147483648.00000000);
+				out[2] = (float)((double)(((uint32_t const *)in->pixel)[2]) - 2147483648.00000000);
 				out[3] = (float)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int32_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_R32G32B32_SFLOAT:
@@ -1713,12 +1798,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R32G32B32A32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)(((int32_t const *)in->pixel)[0]);
-				out[1] = (float)(((int32_t const *)in->pixel)[1]);
-				out[2] = (float)(((int32_t const *)in->pixel)[2]);
-				out[3] = (float)(((int32_t const *)in->pixel)[3]);
+				out[0] = (float)((double)(((uint32_t const *)in->pixel)[0]) - 2147483648.00000000);
+				out[1] = (float)((double)(((uint32_t const *)in->pixel)[1]) - 2147483648.00000000);
+				out[2] = (float)((double)(((uint32_t const *)in->pixel)[2]) - 2147483648.00000000);
+				out[3] = (float)((double)(((uint32_t const *)in->pixel)[3]) - 2147483648.00000000);
 				out += 4;
-				in->pixel = (void const*)(((int32_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_R32G32B32A32_SFLOAT:
@@ -1820,12 +1905,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsD(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (double)(((int64_t const *)in->pixel)[0]);
+				out[0] = ((double)(((uint64_t const *)in->pixel)[0])) - 9223372036854775808.00000000;
 				out[1] = (double)0.00000000;
 				out[2] = (double)0.00000000;
 				out[3] = (double)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int64_t const*)in->pixel) + 1);
+				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 1);
 			}
 			return true;
 		case TinyImageFormat_R64_SFLOAT:
@@ -1850,12 +1935,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsD(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R64G64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (double)(((int64_t const *)in->pixel)[0]);
-				out[1] = (double)(((int64_t const *)in->pixel)[1]);
+				out[0] = ((double)(((uint64_t const *)in->pixel)[0])) - 9223372036854775808.00000000;
+				out[1] = ((double)(((uint64_t const *)in->pixel)[1])) - 9223372036854775808.00000000;
 				out[2] = (double)0.00000000;
 				out[3] = (double)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int64_t const*)in->pixel) + 2);
+				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 2);
 			}
 			return true;
 		case TinyImageFormat_R64G64_SFLOAT:
@@ -1880,12 +1965,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsD(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R64G64B64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (double)(((int64_t const *)in->pixel)[0]);
-				out[1] = (double)(((int64_t const *)in->pixel)[1]);
-				out[2] = (double)(((int64_t const *)in->pixel)[2]);
+				out[0] = ((double)(((uint64_t const *)in->pixel)[0])) - 9223372036854775808.00000000;
+				out[1] = ((double)(((uint64_t const *)in->pixel)[1])) - 9223372036854775808.00000000;
+				out[2] = ((double)(((uint64_t const *)in->pixel)[2])) - 9223372036854775808.00000000;
 				out[3] = (double)1.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int64_t const*)in->pixel) + 3);
+				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 3);
 			}
 			return true;
 		case TinyImageFormat_R64G64B64_SFLOAT:
@@ -1910,12 +1995,12 @@ TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsD(TinyImageFormat co
 			return true;
 		case TinyImageFormat_R64G64B64A64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (double)(((int64_t const *)in->pixel)[0]);
-				out[1] = (double)(((int64_t const *)in->pixel)[1]);
-				out[2] = (double)(((int64_t const *)in->pixel)[2]);
-				out[3] = (double)(((int64_t const *)in->pixel)[3]);
+				out[0] = ((double)(((uint64_t const *)in->pixel)[0])) - 9223372036854775808.00000000;
+				out[1] = ((double)(((uint64_t const *)in->pixel)[1])) - 9223372036854775808.00000000;
+				out[2] = ((double)(((uint64_t const *)in->pixel)[2])) - 9223372036854775808.00000000;
+				out[3] = ((double)(((uint64_t const *)in->pixel)[3])) - 9223372036854775808.00000000;
 				out += 4;
-				in->pixel = (void const*)(((int64_t const*)in->pixel) + 4);
+				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 4);
 			}
 			return true;
 		case TinyImageFormat_R64G64B64A64_SFLOAT:
