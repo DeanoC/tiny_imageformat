@@ -1,23 +1,4 @@
 #pragma once
-typedef enum TinyImageFormat_LogicalChannel {
-	TinyImageFormat_LC_Red = 0,
-	TinyImageFormat_LC_Green = 1,
-	TinyImageFormat_LC_Blue = 2,
-	TinyImageFormat_LC_Alpha = 3,
-	TinyImageFormat_LC_Depth = 0,
-	TinyImageFormat_LC_Stencil = 1,
-	TinyImageFormat_LC_0 = -1,
-	TinyImageFormat_LC_1 = -2,
-} TinyImageFormat_LogicalChannel;
-
-typedef enum TinyImageFormat_PhysicalChannel {
-	TinyImageFormat_PC_0 = 0,
-	TinyImageFormat_PC_1 = 1,
-	TinyImageFormat_PC_2 = 2,
-	TinyImageFormat_PC_3 = 3,
-	TinyImageFormat_PC_CONST_0 = -1,
-	TinyImageFormat_PC_CONST_1 = -2,
-} TinyImageFormat_PhysicalChannel;
 
 typedef enum TinyImageFormat_Namespace {
 	TinyImageFormat_NAMESPACE_PACK = 0ULL,
