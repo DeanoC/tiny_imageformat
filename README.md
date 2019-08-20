@@ -75,3 +75,51 @@ _R8_UNORM_G8_SNORM_ -  would be R channel decoded 0 to 1 and a G channel decoded
 
 Pack namespace formats have a block size of 1x1x1 in most cases, exceptions being the formats that are less than 8 bits. For these multiple pixels are packed up to the minimum size of 8 bit bytes.
 
+## Query Functions
+* Code - uint64_t with the internal descriptor code
+* Name  - Human C string with the name of this fmt
+* FromName - lookup the format given the name as a C String (fast)
+* IsDepthOnly - true if just a depth channel
+* IsStencilOnly - true if just a stencil channel
+* IsDepthAndStencil - if has both depth and stencil channel
+* IsCompressed - true if its a compressed format (aka block)
+* IsCLUT - true if data is index into a CLUT (Colour Look Up Table)
+* IsFloat - is the data in floating point
+* IsNormalised - return true if data will be within 0 to 1 or -1 to 1
+* IsSigned - does the data include negatives
+* IsSRGB - is the data encoded using sRGB non linear encoding
+* IsHomogenous - is the encoding the same for every channel
+* WidthOfBlock - How many pixels in the x dimension for a block
+* HeightOfBlock - How many pixels in the y dimension for a block
+* DepthOfBlock 	- How many pixels in the z dimension for a block
+* PixelCountOfBlock - How many pixels in total for a block
+* BitSizeOfBlock - How big in bits is a single block.
+* ChannelCount - How many channels are actually encoded
+
+## Decode Functions
+X suffix can be F for floats or D for doubles
+* CanDecodeLogicalPixelsX - Can DecodeLogicalPixelsX work with this format?
+* DecodeLogicalPixelsX( width in blocks, FetchInput, out pixels) 	
+
+Pixels should be a pointer to 4 * PixelCounfOfBlack float/doubles does full decode and remapping into logical channels include constants.
+
+ Returned result can be used directly as RGBA floating point data
+
+Input pointers are updated are used, so can be passed back in for next set of pixel decoding if desired.
+
+For CLUT formats in.pixel should be the packed pixel data and in.lut is the lookuptable in R8G8B8A8 format of 2^Pbits entries
+
+For all others in.pixel should be the packed pixel data
+
+## Encode Functions
+X suffix can be F for floats or D for doubles
+* CanEncodeLogicalPixelsX - Can EncodeLogicalPixelsX work with this format?
+* EncodeLogicalPixelsX( width in blocks, in pixels, PutOutput)
+
+Pixels should be a pointer to 4 * PixelCounfOfBlack float/doubles
+
+It does full encode and remapping into logical channels
+
+Output pointers are updated are used, so can be passed back in for next set of pixel encoding if desired.
+ 
+out.pixel is where colour information should be stored
