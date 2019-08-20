@@ -1142,7 +1142,6 @@ inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless(TinyIma
 	case TIF_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM:
 	case TIF_DXGI_FORMAT_UNKNOWN: return TIF_DXGI_FORMAT_UNKNOWN;
 	}
-			TinyImageFormat_ASSERT(false);
 	return TIF_DXGI_FORMAT_UNKNOWN;
 })=====";
 
