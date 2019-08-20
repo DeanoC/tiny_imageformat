@@ -17,17 +17,12 @@ The multiple header version is split into several related sections, wheres the s
 ## API Overview
 All types and function are prefixed by _TinyImageFormat_ or _TIF_ as a form of namespaces, these will be left off for the API documentation.
 
-The basic unit is the block, each image format has a 3D size that represents the smallest quantum of data you can work with. For basic image formats this is a 1x1x1 pixel block, meaning you can fetch and put single pixels of the image. However many other image formats have block larger than this. The DXBC formats are all 4x4x1 as thats the size of the compressed data. The smallest quantum you can fetch or put is a 4x4 pixel block.
+The basic unit is the block, each image format has a 3D size that represents the smallest quantum of data you can work with. For basic image formats this is a 1x1x1 pixel block, meaning you can encode and decode single pixels of the image. However many other image formats have blocks larger than this. The DXBC formats are all 4x4x1 as thats the size of the compressed data. The smallest quantum you can encode or decode is a 4x4 pixel block.
 
 Another common use of blocks is to pack non machine word aligned image format (like 1 bit per pixel images) and also pixel format with different frequency (I.e 4:2:0 video formats, that store channels at different rates).
 
 The smallest unit the API uses is an 8 bit byte, smaller formats either have large block size or multiple channels are packed together to 8 or more bits.
 
-E.g.
-
-_R4G4_ is an 8 bit byte encoding 2 4 bit channels
-
-_R1_ is an 8 bit byte encoding 8 pixels together (has a block size of 8x1x1)
 
 ## Base 
 
@@ -123,5 +118,10 @@ _R8G8B8A8_UNORM_ - each channel is decoded to a normalised 0 to 1
 
 _R8_UNORM_G8_SNORM_ -  would be R channel decoded 0 to 1 and a G channel decoded to -1 to 1
 
-Pack namespace formats have a block size of 1x1x1 in most cases, exceptions being the formats that are less than 8 bits. For these multiple pixels are packed up to the minimum size of 8 bit bytes.
+Pack namespace formats have a block size of 1x1x1 in most cases, exceptions being the formats that are less than 8 bits. For these multiple pixels are packed up to an 8 bit byte.
 
+E.g.
+
+_R4G4_ is an 8 bit byte encoding 2 4 bit channels (block size of 1x1x1)
+
+_R1_ is an 8 bit byte encoding 8 pixels together (block size of 8x1x1)
