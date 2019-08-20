@@ -17,20 +17,18 @@ if(MAKE_GENERATOR)
 	set(GeneratorSrc
 			src/formatgen.cpp
 			src/formatgen_base.cpp
+			src/formatgen_apis.cpp
 			src/formatgen_query.cpp
-			src/formatgen_fetch.cpp
-			src/formatgen_put.cpp
+			src/formatgen_decode.cpp
+			src/formatgen_encode.cpp
 			src/formatgen.h
 			src/formatgen_func.h
 			src/formatgen_macros.h
 
 			src/queryhelpers.h
-			src/fetchhelpers.h
-			src/puthelpers.h
+			src/decodehelpers.h
+			src/encodehelpers.h
 
-			src/otherimageenums_d3d.h
-			src/otherimageenums_vk.h
-			src/otherimageenums_mtl.h
 			src/doc.h
 			)
 
@@ -47,8 +45,8 @@ set(Interface
 		tinyimageformat_base.h
 		tinyimageformat_apis.h
 		tinyimageformat_bits.h
-		tinyimageformat_fetch.h
-		tinyimageformat_put.h
+		tinyimageformat_decode.h
+		tinyimageformat_encode.h
 		tinyimageformat_query.h
 		)
 set(Src

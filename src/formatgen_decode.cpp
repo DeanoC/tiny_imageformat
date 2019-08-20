@@ -670,7 +670,7 @@ bool FetchLogicalPixelsCLUT(char const *name, uint64_t const v,
 	return true;
 }
 
-bool FetchLogicalPixelsD(char const *name, uint64_t const v, char *output) {
+bool DecodeLogicalPixelsD(char const *name, uint64_t const v, char *output) {
 	if (v == 0)
 		return false;
 
@@ -695,7 +695,7 @@ bool FetchLogicalPixelsD(char const *name, uint64_t const v, char *output) {
 	return false;
 }
 
-bool FetchLogicalPixelsF(char const *name, uint64_t const v, char *output) {
+bool DecodeLogicalPixelsF(char const *name, uint64_t const v, char *output) {
 	if (v == 0)
 		return false;
 
@@ -708,11 +708,11 @@ bool FetchLogicalPixelsF(char const *name, uint64_t const v, char *output) {
 	return false;
 }
 
-static void GenCanFetchLogicalPixelsF(VFile_Handle file) {
+static void GenCanDecodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"TIF_CONSTEXPR inline bool TinyImageFormat_CanFetchLogicalPixelsF(TinyImageFormat const fmt) {\n"
+			"TIF_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s: return true;\n";
@@ -720,35 +720,35 @@ static void GenCanFetchLogicalPixelsF(VFile_Handle file) {
 
 	char output[2048];
 #define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = FetchLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
 #define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 
 }
 
-static void GenCanFetchLogicalPixelsD(VFile_Handle file) {
+static void GenCanDecodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"TIF_CONSTEXPR inline bool TinyImageFormat_CanFetchLogicalPixelsD(TinyImageFormat const fmt) {\n"
+			"TIF_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
-	char const switchPostfixF[] = "\t\tdefault: return TinyImageFormat_CanFetchLogicalPixelsF(fmt);\n"
+	char const switchPostfixF[] = "\t\tdefault: return TinyImageFormat_CanDecodeLogicalPixelsF(fmt);\n"
 																"\t}\n}\n\n";
 
 	char output[2048];
 #define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = FetchLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, "\t\tcase %s: return true;\n", "TinyImageFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, "\t\tcase %s: return true;\n", "TinyImageFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
 #define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 
 }
 
-void GenFetchLogicalPixelsF(VFile_Handle file) {
+void GenDecodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_FetchInput * in, uint32_t const width, float* out) {\n"
+			"TIF_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, float* out) {\n"
 			"\tswitch(fmt) {\n";
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
 													 "%s"
@@ -758,16 +758,16 @@ void GenFetchLogicalPixelsF(VFile_Handle file) {
 
 	char output[2048];
 #define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = FetchLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
 #define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 }
 
-void GenFetchLogicalPixelsD(VFile_Handle file) {
+void GenDecodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"TIF_CONSTEXPR inline bool TinyImageFormat_FetchLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_FetchInput * in, uint32_t const width, double* out) {\n"
+			"TIF_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, double* out) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
@@ -777,13 +777,13 @@ void GenFetchLogicalPixelsD(VFile_Handle file) {
 	char const switchPostfixF[] = "\t\tdefault:\n"
 																"\t\t{\n\t\t\tfloat outF[4] = {0, 0, 0, 0}; bool ret = true;\n"
 																"\t\t\tfor(uint32_t w = 0; w < width && ret; ++w) {\n"
-																"\t\t\t\tret = TinyImageFormat_FetchLogicalPixelsF(fmt, in, 1, outF);\n"
+																"\t\t\t\tret = TinyImageFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);\n"
 																"\t\t\t\tout[0] = outF[0]; out[1] = outF[1]; out[2] = outF[2]; out[3] = outF[3]; out += 4;\n\t\t\t\t}\n"
 																"\t\t\treturn ret;\n\t\t}\n\t}\n}\n\n";
 
 	char output[2048];
 #define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = FetchLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
 #define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 }
@@ -845,7 +845,7 @@ static void GetSRGBTableFuncton(VFile_Handle file) {
 void IncludeFetchHelpers(VFile_Handle file) {
 #define RAW_INCLUDE_START(x) x
 	char const *otherEnums =
-#include "fetchhelpers.h"
+#include "decodehelpers.h"
 			"";
 #undef RAW_INCLUDE_START
 
@@ -861,12 +861,12 @@ void IncludeFetchHelpers(VFile_Handle file) {
 	VFile_Write(file, start + 1, end - start - 1);
 }
 
-void GenFetch(VFile_Handle file) {
+void GenDecode(VFile_Handle file) {
 	IncludeFetchHelpers(file);
 	GetSRGBTableFuncton(file);
-	GenCanFetchLogicalPixelsF(file);
-	GenFetchLogicalPixelsF(file);
-	GenCanFetchLogicalPixelsD(file);
-	GenFetchLogicalPixelsD(file);
+	GenCanDecodeLogicalPixelsF(file);
+	GenDecodeLogicalPixelsF(file);
+	GenCanDecodeLogicalPixelsD(file);
+	GenDecodeLogicalPixelsD(file);
 
 }

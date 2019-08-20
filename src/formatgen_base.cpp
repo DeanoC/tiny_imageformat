@@ -49,7 +49,7 @@ void GenEnums(VFile_Handle file) {
 
 void GenStructs(VFile_Handle file) {
 	char const fetchInput[] =
-			"typedef struct TinyImageFormat_FetchInput {\n"
+			"typedef struct TinyImageFormat_DecodeInput {\n"
 			"\tunion { void const* pixel; void const* pixelPlane0; };\n"
 			"\tunion { void const* lut; void const* pixelPlane1; };\n"
 			"\tvoid const* pixelPlane2;\n"
@@ -64,7 +64,7 @@ void GenStructs(VFile_Handle file) {
 	VFile_Write(file, fetchInput, strlen(fetchInput));
 
 	char const putOutput[] =
-			"typedef struct TinyImageFormat_PutOutput {\n"
+			"typedef struct TinyImageFormat_EncodeOutput {\n"
 			"\tunion { void const* pixel; void const* pixelPlane0; };\n"
 			"\tvoid const* pixelPlane1;\n"
 			"\tvoid const* pixelPlane2;\n"
