@@ -33,48 +33,6 @@ _R1_ is an 8 bit byte encoding 8 pixels together (has a block size of 8x1x1)
 
 The base section has the main enumeration simply called _TinyImageFormat_. Here these is _TinyImageFormat_Count_ values, with each being a different image format. Internally image formats are split into ‘namespaces’ which are used to seperate very different types of image format, whilst this doesn’t technically affect the _TinyImageFormat_ naming, its usually possible to see parts of it (I.e. ASTC is a namespace and all ASTC pixel formats have ASTC in the name).
 
-Most image formats come from the Pack namespace which allows pixel ranging from a single bit to 256 bit to be described. Packed formats have 1 to 4 channels, arbitary swizzling and support for constant 0 and 1. Pack enumeration names are read left to right, with the leftmost element being the lowest bits in the pixel, incrementing as you scan right across the name. The following a channel name is the number of bits that channel is encoded with.
-
-E.g
-
-_R8G8B8A8_
-
-Red channel is 8 bits from the 0 to 7th bits of a 32 bit unsigned integer. Red = (P >> 0) & 0xFF
-
-Green channel is 8 bits from the 8 to 15th bits of a 32 bit unsigned integer. Green = (P >> 8) & 0xFF
-
-Blue channel is 8 bits from the 16 to 23rd bits of a 32 bit unsigned integer. Blue = (P >> 16) & 0xFF
-
-Alpha channel is 8 bits from the 24 to 32nd bits of a 32 bit unsigned integer. Alpha = (P >> 24) & 0xFF
-
-_A8B8G8R8_
-
-Red channel is 8 bits from the 24 to 32nd bits of a 32 bit unsigned integer. Red = (P >> 24) & 0xFF
-
-Green channel is 8 bits from the 16 to 23rd bits of a 32 bit unsigned integer. Green = (P >> 16) & 0xFF
-
-Blue channel is 8 bits from the 8 to 16th bits of a 32 bit unsigned integer. Blue = (P >> 8) & 0xFF
-
-Alpha channel is 8 bits from the 0 to 7th bits of a 32 bit unsigned integer. Alpha = (P >> 0) & 0xFF
-
-Each packed channel also has a type, in almost every packed image format this is the same for all channels and in the case the type is specified just once at the end of the name, in the multiple type case the name is after the bit size for each channel
-Types are
-* _UNORM_ - decoded values are between 0 and 1
-* _SNORM_ - decoded values are between -1 and 1
-* _UINT_ - decoded values are between 0 and 2^bits-1
-* _SINT_ - decoded values are between -2^(bits-1) and 2^(bits-1)-1 
-* _UFLOAT_ - decoded values are positive floating point numbers
-* _SFLOAT_ - decoded values are signed float points numbers
-* _SBFLOAT_ - decode value is a 32 bit float with lower 16 mantissa bits being 0 (Brain Floats)
-
-E.g.
-
-_R8G8B8A8_UNORM_ - each channel is decoded to a normalised 0 to 1
-
-_R8_UNORM_G8_SNORM_ -  would be R channel decoded 0 to 1 and a G channel decoded to -1 to 1
-
-Pack namespace formats have a block size of 1x1x1 in most cases, exceptions being the formats that are less than 8 bits. For these multiple pixels are packed up to the minimum size of 8 bit bytes.
-
 ## Query Functions
 * Code - uint64_t with the internal descriptor code
 * Name  - Human C string with the name of this fmt
@@ -123,3 +81,47 @@ It does full encode and remapping into logical channels
 Output pointers are updated are used, so can be passed back in for next set of pixel encoding if desired.
  
 out.pixel is where colour information should be stored
+
+## Pack namespace details
+Most image formats come from the Pack namespace which allows pixel ranging from a single bit to 256 bit to be described. Packed formats have 1 to 4 channels, arbitary swizzling and support for constant 0 and 1. Pack enumeration names are read left to right, with the leftmost element being the lowest bits in the pixel, incrementing as you scan right across the name. The following a channel name is the number of bits that channel is encoded with.
+
+E.g
+
+_R8G8B8A8_
+
+Red channel is 8 bits from the 0 to 7th bits of a 32 bit unsigned integer. Red = (P >> 0) & 0xFF
+
+Green channel is 8 bits from the 8 to 15th bits of a 32 bit unsigned integer. Green = (P >> 8) & 0xFF
+
+Blue channel is 8 bits from the 16 to 23rd bits of a 32 bit unsigned integer. Blue = (P >> 16) & 0xFF
+
+Alpha channel is 8 bits from the 24 to 32nd bits of a 32 bit unsigned integer. Alpha = (P >> 24) & 0xFF
+
+_A8B8G8R8_
+
+Red channel is 8 bits from the 24 to 32nd bits of a 32 bit unsigned integer. Red = (P >> 24) & 0xFF
+
+Green channel is 8 bits from the 16 to 23rd bits of a 32 bit unsigned integer. Green = (P >> 16) & 0xFF
+
+Blue channel is 8 bits from the 8 to 16th bits of a 32 bit unsigned integer. Blue = (P >> 8) & 0xFF
+
+Alpha channel is 8 bits from the 0 to 7th bits of a 32 bit unsigned integer. Alpha = (P >> 0) & 0xFF
+
+Each packed channel also has a type, in almost every packed image format this is the same for all channels and in the case the type is specified just once at the end of the name, in the multiple type case the name is after the bit size for each channel
+Types are
+* _UNORM_ - decoded values are between 0 and 1
+* _SNORM_ - decoded values are between -1 and 1
+* _UINT_ - decoded values are between 0 and 2^bits-1
+* _SINT_ - decoded values are between -2^(bits-1) and 2^(bits-1)-1 
+* _UFLOAT_ - decoded values are positive floating point numbers
+* _SFLOAT_ - decoded values are signed float points numbers
+* _SBFLOAT_ - decode value is a 32 bit float with lower 16 mantissa bits being 0 (Brain Floats)
+
+E.g.
+
+_R8G8B8A8_UNORM_ - each channel is decoded to a normalised 0 to 1
+
+_R8_UNORM_G8_SNORM_ -  would be R channel decoded 0 to 1 and a G channel decoded to -1 to 1
+
+Pack namespace formats have a block size of 1x1x1 in most cases, exceptions being the formats that are less than 8 bits. For these multiple pixels are packed up to the minimum size of 8 bit bytes.
+
