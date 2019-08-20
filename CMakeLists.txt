@@ -28,7 +28,9 @@ if(MAKE_GENERATOR)
 			src/fetchhelpers.h
 			src/puthelpers.h
 
-			src/otherimageenums.h
+			src/otherimageenums_d3d.h
+			src/otherimageenums_vk.h
+			src/otherimageenums_mtl.h
 			src/doc.h
 			)
 
@@ -42,7 +44,13 @@ if(MAKE_GENERATOR)
 endif()
 
 set(Interface
-		tinyimageformat.h )
+		tinyimageformat_base.h
+		tinyimageformat_apis.h
+		tinyimageformat_bits.h
+		tinyimageformat_fetch.h
+		tinyimageformat_put.h
+		tinyimageformat_query.h
+		)
 set(Src
 		dummy.c)
 

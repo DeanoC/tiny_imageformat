@@ -1,3 +1,4 @@
+#pragma once
 typedef enum TinyImageFormat_LogicalChannel {
 	TinyImageFormat_LC_Red = 0,
 	TinyImageFormat_LC_Green = 1,

@@ -1,7 +1,8 @@
 #include "al2o3_platform/platform.h"
 #include "al2o3_catch2/catch2.hpp"
 
-#include "tiny_imageformat/tinyimageformat.h"
+#include "tiny_imageformat/tinyimageformat_base.h"
+#include "tiny_imageformat/tinyimageformat_query.h"
 #include <float.h>
 
 TEST_CASE("Format Cracker IsDepthOnly (C)", "[Image]") {

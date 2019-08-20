@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
@@ -8,6 +9,21 @@
 #include "../include/tiny_imageformat/tinyimageformat_bits.h"
 #include "formatgen.h"
 
+void GenCode(VFile_Handle file) {
+	char const isPrefixF[] =
+		"TIF_CONSTEXPR inline uint64_t TinyImageFormat_Code(TinyImageFormat const fmt) {\n"
+		"\tswitch(fmt) {\n";
+	char const switchPostfixF[] = "\t\tdefault: return 0ULL;\n\t}\n}\n\n";
+
+	char buffer[2048];
+
+#define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
+#define  TinyImageFormat_MOD_MACRO(x, y) sprintf(buffer, "\t\tcase %s: return 0x%.16" PRIX64 ";\n", "TinyImageFormat_"#x, y); \
+                                                               VFile_Write(file, buffer, strlen(buffer));
+#define  TinyImageFormat_END_MACRO VFile_Write(file, switchPostfixF, strlen(switchPostfixF));
+#include "formatgen.h"
+
+}
 
 bool IsDepthOnly(char const *name, uint64_t v) {
 	if (!IsInDepthStencil(name, v))
@@ -678,7 +694,7 @@ static uint32_t BitSizeOfBlock(char const *name, uint64_t v) {
 
 	if(IsInCLUT(name, v)) {
 		uint32_t bitsize = 0;
-		for(int i=0;i < ChannelCount(name, v);++i) {
+		for(uint32_t i=0;i < ChannelCount(name, v);++i) {
 			bitsize += ChannelBitWidth(name, v, i);
 		}
 
@@ -1469,6 +1485,8 @@ void IncludeQueryHelpers(VFile_Handle file) {
 #define GEN_DBLPERCHAN_FUNC(f, d, t) GenDoublePerChanFunc(f, #t, d, &t)
 
 void GenQuerys(VFile_Handle file) {
+
+	GenCode(file);
 
 	GenMaxPixelCountOfBlock(file);
 	GEN_BOOL_FUNC(file, false, IsDepthOnly);

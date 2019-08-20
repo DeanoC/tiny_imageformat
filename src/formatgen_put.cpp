@@ -1,9 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <cmath>
 #include "al2o3_vfile/vfile.h"
-#include "../include/tiny_imageformat/tinyimageformat_bits.h"
+#include "tiny_imageformat/tinyimageformat_bits.h"
 #include "formatgen.h"
 
 int8_t PhysicalChannelToLogical(char const *name, uint64_t const v, uint32_t chan);
@@ -30,7 +31,7 @@ bool PutLogicalPixelsPacked(char const *name,
 	}
 
 	// special case
-	if (v == TinyImageFormat_E5B9G9R9_UFLOAT) {
+	if (v == (uint64_t)TinyImageFormat::E5B9G9R9_UFLOAT) {
 				if (inputFloatWidth == 32) {
 					char const decoder[] = "\n\t\t\t\tTinyImageFormat_FloatRGBToRGB9E5AsUint32( (float const*)in, (uint32_t*)out->pixel);\n"
 																 "\t\t\t\tout->pixel = (void const*)(((uint32_t const*)out->pixel) + 1);\n"

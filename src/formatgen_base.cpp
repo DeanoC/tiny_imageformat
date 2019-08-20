@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
@@ -17,15 +18,6 @@ void GenEnums(VFile_Handle file) {
 #define  TinyImageFormat_START_MACRO { VFile_Write(file, ifstartmacro, strlen(ifstartmacro)); uint32_t count = 0;
 #define  TinyImageFormat_MOD_MACRO(x, y) sprintf(buffer, ifmodmacro, #x, count++); VFile_Write(file, buffer, strlen(buffer));
 #define  TinyImageFormat_END_MACRO VFile_Write(file, ifendmacro, strlen(ifendmacro)); }
-#include "formatgen.h"
-
-	char const ifstartmacro2[] = "typedef enum TinyImageFormat_Code {\n";
-	char const ifmodmacro2[] = "\tTinyImageFormat_Code_%s = 0x%.16" PRIX64 "ULL,\n";
-	char const ifendmacro2[] = "} TinyImageFormat_Code;\n\n";
-
-#define  TinyImageFormat_START_MACRO { VFile_Write(file, ifstartmacro2, strlen(ifstartmacro2));
-#define  TinyImageFormat_MOD_MACRO(x, y) sprintf(buffer, ifmodmacro2, #x, y); VFile_Write(file, buffer, strlen(buffer));
-#define  TinyImageFormat_END_MACRO VFile_Write(file, ifendmacro2, strlen(ifendmacro2)); }
 #include "formatgen.h"
 
 	char const logiEnum[] =
@@ -74,7 +66,7 @@ void GenStructs(VFile_Handle file) {
 	char const putOutput[] =
 			"typedef struct TinyImageFormat_PutOutput {\n"
 			"\tunion { void const* pixel; void const* pixelPlane0; };\n"
-			"\tvoid const* pixelPlane1;;\n"
+			"\tvoid const* pixelPlane1;\n"
 			"\tvoid const* pixelPlane2;\n"
 			"\tvoid const* pixelPlane3;\n"
 			"\tvoid const* pixelPlane4;\n"

@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
@@ -71,7 +72,7 @@ uint32_t ChannelWidth(char const *name, uint64_t const v, uint32_t chan) {
 	if(IsInDXTC(name,v)) {
 		uint64_t vt = v >> TinyImageFormat_DXTC_TYPE_SHIFT;
 		uint64_t vcc = v >> TinyImageFormat_DXTC_CHANNELCOUNT_SHIFT;
-		uint32_t const channelCount = (vcc & Mask(TinyImageFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
+		uint32_t const channelCount = (uint32_t const)(vcc & Mask(TinyImageFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
 		if(chan >= channelCount) return 0;
 		auto type = (TinyImageFormat_DXTC_Type const) (vt & Mask(TinyImageFormat_DXTC_TYPE_REQUIRED_BITS));
 		switch(type) {
@@ -85,7 +86,7 @@ uint32_t ChannelWidth(char const *name, uint64_t const v, uint32_t chan) {
 	if(IsInETC(name,v)) {
 		uint64_t vb = v >> TinyImageFormat_ETC_BITS_SHIFT;
 		uint64_t vcc = v >> TinyImageFormat_ETC_CHANNELCOUNT_SHIFT;
-		uint32_t const channelCount = (vcc & Mask(TinyImageFormat_ETC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
+		uint32_t const channelCount = (uint32_t const)(vcc & Mask(TinyImageFormat_ETC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
 		if(chan >= channelCount) return 0;
 		auto bits = (TinyImageFormat_ETC_Bits const) (vb & Mask(TinyImageFormat_ETC_BITS_REQUIRED_BITS));
 		switch(bits) {
@@ -246,22 +247,24 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 			case TinyImageFormat_PACK_TYPE_SINT:
 				if(chanBitWidth == 32) {
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = (%s)((double)(((%s const *)in->pixel)[%d]) - %1.8f);\n",
+									"%s\t\t\t\tout[%d] = (%s)((double)(((%s const *)in->pixel)[%d]) - (%s)%1.8f);\n",
 									output,
 									swizzle,
 									outputCast,
 									typeStringBuf,
 									i,
+									outputCast,
 									maxFactor + 1
-					);
+								);
 				} else {
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = ((%s)(((%s const *)in->pixel)[%d])) - %1.8f;\n",
+									"%s\t\t\t\tout[%d] = ((%s)(((%s const *)in->pixel)[%d])) - (%s)%1.8f;\n",
 									output,
 									swizzle,
 									outputCast,
 									typeStringBuf,
 									i,
+									outputCast,
 									maxFactor + 1
 					);
 				}
@@ -400,9 +403,10 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 					type = TinyImageFormat_PACK_TYPE_UINT;
 
 				switch (type) {
+
 				case TinyImageFormat_PACK_TYPE_UNORM:
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.2ff);\n",
+									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f);\n",
 									output,
 									j * 4 + swizzle,
 									outputCast,
@@ -413,7 +417,7 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 					break;
 				case TinyImageFormat_PACK_TYPE_SNORM:
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = (((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.2ff)) - 1;\n",
+									"%s\t\t\t\tout[%d] = (((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f)) - 1;\n",
 									output,
 									j * 4 + swizzle,
 									outputCast,
@@ -433,7 +437,7 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 					break;
 				case TinyImageFormat_PACK_TYPE_SINT:
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx) - %1.2ff;\n",
+									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx) - %1.8ff;\n",
 									output,
 									j * 4 + swizzle,
 									outputCast,
@@ -535,7 +539,7 @@ bool FetchLogicalPixelsPacked(char const *name, uint64_t const v, uint32_t const
 	}
 
 	// special case
-	if (v == TinyImageFormat_E5B9G9R9_UFLOAT) {
+	if (v == (uint64_t)TinyImageFormat::E5B9G9R9_UFLOAT) {
 		if (outputFloatWidth == 32) {
 			char const decoder[] = "\n\t\t\t\tTinyImageFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);\n"
 														 "\t\t\t\tin->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);\n"

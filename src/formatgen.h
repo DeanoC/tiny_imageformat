@@ -3,8 +3,7 @@
 #if !defined  TinyImageFormat_START_MACRO
 
 #define GFX_IMAGEFORMAT_FORMAT_H_ 1
-#define  TinyImageFormat_START_MACRO typedef enum TinyImageFormat {
-#define  TinyImageFormat_ADD_FUNC
+#define  TinyImageFormat_START_MACRO typedef enum class TinyImageFormat : uint64_t {
 
 #else
 
@@ -17,7 +16,7 @@
 #endif
 
 #if !defined  TinyImageFormat_MOD_MACRO
-#define  TinyImageFormat_MOD_MACRO(x, y) TinyImageFormat_##x = (y),
+#define  TinyImageFormat_MOD_MACRO(x, y) x = (y),
 #endif
 
 #if !defined  TinyImageFormat_END_MACRO
@@ -26,6 +25,7 @@
 
 
 //---------
+#include "tiny_imageformat/tinyimageformat_bits.h"
 #include "formatgen_func.h"
 #include "formatgen_macros.h"
 
