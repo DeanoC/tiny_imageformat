@@ -18,18 +18,23 @@ The multiple header version is split into several related sections, wheres the s
 All types and function are prefixed by _TinyImageFormat_ or _TIF_ as a form of namespaces, these will be left off for the API documentation.
 
 The basic unit is the block, each image format has a 3D size that represents the smallest quantum of data you can work with. For basic image formats this is a 1x1x1 pixel block, meaning you can fetch and put single pixels of the image. However many other image formats have block larger than this. The DXBC formats are all 4x4x1 as thats the size of the compressed data. The smallest quantum you can fetch or put is a 4x4 pixel block.
+
 Another common use of blocks is to pack non machine word aligned image format (like 1 bit per pixel images) and also pixel format with different frequency (I.e 4:2:0 video formats, that store channels at different rates).
 
 The smallest unit the API uses is an 8 bit byte, smaller formats either have large block size or multiple channels are packed together to 8 or more bits.
+
 E.g.
-R4G4 is an 8 bit byte encoding 2 4 bit channels
-R1 is an 8 bit byte encoding 8 pixels together (has a block size of 8x1x1)
+
+_R4G4_ is an 8 bit byte encoding 2 4 bit channels
+
+_R1_ is an 8 bit byte encoding 8 pixels together (has a block size of 8x1x1)
 
 ## Base 
 
 The base section has the main enumeration simply called _TinyImageFormat_. Here these is _TinyImageFormat_Count_ values, with each being a different image format. Internally image formats are split into ‘namespaces’ which are used to seperate very different types of image format, whilst this doesn’t technically affect the _TinyImageFormat_ naming, its usually possible to see parts of it (I.e. ASTC is a namespace and all ASTC pixel formats have ASTC in the name).
 
 Most image formats come from the Pack namespace which allows pixel ranging from a single bit to 256 bit to be described. Packed formats have 1 to 4 channels, arbitary swizzling and support for constant 0 and 1. Pack enumeration names are read left to right, with the leftmost element being the lowest bits in the pixel, incrementing as you scan right across the name. The following a channel name is the number of bits that channel is encoded with.
+
 E.g
 
 _R8G8B8A8_
