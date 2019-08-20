@@ -125,3 +125,25 @@ E.g.
 _R4G4_ is an 8 bit byte encoding 2 4 bit channels (block size of 1x1x1)
 
 _R1_ is an 8 bit byte encoding 8 pixels together (block size of 8x1x1)
+
+## Examples
+
+To write a Red and Alpha pixel to an R16G16B16A16_SFLOAT pixel image, the code below would work
+```
+TinyImageFormat_EncodeOutput output { destinationPtr };
+float const redAlphaPixel[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat_R16G16B16A16_SFLOAT, redAlphaPixel, 1, &output);
+```
+
+The read the pixel back 
+```
+TinyImageFormat_DecodeInput input { destinationPtr };
+float result[4];
+TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat_R16G16B16A16_SFLOAT, &input, 1, result);
+```
+
+To query if the format is floating point (it would return true).
+```
+TinyImageFormat_IsFloat(TinyImageFormat_R16G16B16A16_SFLOAT);
+```
+
