@@ -373,6 +373,7 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 				switch (type) {
 
 				case TinyImageFormat_PACK_TYPE_UNORM:
+				case TinyImageFormat_PACK_TYPE_SNORM:
 					sprintf(output,
 									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f);\n",
 									output,
@@ -383,18 +384,8 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 									outputCast,
 									normalFactor);
 					break;
-				case TinyImageFormat_PACK_TYPE_SNORM:
-					sprintf(output,
-									"%s\t\t\t\tout[%d] = (((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f)) - 1;\n",
-									output,
-									j * 4 + swizzle,
-									outputCast,
-									shifter,
-									Mask(chanBitWidth),
-									outputCast,
-									normalFactor);
-					break;
 				case TinyImageFormat_PACK_TYPE_UINT:
+				case TinyImageFormat_PACK_TYPE_SINT:
 					sprintf(output,
 									"%s\t\t\t\tout[%d] = (%s)((val >> %lld) & 0x%llx);\n",
 									output,
@@ -402,16 +393,6 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 									outputCast,
 									shifter,
 									Mask(chanBitWidth));
-					break;
-				case TinyImageFormat_PACK_TYPE_SINT:
-					sprintf(output,
-									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx) - %1.8ff;\n",
-									output,
-									j * 4 + swizzle,
-									outputCast,
-									shifter,
-									Mask(chanBitWidth),
-									maxFactor);
 					break;
 				case TinyImageFormat_PACK_TYPE_SRGB:
 					sprintf(output,

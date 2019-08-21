@@ -411,11 +411,20 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageForma
 		case TinyImageFormat_R32_SFLOAT: return true;
 		case TinyImageFormat_A2R10G10B10_UNORM: return true;
 		case TinyImageFormat_A2R10G10B10_UINT: return true;
+		case TinyImageFormat_A2R10G10B10_SNORM: return true;
+		case TinyImageFormat_A2R10G10B10_SINT: return true;
 		case TinyImageFormat_A2B10G10R10_UNORM: return true;
 		case TinyImageFormat_A2B10G10R10_UINT: return true;
+		case TinyImageFormat_A2B10G10R10_SNORM: return true;
+		case TinyImageFormat_A2B10G10R10_SINT: return true;
 		case TinyImageFormat_R10G10B10A2_UNORM: return true;
+		case TinyImageFormat_R10G10B10A2_UINT: return true;
+		case TinyImageFormat_R10G10B10A2_SNORM: return true;
+		case TinyImageFormat_R10G10B10A2_SINT: return true;
 		case TinyImageFormat_B10G10R10A2_UNORM: return true;
 		case TinyImageFormat_B10G10R10A2_UINT: return true;
+		case TinyImageFormat_B10G10R10A2_SNORM: return true;
+		case TinyImageFormat_B10G10R10A2_SINT: return true;
 		case TinyImageFormat_B10G11R11_UFLOAT: return true;
 		case TinyImageFormat_E5B9G9R9_UFLOAT: return true;
 		case TinyImageFormat_R16G16B16_UNORM: return true;
@@ -1255,6 +1264,28 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 				in+=4;
 			}
 			return true;
+		case TinyImageFormat_A2R10G10B10_SNORM:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= ((int32_t)(in[3] * 1.00f) & 0x3) << 0;
+				*op0 |= ((int32_t)(in[0] * 511.00f) & 0x3ff) << 2;
+				*op0 |= ((int32_t)(in[1] * 511.00f) & 0x3ff) << 12;
+				*op0 |= ((int32_t)(in[2] * 511.00f) & 0x3ff) << 22;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_A2R10G10B10_SINT:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= (((int32_t)in[3]) & 0x3) << 0;
+				*op0 |= (((int32_t)in[0]) & 0x3ff) << 2;
+				*op0 |= (((int32_t)in[1]) & 0x3ff) << 12;
+				*op0 |= (((int32_t)in[2]) & 0x3ff) << 22;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
 		case TinyImageFormat_A2B10G10R10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
@@ -1277,6 +1308,28 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 				in+=4;
 			}
 			return true;
+		case TinyImageFormat_A2B10G10R10_SNORM:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= ((int32_t)(in[3] * 1.00f) & 0x3) << 0;
+				*op0 |= ((int32_t)(in[2] * 511.00f) & 0x3ff) << 2;
+				*op0 |= ((int32_t)(in[1] * 511.00f) & 0x3ff) << 12;
+				*op0 |= ((int32_t)(in[0] * 511.00f) & 0x3ff) << 22;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_A2B10G10R10_SINT:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= (((int32_t)in[3]) & 0x3) << 0;
+				*op0 |= (((int32_t)in[2]) & 0x3ff) << 2;
+				*op0 |= (((int32_t)in[1]) & 0x3ff) << 12;
+				*op0 |= (((int32_t)in[0]) & 0x3ff) << 22;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
 		case TinyImageFormat_R10G10B10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
@@ -1284,6 +1337,39 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 				*op0 |= ((uint32_t)(in[1] * 1023.00f) & 0x3ff) << 10;
 				*op0 |= ((uint32_t)(in[2] * 1023.00f) & 0x3ff) << 20;
 				*op0 |= ((uint32_t)(in[3] * 3.00f) & 0x3) << 30;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_R10G10B10A2_UINT:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= (((uint32_t)in[0]) & 0x3ff) << 0;
+				*op0 |= (((uint32_t)in[1]) & 0x3ff) << 10;
+				*op0 |= (((uint32_t)in[2]) & 0x3ff) << 20;
+				*op0 |= (((uint32_t)in[3]) & 0x3) << 30;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_R10G10B10A2_SNORM:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= ((int32_t)(in[0] * 511.00f) & 0x3ff) << 0;
+				*op0 |= ((int32_t)(in[1] * 511.00f) & 0x3ff) << 10;
+				*op0 |= ((int32_t)(in[2] * 511.00f) & 0x3ff) << 20;
+				*op0 |= ((int32_t)(in[3] * 1.00f) & 0x3) << 30;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_R10G10B10A2_SINT:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= (((int32_t)in[0]) & 0x3ff) << 0;
+				*op0 |= (((int32_t)in[1]) & 0x3ff) << 10;
+				*op0 |= (((int32_t)in[2]) & 0x3ff) << 20;
+				*op0 |= (((int32_t)in[3]) & 0x3) << 30;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}
@@ -1306,6 +1392,28 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 				*op0 |= (((uint32_t)in[1]) & 0x3ff) << 10;
 				*op0 |= (((uint32_t)in[0]) & 0x3ff) << 20;
 				*op0 |= (((uint32_t)in[3]) & 0x3) << 30;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_B10G10R10A2_SNORM:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= ((int32_t)(in[2] * 511.00f) & 0x3ff) << 0;
+				*op0 |= ((int32_t)(in[1] * 511.00f) & 0x3ff) << 10;
+				*op0 |= ((int32_t)(in[0] * 511.00f) & 0x3ff) << 20;
+				*op0 |= ((int32_t)(in[3] * 1.00f) & 0x3) << 30;
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
+				in+=4;
+			}
+			return true;
+		case TinyImageFormat_B10G10R10A2_SINT:
+			for(uint32_t w = 0; w < width; ++w) {
+				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
+				*op0 |= (((int32_t)in[2]) & 0x3ff) << 0;
+				*op0 |= (((int32_t)in[1]) & 0x3ff) << 10;
+				*op0 |= (((int32_t)in[0]) & 0x3ff) << 20;
+				*op0 |= (((int32_t)in[3]) & 0x3) << 30;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}

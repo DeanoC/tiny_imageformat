@@ -127,12 +127,20 @@
 
 	 TinyImageFormat_MOD_MACRO(A2R10G10B10_UNORM,  TinyImageFormat_PACK_4_UNORM(A, 2, R, 10, G, 10, B, 10, PACK))
    TinyImageFormat_MOD_MACRO(A2R10G10B10_UINT,  TinyImageFormat_PACK_4_UINT(A, 2, R, 10, G, 10, B, 10, PACK))
+	 TinyImageFormat_MOD_MACRO(A2R10G10B10_SNORM,  TinyImageFormat_PACK_4_SNORM(A, 2, R, 10, G, 10, B, 10, PACK))
+	 TinyImageFormat_MOD_MACRO(A2R10G10B10_SINT,  TinyImageFormat_PACK_4_SINT(A, 2, R, 10, G, 10, B, 10, PACK))
    TinyImageFormat_MOD_MACRO(A2B10G10R10_UNORM,  TinyImageFormat_PACK_4_UNORM(A, 2, B, 10, G, 10, R, 10, PACK))
    TinyImageFormat_MOD_MACRO(A2B10G10R10_UINT,  TinyImageFormat_PACK_4_UINT(A, 2, B, 10, G, 10, R, 10, PACK))
-
+	 TinyImageFormat_MOD_MACRO(A2B10G10R10_SNORM,  TinyImageFormat_PACK_4_SNORM(A, 2, B, 10, G, 10, R, 10, PACK))
+	 TinyImageFormat_MOD_MACRO(A2B10G10R10_SINT,  TinyImageFormat_PACK_4_SINT(A, 2, B, 10, G, 10, R, 10, PACK))
 	 TinyImageFormat_MOD_MACRO(R10G10B10A2_UNORM,  TinyImageFormat_PACK_4_UNORM(R, 10, G, 10, B, 10, A, 2, PACK))
+	 TinyImageFormat_MOD_MACRO(R10G10B10A2_UINT,  TinyImageFormat_PACK_4_UINT(R, 10, G, 10, B, 10, A, 2, PACK))
+	 TinyImageFormat_MOD_MACRO(R10G10B10A2_SNORM,  TinyImageFormat_PACK_4_SNORM(R, 10, G, 10, B, 10, A, 2, PACK))
+	 TinyImageFormat_MOD_MACRO(R10G10B10A2_SINT,  TinyImageFormat_PACK_4_SINT(R, 10, G, 10, B, 10, A, 2, PACK))
 	 TinyImageFormat_MOD_MACRO(B10G10R10A2_UNORM,  TinyImageFormat_PACK_4_UNORM(B, 10, G, 10, R, 10, A, 2, PACK))
 	 TinyImageFormat_MOD_MACRO(B10G10R10A2_UINT,  TinyImageFormat_PACK_4_UINT(B, 10, G, 10, R, 10, A, 2, PACK))
+	 TinyImageFormat_MOD_MACRO(B10G10R10A2_SNORM,  TinyImageFormat_PACK_4_SNORM(B, 10, G, 10, R, 10, A, 2, PACK))
+	 TinyImageFormat_MOD_MACRO(B10G10R10A2_SINT,  TinyImageFormat_PACK_4_SINT(B, 10, G, 10, R, 10, A, 2, PACK))
 
 	 TinyImageFormat_MOD_MACRO(B10G11R11_UFLOAT,  TinyImageFormat_PACK_3(B, 10, UFLOAT, G, 11, UFLOAT, R, 11, UFLOAT, PACK))
 	 TinyImageFormat_MOD_MACRO(E5B9G9R9_UFLOAT,  TinyImageFormat_PACK(A, 5, UINT, B, 9, UFLOAT, G, 9, UFLOAT, R, 9, UFLOAT, PACK))
@@ -154,7 +162,6 @@
 	 TinyImageFormat_MOD_MACRO(R32G32_UINT,    TinyImageFormat_PACK_2_UINT(R, 32, G, 32, NONE))
    TinyImageFormat_MOD_MACRO(R32G32_SINT,    TinyImageFormat_PACK_2_SINT(R, 32, G, 32, NONE))
    TinyImageFormat_MOD_MACRO(R32G32_SFLOAT,  TinyImageFormat_PACK_2_SFLOAT(R, 32, G, 32, NONE))
-
 
 	 TinyImageFormat_MOD_MACRO(R32G32B32_UINT,    TinyImageFormat_PACK_3_UINT(R, 32, G, 32, B, 32, NONE))
    TinyImageFormat_MOD_MACRO(R32G32B32_SINT,    TinyImageFormat_PACK_3_SINT(R, 32, G, 32, B, 32, NONE))

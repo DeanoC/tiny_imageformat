@@ -132,7 +132,7 @@ bool PutLogicalPixelsPacked(char const *name,
 				break;
 			}
 
-			if (swizzle >= 0 && i < ChannelCount(name, v)) {
+			if (swizzle >= 0 && i < (int)ChannelCount(name, v)) {
 				if (shifter >= outTypeSize) {
 					sprintf(output, "%s%s", output, nextPixelBuffer);
 					shifter -= outTypeSize;
