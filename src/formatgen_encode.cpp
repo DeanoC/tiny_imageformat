@@ -72,6 +72,7 @@ bool PutLogicalPixelsPacked(char const *name,
 	char const *loadOut;
 	char const *nextPixelBuffer;
 	char castBuffer[2048];
+	char scastBuffer[2048];
 
 	uint32_t outTypeSize = 0;
 	switch (bitWidth) {
@@ -103,6 +104,7 @@ bool PutLogicalPixelsPacked(char const *name,
 
 	ASSERT(outTypeSize != 0);
 	sprintf(castBuffer, "(uint%d_t)", outTypeSize);
+	sprintf(scastBuffer, "(int%d_t)", outTypeSize);
 
 	uint64_t shifter = 0;
 	bool load = true;
@@ -149,57 +151,24 @@ bool PutLogicalPixelsPacked(char const *name,
 
 				switch (type) {
 				case TinyImageFormat_PACK_TYPE_UNORM:
+				case TinyImageFormat_PACK_TYPE_SNORM:
 					sprintf(output,
 									"%s\t\t\t\t*op%d |= (%s(in[%d] * %1.2ff) & 0x%llx) << %lld;\n",
 									output,
 									loadIndex,
-									castBuffer,
+									(type == TinyImageFormat_PACK_TYPE_UNORM) ? castBuffer : scastBuffer,
 									j * 4 + swizzle,
 									maxFactor,
 									Mask(chanBitWidth),
 									shifter);
 					break;
-				case TinyImageFormat_PACK_TYPE_SNORM:
-					sprintf(output,
-									"%s\t\t\t\t*op%d |= ((%s(((in[%d] + 1.0f) * 0.5f) * %1.2ff)) & 0x%llx) << %lld;\n",
-									output,
-									loadIndex,
-									castBuffer,
-									j * 4 + swizzle,
-									(maxFactor * 2) + 1,
-									Mask(chanBitWidth),
-									shifter);
-					break;
 				case TinyImageFormat_PACK_TYPE_SINT:
-					if (chanBitWidth == 32) {
-						sprintf(output,
-										"%s\t\t\t\t*op%d |= ((%s((double)in[%d] + %1.2f)) & 0x%llx) << %lld;\n",
-										output,
-										loadIndex,
-										castBuffer,
-										j * 4 + swizzle,
-										maxFactor + 1,
-										Mask(chanBitWidth),
-										shifter);
-
-					} else {
-						sprintf(output,
-										"%s\t\t\t\t*op%d |= ((%s(in[%d] + %1.2ff)) & 0x%llx) << %lld;\n",
-										output,
-										loadIndex,
-										castBuffer,
-										j * 4 + swizzle,
-										maxFactor + 1,
-										Mask(chanBitWidth),
-										shifter);
-					}
-					break;
 				case TinyImageFormat_PACK_TYPE_UINT:
 					sprintf(output,
 									"%s\t\t\t\t*op%d |= ((%sin[%d]) & 0x%llx) << %lld;\n",
 									output,
 									loadIndex,
-									castBuffer,
+									(type == TinyImageFormat_PACK_TYPE_UINT) ? castBuffer : scastBuffer,
 									j * 4 + swizzle,
 									Mask(chanBitWidth),
 									shifter);

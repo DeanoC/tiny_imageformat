@@ -155,9 +155,12 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 			switch (type) {
 			case TinyImageFormat_PACK_TYPE_SNORM:
 			case TinyImageFormat_PACK_TYPE_SINT:
-				case TinyImageFormat_PACK_TYPE_UNORM:
+				typeStringFmt = "int%d_t";
+				break;
+			case TinyImageFormat_PACK_TYPE_UNORM:
 			case TinyImageFormat_PACK_TYPE_SRGB:
-			case TinyImageFormat_PACK_TYPE_UINT: typeStringFmt = "uint%d_t";
+			case TinyImageFormat_PACK_TYPE_UINT:
+				typeStringFmt = "uint%d_t";
 				break;
 			case TinyImageFormat_PACK_TYPE_UFLOAT:
 			case TinyImageFormat_PACK_TYPE_SFLOAT:
@@ -184,19 +187,9 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 			sprintf(typeStringBuf, typeStringFmt, chanBitWidth);
 			switch (type) {
 			case TinyImageFormat_PACK_TYPE_UNORM:
-				sprintf(output,
-								"%s\t\t\t\tout[%d] = ((%s)((%s const *)in->pixel)[%d]) * (%s)%1.8f;\n",
-								output,
-								swizzle,
-								outputCast,
-								typeStringBuf,
-								i,
-								outputCast,
-								normalFactor);
-				break;
 			case TinyImageFormat_PACK_TYPE_SNORM:
 				sprintf(output,
-								"%s\t\t\t\tout[%d] = (((%s)((%s const *)in->pixel)[%d]) * (%s)%1.8f)-1;\n",
+								"%s\t\t\t\tout[%d] = ((%s)((%s const *)in->pixel)[%d]) * (%s)%1.8f;\n",
 								output,
 								swizzle,
 								outputCast,
@@ -235,6 +228,7 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 								i);
 				break;
 			case TinyImageFormat_PACK_TYPE_UINT:
+			case TinyImageFormat_PACK_TYPE_SINT:
 				sprintf(output,
 								"%s\t\t\t\tout[%d] = (%s)(((%s const *)in->pixel)[%d]);\n",
 								output,
@@ -242,32 +236,6 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 								outputCast,
 								typeStringBuf,
 								i);
-				break;
-
-			case TinyImageFormat_PACK_TYPE_SINT:
-				if(chanBitWidth == 32) {
-					sprintf(output,
-									"%s\t\t\t\tout[%d] = (%s)((double)(((%s const *)in->pixel)[%d]) - (%s)%1.8f);\n",
-									output,
-									swizzle,
-									outputCast,
-									typeStringBuf,
-									i,
-									outputCast,
-									maxFactor + 1
-								);
-				} else {
-					sprintf(output,
-									"%s\t\t\t\tout[%d] = ((%s)(((%s const *)in->pixel)[%d])) - (%s)%1.8f;\n",
-									output,
-									swizzle,
-									outputCast,
-									typeStringBuf,
-									i,
-									outputCast,
-									maxFactor + 1
-					);
-				}
 				break;
 			case TinyImageFormat_PACK_TYPE_SRGB:
 				sprintf(output,
