@@ -287,7 +287,7 @@ inline TinyImageFormat TinyImageFormat_FromVkFormat(TinyImageFormat_VkFormat fmt
 	case TIF_VK_FORMAT_A2R10G10B10_UNORM_PACK32: return TinyImageFormat_B10G10R10A2_UNORM;
 	case TIF_VK_FORMAT_A2R10G10B10_UINT_PACK32: return TinyImageFormat_B10G10R10A2_UINT;
 	case TIF_VK_FORMAT_A2B10G10R10_UNORM_PACK32: return TinyImageFormat_R10G10B10A2_UNORM;
-	case TIF_VK_FORMAT_A2B10G10R10_UINT_PACK32: TinyImageFormat_R10G10B10A2_UINT;
+	case TIF_VK_FORMAT_A2B10G10R10_UINT_PACK32: return TinyImageFormat_R10G10B10A2_UINT;
 	case TIF_VK_FORMAT_R16_UNORM: return TinyImageFormat_R16_UNORM;
 	case TIF_VK_FORMAT_R16_SNORM: return TinyImageFormat_R16_SNORM;
 	case TIF_VK_FORMAT_R16_UINT: return TinyImageFormat_R16_UINT;
@@ -1542,7 +1542,273 @@ inline TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPix
 }
 
 )=====";
+	char const* otherEnumsMtl3 = R"=====(
+inline bool TinyImageFormat_MTLPixelFormatOnMac(TinyImageFormat_MTLPixelFormat fmt) {
+	switch(fmt) {
+	case TIF_MTLPixelFormatA8Unorm:
+	case TIF_MTLPixelFormatR8Unorm:
+	case TIF_MTLPixelFormatR8Snorm:
+	case TIF_MTLPixelFormatR8Uint:
+	case TIF_MTLPixelFormatR8Sint:
+	case TIF_MTLPixelFormatR16Unorm:
+	case TIF_MTLPixelFormatR16Snorm:
+	case TIF_MTLPixelFormatR16Uint:
+	case TIF_MTLPixelFormatR16Sint:
+	case TIF_MTLPixelFormatR16Float:
+	case TIF_MTLPixelFormatRG8Unorm:
+	case TIF_MTLPixelFormatRG8Snorm:
+	case TIF_MTLPixelFormatRG8Uint:
+	case TIF_MTLPixelFormatRG8Sint:
+	case TIF_MTLPixelFormatR32Uint:
+	case TIF_MTLPixelFormatR32Sint:
+	case TIF_MTLPixelFormatR32Float:
+	case TIF_MTLPixelFormatRG16Unorm:
+	case TIF_MTLPixelFormatRG16Snorm:
+	case TIF_MTLPixelFormatRG16Uint:
+	case TIF_MTLPixelFormatRG16Sint:
+	case TIF_MTLPixelFormatRG16Float:
+	case TIF_MTLPixelFormatRGBA8Unorm:
+	case TIF_MTLPixelFormatRGBA8Unorm_sRGB:
+	case TIF_MTLPixelFormatRGBA8Snorm:
+	case TIF_MTLPixelFormatRGBA8Uint:
+	case TIF_MTLPixelFormatRGBA8Sint:
+	case TIF_MTLPixelFormatBGRA8Unorm:
+	case TIF_MTLPixelFormatBGRA8Unorm_sRGB:
+	case TIF_MTLPixelFormatRGB10A2Unorm:
+	case TIF_MTLPixelFormatRGB10A2Uint:
+	case TIF_MTLPixelFormatRG11B10Float:
+	case TIF_MTLPixelFormatRGB9E5Float:
+	case TIF_MTLPixelFormatBGR10A2Unorm:
+	case TIF_MTLPixelFormatRG32Uint:
+	case TIF_MTLPixelFormatRG32Sint:
+	case TIF_MTLPixelFormatRG32Float:
+	case TIF_MTLPixelFormatRGBA16Unorm:
+	case TIF_MTLPixelFormatRGBA16Snorm:
+	case TIF_MTLPixelFormatRGBA16Uint:
+	case TIF_MTLPixelFormatRGBA16Sint:
+	case TIF_MTLPixelFormatRGBA16Float:
+	case TIF_MTLPixelFormatRGBA32Uint:
+	case TIF_MTLPixelFormatRGBA32Sint:
+	case TIF_MTLPixelFormatRGBA32Float:
+	case TIF_MTLPixelFormatBC1_RGBA:
+	case TIF_MTLPixelFormatBC1_RGBA_sRGB:
+	case TIF_MTLPixelFormatBC2_RGBA:
+	case TIF_MTLPixelFormatBC2_RGBA_sRGB:
+	case TIF_MTLPixelFormatBC3_RGBA:
+	case TIF_MTLPixelFormatBC3_RGBA_sRGB:
+	case TIF_MTLPixelFormatBC4_RUnorm:
+	case TIF_MTLPixelFormatBC4_RSnorm:
+	case TIF_MTLPixelFormatBC5_RGUnorm:
+	case TIF_MTLPixelFormatBC5_RGSnorm:
+	case TIF_MTLPixelFormatBC6H_RGBFloat:
+	case TIF_MTLPixelFormatBC6H_RGBUfloat:
+	case TIF_MTLPixelFormatBC7_RGBAUnorm:
+	case TIF_MTLPixelFormatBC7_RGBAUnorm_sRGB:
+	case TIF_MTLPixelFormatGBGR422:
+	case TIF_MTLPixelFormatBGRG422:
+	case TIF_MTLPixelFormatDepth16Unorm:
+	case TIF_MTLPixelFormatDepth32Float:
+	case TIF_MTLPixelFormatStencil8:
+	case TIF_MTLPixelFormatDepth24Unorm_Stencil8:
+	case TIF_MTLPixelFormatDepth32Float_Stencil8:
+	case TIF_MTLPixelFormatX32_Stencil8:
+	case TIF_MTLPixelFormatX24_Stencil8:
+		return true;
 
+	case TIF_MTLPixelFormatBGRA10_XR:
+	case TIF_MTLPixelFormatBGRA10_XR_sRGB:
+	case TIF_MTLPixelFormatBGR10_XR:
+	case TIF_MTLPixelFormatBGR10_XR_sRGB:
+	case TIF_MTLPixelFormatB5G6R5Unorm:
+	case TIF_MTLPixelFormatA1BGR5Unorm:
+	case TIF_MTLPixelFormatABGR4Unorm:
+	case TIF_MTLPixelFormatBGR5A1Unorm:
+	case TIF_MTLPixelFormatR8Unorm_sRGB:
+	case TIF_MTLPixelFormatRG8Unorm_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGB_2BPP:
+	case TIF_MTLPixelFormatPVRTC_RGB_2BPP_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGB_4BPP:
+	case TIF_MTLPixelFormatPVRTC_RGB_4BPP_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGBA_2BPP:
+	case TIF_MTLPixelFormatPVRTC_RGBA_2BPP_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGBA_4BPP:
+	case TIF_MTLPixelFormatPVRTC_RGBA_4BPP_sRGB:
+	case TIF_MTLPixelFormatEAC_R11Unorm:
+	case TIF_MTLPixelFormatEAC_R11Snorm:
+	case TIF_MTLPixelFormatEAC_RG11Unorm:
+	case TIF_MTLPixelFormatEAC_RG11Snorm:
+	case TIF_MTLPixelFormatEAC_RGBA8:
+	case TIF_MTLPixelFormatEAC_RGBA8_sRGB:
+	case TIF_MTLPixelFormatETC2_RGB8:
+	case TIF_MTLPixelFormatETC2_RGB8_sRGB:
+	case TIF_MTLPixelFormatETC2_RGB8A1:
+	case TIF_MTLPixelFormatETC2_RGB8A1_sRGB:
+	case TIF_MTLPixelFormatASTC_4x4_sRGB:
+	case TIF_MTLPixelFormatASTC_5x4_sRGB:
+	case TIF_MTLPixelFormatASTC_5x5_sRGB:
+	case TIF_MTLPixelFormatASTC_6x5_sRGB:
+	case TIF_MTLPixelFormatASTC_6x6_sRGB:
+	case TIF_MTLPixelFormatASTC_8x5_sRGB:
+	case TIF_MTLPixelFormatASTC_8x6_sRGB:
+	case TIF_MTLPixelFormatASTC_8x8_sRGB:
+	case TIF_MTLPixelFormatASTC_10x5_sRGB:
+	case TIF_MTLPixelFormatASTC_10x6_sRGB:
+	case TIF_MTLPixelFormatASTC_10x8_sRGB:
+	case TIF_MTLPixelFormatASTC_10x10_sRGB:
+	case TIF_MTLPixelFormatASTC_12x10_sRGB:
+	case TIF_MTLPixelFormatASTC_12x12_sRGB:
+	case TIF_MTLPixelFormatASTC_4x4_LDR:
+	case TIF_MTLPixelFormatASTC_5x4_LDR:
+	case TIF_MTLPixelFormatASTC_5x5_LDR:
+	case TIF_MTLPixelFormatASTC_6x5_LDR:
+	case TIF_MTLPixelFormatASTC_6x6_LDR:
+	case TIF_MTLPixelFormatASTC_8x5_LDR:
+	case TIF_MTLPixelFormatASTC_8x6_LDR:
+	case TIF_MTLPixelFormatASTC_8x8_LDR:
+	case TIF_MTLPixelFormatASTC_10x5_LDR:
+	case TIF_MTLPixelFormatASTC_10x6_LDR:
+	case TIF_MTLPixelFormatASTC_10x8_LDR:
+	case TIF_MTLPixelFormatASTC_10x10_LDR:
+	case TIF_MTLPixelFormatASTC_12x10_LDR:
+	case TIF_MTLPixelFormatASTC_12x12_LDR:
+	case TIF_MTLPixelFormatInvalid: return false;
+	}
+}
+
+	)=====";
+	char const* otherEnumsMtl4 = R"=====(
+inline bool TinyImageFormat_MTLPixelFormatOnIOs(TinyImageFormat_MTLPixelFormat fmt) {
+	switch(fmt) {
+	case TIF_MTLPixelFormatA8Unorm:
+	case TIF_MTLPixelFormatR8Unorm:
+	case TIF_MTLPixelFormatR8Snorm:
+	case TIF_MTLPixelFormatR8Uint:
+	case TIF_MTLPixelFormatR8Sint:
+	case TIF_MTLPixelFormatR16Unorm:
+	case TIF_MTLPixelFormatR16Snorm:
+	case TIF_MTLPixelFormatR16Uint:
+	case TIF_MTLPixelFormatR16Sint:
+	case TIF_MTLPixelFormatR16Float:
+	case TIF_MTLPixelFormatRG8Unorm:
+	case TIF_MTLPixelFormatRG8Snorm:
+	case TIF_MTLPixelFormatRG8Uint:
+	case TIF_MTLPixelFormatRG8Sint:
+	case TIF_MTLPixelFormatR32Uint:
+	case TIF_MTLPixelFormatR32Sint:
+	case TIF_MTLPixelFormatR32Float:
+	case TIF_MTLPixelFormatRG16Unorm:
+	case TIF_MTLPixelFormatRG16Snorm:
+	case TIF_MTLPixelFormatRG16Uint:
+	case TIF_MTLPixelFormatRG16Sint:
+	case TIF_MTLPixelFormatRG16Float:
+	case TIF_MTLPixelFormatRGBA8Unorm:
+	case TIF_MTLPixelFormatRGBA8Unorm_sRGB:
+	case TIF_MTLPixelFormatRGBA8Snorm:
+	case TIF_MTLPixelFormatRGBA8Uint:
+	case TIF_MTLPixelFormatRGBA8Sint:
+	case TIF_MTLPixelFormatBGRA8Unorm:
+	case TIF_MTLPixelFormatBGRA8Unorm_sRGB:
+	case TIF_MTLPixelFormatRGB10A2Unorm:
+	case TIF_MTLPixelFormatRGB10A2Uint:
+	case TIF_MTLPixelFormatRG11B10Float:
+	case TIF_MTLPixelFormatRGB9E5Float:
+	case TIF_MTLPixelFormatBGR10A2Unorm:
+	case TIF_MTLPixelFormatRG32Uint:
+	case TIF_MTLPixelFormatRG32Sint:
+	case TIF_MTLPixelFormatRG32Float:
+	case TIF_MTLPixelFormatRGBA16Unorm:
+	case TIF_MTLPixelFormatRGBA16Snorm:
+	case TIF_MTLPixelFormatRGBA16Uint:
+	case TIF_MTLPixelFormatRGBA16Sint:
+	case TIF_MTLPixelFormatRGBA16Float:
+	case TIF_MTLPixelFormatRGBA32Uint:
+	case TIF_MTLPixelFormatRGBA32Sint:
+	case TIF_MTLPixelFormatRGBA32Float:
+	case TIF_MTLPixelFormatGBGR422:
+	case TIF_MTLPixelFormatBGRG422:
+	case TIF_MTLPixelFormatDepth32Float:
+	case TIF_MTLPixelFormatStencil8:
+	case TIF_MTLPixelFormatDepth32Float_Stencil8:
+	case TIF_MTLPixelFormatX32_Stencil8:
+	case TIF_MTLPixelFormatBGRA10_XR:
+	case TIF_MTLPixelFormatBGRA10_XR_sRGB:
+	case TIF_MTLPixelFormatBGR10_XR:
+	case TIF_MTLPixelFormatBGR10_XR_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGB_2BPP:
+	case TIF_MTLPixelFormatPVRTC_RGB_2BPP_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGB_4BPP:
+	case TIF_MTLPixelFormatPVRTC_RGB_4BPP_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGBA_2BPP:
+	case TIF_MTLPixelFormatPVRTC_RGBA_2BPP_sRGB:
+	case TIF_MTLPixelFormatPVRTC_RGBA_4BPP:
+	case TIF_MTLPixelFormatPVRTC_RGBA_4BPP_sRGB:
+	case TIF_MTLPixelFormatEAC_R11Unorm:
+	case TIF_MTLPixelFormatEAC_R11Snorm:
+	case TIF_MTLPixelFormatEAC_RG11Unorm:
+	case TIF_MTLPixelFormatEAC_RG11Snorm:
+	case TIF_MTLPixelFormatEAC_RGBA8:
+	case TIF_MTLPixelFormatEAC_RGBA8_sRGB:
+	case TIF_MTLPixelFormatETC2_RGB8:
+	case TIF_MTLPixelFormatETC2_RGB8_sRGB:
+	case TIF_MTLPixelFormatETC2_RGB8A1:
+	case TIF_MTLPixelFormatETC2_RGB8A1_sRGB:
+	case TIF_MTLPixelFormatASTC_4x4_sRGB:
+	case TIF_MTLPixelFormatASTC_5x4_sRGB:
+	case TIF_MTLPixelFormatASTC_5x5_sRGB:
+	case TIF_MTLPixelFormatASTC_6x5_sRGB:
+	case TIF_MTLPixelFormatASTC_6x6_sRGB:
+	case TIF_MTLPixelFormatASTC_8x5_sRGB:
+	case TIF_MTLPixelFormatASTC_8x6_sRGB:
+	case TIF_MTLPixelFormatASTC_8x8_sRGB:
+	case TIF_MTLPixelFormatASTC_10x5_sRGB:
+	case TIF_MTLPixelFormatASTC_10x6_sRGB:
+	case TIF_MTLPixelFormatASTC_10x8_sRGB:
+	case TIF_MTLPixelFormatASTC_10x10_sRGB:
+	case TIF_MTLPixelFormatASTC_12x10_sRGB:
+	case TIF_MTLPixelFormatASTC_12x12_sRGB:
+	case TIF_MTLPixelFormatASTC_4x4_LDR:
+	case TIF_MTLPixelFormatASTC_5x4_LDR:
+	case TIF_MTLPixelFormatASTC_5x5_LDR:
+	case TIF_MTLPixelFormatASTC_6x5_LDR:
+	case TIF_MTLPixelFormatASTC_6x6_LDR:
+	case TIF_MTLPixelFormatASTC_8x5_LDR:
+	case TIF_MTLPixelFormatASTC_8x6_LDR:
+	case TIF_MTLPixelFormatASTC_8x8_LDR:
+	case TIF_MTLPixelFormatASTC_10x5_LDR:
+	case TIF_MTLPixelFormatASTC_10x6_LDR:
+	case TIF_MTLPixelFormatASTC_10x8_LDR:
+	case TIF_MTLPixelFormatASTC_10x10_LDR:
+	case TIF_MTLPixelFormatASTC_12x10_LDR:
+	case TIF_MTLPixelFormatASTC_12x12_LDR:
+	case TIF_MTLPixelFormatB5G6R5Unorm:
+	case TIF_MTLPixelFormatA1BGR5Unorm:
+	case TIF_MTLPixelFormatABGR4Unorm:
+	case TIF_MTLPixelFormatBGR5A1Unorm:
+	case TIF_MTLPixelFormatR8Unorm_sRGB:
+	case TIF_MTLPixelFormatRG8Unorm_sRGB:
+		return true;
+
+	case TIF_MTLPixelFormatDepth16Unorm:
+	case TIF_MTLPixelFormatDepth24Unorm_Stencil8:
+	case TIF_MTLPixelFormatX24_Stencil8:
+	case TIF_MTLPixelFormatBC1_RGBA:
+	case TIF_MTLPixelFormatBC1_RGBA_sRGB:
+	case TIF_MTLPixelFormatBC2_RGBA:
+	case TIF_MTLPixelFormatBC2_RGBA_sRGB:
+	case TIF_MTLPixelFormatBC3_RGBA:
+	case TIF_MTLPixelFormatBC3_RGBA_sRGB:
+	case TIF_MTLPixelFormatBC4_RUnorm:
+	case TIF_MTLPixelFormatBC4_RSnorm:
+	case TIF_MTLPixelFormatBC5_RGUnorm:
+	case TIF_MTLPixelFormatBC5_RGSnorm:
+	case TIF_MTLPixelFormatBC6H_RGBFloat:
+	case TIF_MTLPixelFormatBC6H_RGBUfloat:
+	case TIF_MTLPixelFormatBC7_RGBAUnorm:
+	case TIF_MTLPixelFormatBC7_RGBAUnorm_sRGB:
+	case TIF_MTLPixelFormatInvalid: return false;
+	}
+}
+	)=====";
 
 	VFile_Write(file, otherEnumsVk0, strlen(otherEnumsVk0));
 	VFile_Write(file, otherEnumsVk1, strlen(otherEnumsVk1));
@@ -1554,6 +1820,8 @@ inline TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPix
 	VFile_Write(file, otherEnumsMtl0, strlen(otherEnumsMtl0));
 	VFile_Write(file, otherEnumsMtl1, strlen(otherEnumsMtl1));
 	VFile_Write(file, otherEnumsMtl2, strlen(otherEnumsMtl2));
+	VFile_Write(file, otherEnumsMtl3, strlen(otherEnumsMtl3));
+	VFile_Write(file, otherEnumsMtl4, strlen(otherEnumsMtl4));
 
 }
 
