@@ -852,7 +852,7 @@ inline TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORM
 	case TIF_DXGI_FORMAT_B8G8R8A8_UNORM: return TinyImageFormat_B8G8R8A8_UNORM;
 	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM: return TinyImageFormat_B8G8R8X8_UNORM;
 	case TIF_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB;
-	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB; // should be X8
+	case TIF_DXGI_FORMAT_B8G8R8X8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB; // WRONG should be X8
 	case TIF_DXGI_FORMAT_BC6H_UF16: return TinyImageFormat_DXBC6H_UFLOAT;
 	case TIF_DXGI_FORMAT_BC6H_SF16: return TinyImageFormat_DXBC6H_SFLOAT;
 	case TIF_DXGI_FORMAT_BC7_UNORM: return TinyImageFormat_DXBC7_UNORM;
@@ -924,8 +924,6 @@ inline TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORM
 
 inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_ToDXGI_FORMAT(TinyImageFormat fmt) {
 	switch (fmt) {
-	case TinyImageFormat_UNDEFINED: return TIF_DXGI_FORMAT_UNKNOWN;
-
 	case TinyImageFormat_R1_UNORM: return TIF_DXGI_FORMAT_R1_UNORM;
 	case TinyImageFormat_R4G4_UNORM: return TIF_DXGI_FORMAT_R4G4_UNORM;
 	case TinyImageFormat_R5G6B5_UNORM: return TIF_DXGI_FORMAT_B5G6R5_UNORM;
