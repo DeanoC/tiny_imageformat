@@ -122,9 +122,9 @@ int main(int argc, char const *argv[]) {
 			"#ifndef  TinyImageFormat_HAVE_POWF\n"
 			"#include <math.h>	// for powf\n"
 			"#endif\n"
+	    "//TinyImageFormat_ASSERT needs to be constexpr on some platforms\n"
 			"#ifndef  TinyImageFormat_ASSERT\n"
-			"#include <assert.h>\n"
-			"#define  TinyImageFormat_ASSERT assert\n"
+			"#define  TinyImageFormat_ASSERT(x)\n"
 			"#endif\n"
 			"\n";
 	char const suffix2[] =
