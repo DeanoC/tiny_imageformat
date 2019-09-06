@@ -109,7 +109,8 @@ bool IsFloat(char const *name, uint64_t v) {
 	}
 
 	if (IsInDepthStencil(name, v)) {
-		v = v >> TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS;
+		v = v >> TinyImageFormat_DEPTH_STENCIL_TYPE_SHIFT;
+
 		for (uint32_t i = 0; i < TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS; ++i) {
 			uint64_t const type = (v & Mask(TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS));
 			if (type == TinyImageFormat_DEPTH_STENCIL_TYPE_SFLOAT)
@@ -146,7 +147,7 @@ bool IsNormalised(char const *name, uint64_t v) {
 	}
 
 	if (IsInDepthStencil(name, v)) {
-		v = v >> TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS;
+		v = v >> TinyImageFormat_DEPTH_STENCIL_TYPE_SHIFT;
 		for (uint32_t i = 0; i < TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS; ++i) {
 			uint64_t const type = (v & Mask(TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS));
 			if (type == TinyImageFormat_DEPTH_STENCIL_TYPE_UNORM)
@@ -215,7 +216,7 @@ bool IsSigned(char const *name, uint64_t v) {
 	}
 
 	if (IsInDepthStencil(name, v)) {
-		v = v >> TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS;
+		v = v >> TinyImageFormat_DEPTH_STENCIL_TYPE_SHIFT;
 		for (uint32_t i = 0; i < TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS; ++i) {
 			uint64_t const type = (v & Mask(TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS));
 			if (type == TinyImageFormat_DEPTH_STENCIL_TYPE_SFLOAT)

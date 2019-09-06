@@ -13,9 +13,10 @@ TEST_CASE("Format Cracker IsDepthOnly (C)", "[Image]") {
 		bool shouldBe = strstr(name, "D16") != nullptr;
 		shouldBe |= strstr(name, "D24") != nullptr;
 		shouldBe |= strstr(name, "D32") != nullptr;
+		shouldBe &= (strstr(name, "S8") == nullptr);
 
 		if (TinyImageFormat_IsDepthOnly(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsDepth failed %s", name);
+			LOGINFOF("TinyImageFormat_IsDepthOnly failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsDepthOnly(fmt) == shouldBe);
 	}
@@ -60,6 +61,7 @@ TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "SFLOAT") != nullptr;
 		shouldBe |= strstr(name, "UFLOAT") != nullptr;
+		shouldBe |= strstr(name, "SBFLOAT") != nullptr;
 
 		if (TinyImageFormat_IsFloat(fmt) != shouldBe) {
 			LOGINFOF("TinyImageFormat_IsFloat failed %s", name);
@@ -75,6 +77,8 @@ TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBeNormalised = strstr(name, "UNORM") != nullptr;
 		shouldBeNormalised |= strstr(name, "SNORM") != nullptr;
+		shouldBeNormalised |= strstr(name, "SRGB") != nullptr;
+
 		if (TinyImageFormat_IsNormalised(fmt) != shouldBeNormalised) {
 			LOGINFOF("TinyImageFormat_IsNormalised failed %s", name);
 		}
@@ -90,6 +94,7 @@ TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
 		shouldBe |= strstr(name, "SSCALED") != nullptr;
 		shouldBe |= strstr(name, "SINT") != nullptr;
 		shouldBe |= strstr(name, "SFLOAT") != nullptr;
+		shouldBe |= strstr(name, "SBFLOAT") != nullptr;
 
 		if (TinyImageFormat_IsSigned(fmt) != shouldBe) {
 			LOGINFOF("TinyImageFormat_IsSigned failed %s", name);
@@ -117,7 +122,11 @@ TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 	for (uint32_t i = 0; i < TinyImageFormat_Count; ++i) {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
-		bool shouldBe = strstr(name, "BLOCK") != nullptr;
+		bool shouldBe = false;
+		shouldBe |=	(strstr(name, "DXBC") != nullptr);
+		shouldBe |=	(strstr(name, "ETC") != nullptr);
+		shouldBe |=	(strstr(name, "PVRTC") != nullptr);
+		shouldBe |=	(strstr(name, "ASTC") != nullptr);
 
 		if (TinyImageFormat_IsCompressed(fmt) != shouldBe) {
 			LOGINFOF("TinyImageFormat_IsCompressed failed %s", name);
