@@ -16,7 +16,7 @@ TEST_CASE("Format Cracker IsDepthOnly (C)", "[Image]") {
 		shouldBe &= (strstr(name, "S8") == nullptr);
 
 		if (TinyImageFormat_IsDepthOnly(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsDepthOnly failed %s", name);
+			LOGINFO("TinyImageFormat_IsDepthOnly failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsDepthOnly(fmt) == shouldBe);
 	}
@@ -31,7 +31,7 @@ TEST_CASE("Format Cracker IsStencilOnly (C)", "[Image]") {
 										(strstr(name, "D") == nullptr);
 
 		if (TinyImageFormat_IsStencilOnly(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsStencilOnly failed %s", name);
+			LOGINFO("TinyImageFormat_IsStencilOnly failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsStencilOnly(fmt) == shouldBe);
 	}
@@ -48,7 +48,7 @@ TEST_CASE("Format Cracker IsDepthAndStencil (C)", "[Image]") {
 		shouldBe &= strstr(name, "S8") != nullptr;
 
 		if (TinyImageFormat_IsDepthAndStencil(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsDepthAndStencil failed %s", name);
+			LOGINFO("TinyImageFormat_IsDepthAndStencil failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsDepthAndStencil(fmt) == shouldBe);
   }
@@ -64,7 +64,7 @@ TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 		shouldBe |= strstr(name, "SBFLOAT") != nullptr;
 
 		if (TinyImageFormat_IsFloat(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsFloat failed %s", name);
+			LOGINFO("TinyImageFormat_IsFloat failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsFloat(fmt) == shouldBe);
   }
@@ -80,7 +80,7 @@ TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 		shouldBeNormalised |= strstr(name, "SRGB") != nullptr;
 
 		if (TinyImageFormat_IsNormalised(fmt) != shouldBeNormalised) {
-			LOGINFOF("TinyImageFormat_IsNormalised failed %s", name);
+			LOGINFO("TinyImageFormat_IsNormalised failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsNormalised(fmt) == shouldBeNormalised);
 	}
@@ -97,7 +97,7 @@ TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
 		shouldBe |= strstr(name, "SBFLOAT") != nullptr;
 
 		if (TinyImageFormat_IsSigned(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsSigned failed %s", name);
+			LOGINFO("TinyImageFormat_IsSigned failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsSigned(fmt) == shouldBe);
   }
@@ -111,7 +111,7 @@ TEST_CASE("Format Cracker IsSRGB (C)", "[Image]") {
 		bool shouldBe = strstr(name, "SRGB") != nullptr;
 
 		if (TinyImageFormat_IsSRGB(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsSRGB failed %s", name);
+			LOGINFO("TinyImageFormat_IsSRGB failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsSRGB(fmt) == shouldBe);
   }
@@ -129,7 +129,7 @@ TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 		shouldBe |=	(strstr(name, "ASTC") != nullptr);
 
 		if (TinyImageFormat_IsCompressed(fmt) != shouldBe) {
-			LOGINFOF("TinyImageFormat_IsCompressed failed %s", name);
+			LOGINFO("TinyImageFormat_IsCompressed failed %s", name);
 		}
 		CHECK(TinyImageFormat_IsCompressed(fmt) == shouldBe);
 	}

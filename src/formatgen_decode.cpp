@@ -146,8 +146,8 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 			case 16:
 			case 32:
 			case 64: break;
-			default: LOGERRORF("unpacked format can only be 8, 16, 32, 64 bits wide per channel: bits encoded as %d",
-												 chanBitWidth);
+				default: LOGERROR("unpacked format can only be 8, 16, 32, 64 bits wide per channel: bits encoded as %d",
+													chanBitWidth);
 				continue;
 			}
 
@@ -326,7 +326,7 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 		break;
 	default:
 		if (bitWidth < 8 || bitWidth > 64) {
-			LOGERRORF("The total bitwidth of a pack pixel must be between 8 and 64 bits: %s has %d", name, bitWidth);
+			LOGERROR("The total bitwidth of a pack pixel must be between 8 and 64 bits: %s has %d", name, bitWidth);
 			return false;
 		}
 	}
