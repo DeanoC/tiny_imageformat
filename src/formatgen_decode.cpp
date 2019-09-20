@@ -739,7 +739,7 @@ void GenDecodeLogicalPixelsD(VFile_Handle file) {
 
 static void GetSRGBTableFuncton(VFile_Handle file) {
 	char const *const prefix =
-			"TIF_CONSTEXPR float TinyImageFormat_LookupSRGB(uint8_t lookup) {\n"
+			"TIF_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {\n"
 			"\tswitch(lookup) {\n";
 	char const *const body = "\t\tcase %d: return %1.8ff;\n";
 	char const *const postfix = "\t\tdefault: return 1.0;\n\t}\n}\n\n";

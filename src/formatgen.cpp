@@ -108,7 +108,7 @@ int main(int argc, char const *argv[]) {
 
 	char const header2[] =
 			"\n"
-	 		"#if __cplusplus\n"
+			"#if __cplusplus > 201402L\n"
 			"#define TIF_CONSTEXPR constexpr\n"
 			"#else\n"
 			"#define TIF_CONSTEXPR\n"
