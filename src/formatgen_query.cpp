@@ -370,6 +370,7 @@ uint32_t SizeOfBlock(char const *name, uint64_t v, uint64_t dim) {
 		case TinyImageFormat_ASTC_SIZE_12: return 12;
 		}
 	}
+
 	if (IsInCLUT(name, v) && dim == 0) {
 		v = v >> TinyImageFormat_CLUT_BLOCKSIZE_SHIFT;
 		auto bs = (TinyImageFormat_CLUT_BlockSize const) (v & Mask(TinyImageFormat_CLUT_BLOCKSIZE_REQUIRED_BITS));
@@ -686,7 +687,7 @@ static uint32_t BitSizeOfBlock(char const *name, uint64_t v) {
 	}
 
 	if (IsInETC(name, v)) {
-		return 32;
+		return 64;
 	}
 
 	if (IsInASTC(name, v)) {
