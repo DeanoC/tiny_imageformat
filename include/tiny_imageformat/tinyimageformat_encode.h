@@ -1433,7 +1433,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 		case TinyImageFormat_E5B9G9R9_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				TinyImageFormat_FloatRGBToRGB9E5AsUint32( (float const*)in, (uint32_t*)out->pixel);
-				out->pixel = (void const*)(((uint32_t const*)out->pixel) + 1);
+				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in += 4;
 			}
 			return true;

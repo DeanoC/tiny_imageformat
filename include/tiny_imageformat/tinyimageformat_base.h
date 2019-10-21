@@ -470,17 +470,17 @@ typedef struct TinyImageFormat_DecodeInput {
 } TinyImageFormat_FetchInput;
 
 typedef struct TinyImageFormat_EncodeOutput {
-	union { void const* pixel; void const* pixelPlane0; };
-	void const* pixelPlane1;
-	void const* pixelPlane2;
-	void const* pixelPlane3;
-	void const* pixelPlane4;
-	void const* pixelPlane5;
-	void const* pixelPlane6;
-	void const* pixelPlane7;
-	void const* pixelPlane8;
-	void const* pixelPlane9;
-} TinyImageFormat_PutOutput;
+	union { void * pixel; void * pixelPlane0; };
+	void * pixelPlane1;
+	void * pixelPlane2;
+	void * pixelPlane3;
+	void * pixelPlane4;
+	void * pixelPlane5;
+	void * pixelPlane6;
+	void * pixelPlane7;
+	void * pixelPlane8;
+	void * pixelPlane9;
+} TinyImageFormat_EncodeOutput;
 
 #endif // TINYIMAGEFORMAT_BASE_H_
 

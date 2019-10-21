@@ -65,17 +65,17 @@ void GenStructs(VFile_Handle file) {
 
 	char const putOutput[] =
 			"typedef struct TinyImageFormat_EncodeOutput {\n"
-			"\tunion { void const* pixel; void const* pixelPlane0; };\n"
-			"\tvoid const* pixelPlane1;\n"
-			"\tvoid const* pixelPlane2;\n"
-			"\tvoid const* pixelPlane3;\n"
-			"\tvoid const* pixelPlane4;\n"
-			"\tvoid const* pixelPlane5;\n"
-			"\tvoid const* pixelPlane6;\n"
-			"\tvoid const* pixelPlane7;\n"
-			"\tvoid const* pixelPlane8;\n"
-			"\tvoid const* pixelPlane9;\n"
-			"} TinyImageFormat_PutOutput;\n\n";
+			"\tunion { void * pixel; void * pixelPlane0; };\n"
+			"\tvoid * pixelPlane1;\n"
+			"\tvoid * pixelPlane2;\n"
+			"\tvoid * pixelPlane3;\n"
+			"\tvoid * pixelPlane4;\n"
+			"\tvoid * pixelPlane5;\n"
+			"\tvoid * pixelPlane6;\n"
+			"\tvoid * pixelPlane7;\n"
+			"\tvoid * pixelPlane8;\n"
+			"\tvoid * pixelPlane9;\n"
+			"} TinyImageFormat_EncodeOutput;\n\n";
 	VFile_Write(file, putOutput, strlen(putOutput));
 
 }

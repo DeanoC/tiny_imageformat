@@ -34,7 +34,7 @@ bool PutLogicalPixelsPacked(char const *name,
 	if (v == (uint64_t)TinyImageFormat::E5B9G9R9_UFLOAT) {
 				if (inputFloatWidth == 32) {
 					char const decoder[] = "\n\t\t\t\tTinyImageFormat_FloatRGBToRGB9E5AsUint32( (float const*)in, (uint32_t*)out->pixel);\n"
-																 "\t\t\t\tout->pixel = (void const*)(((uint32_t const*)out->pixel) + 1);\n"
+																 "\t\t\t\tout->pixel = (void*)(((uint32_t*)out->pixel) + 1);\n"
 																 "\t\t\t\tin += 4;\n";
 					sprintf(output, decoder);
 					return true;
