@@ -31,7 +31,7 @@ pub fn buildFormatGen(b: *Builder, target: CrossTarget, mode: Mode, comptime pre
         "formatgen_query.cpp",
     };
     inline for (csources) |csrc| {
-        exe.addCSourceFile(src_path ++ csrc, &[_][]const u8{});
+        exe.addCSourceFile(src_path ++ csrc, &[_][]const u8{"-std=c++17"});
     }
 
     exe.setTarget(target);

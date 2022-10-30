@@ -1,11 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
-#include "al2o3_vfile/vfile.h"
+#include "vfile.h"
 
-void GenAPIsEnums(VFile_Handle file) {
+void GenAPIsEnums(VFile_Handle file)
+{
 	char const *otherEnumsVk0 = R"=====(
 #ifndef TINYIMAGEFORMAT_VKFORMAT
 #define TINYIMAGEFORMAT_VKFORMAT
@@ -479,7 +481,7 @@ inline TinyImageFormat TinyImageFormat_FromVkFormat(TinyImageFormat_VkFormat fmt
 	return TinyImageFormat_UNDEFINED;
 }
 )=====";
-	char const* otherEnumsVk2 = R"=====(
+	char const *otherEnumsVk2 = R"=====(
 inline TinyImageFormat_VkFormat TinyImageFormat_ToVkFormat(TinyImageFormat fmt) {
 	switch (fmt) {
 
@@ -652,7 +654,7 @@ inline TinyImageFormat_VkFormat TinyImageFormat_ToVkFormat(TinyImageFormat fmt) 
 }
 )=====";
 
-	char const* otherEnumsD3D0 = R"=====(
+	char const *otherEnumsD3D0 = R"=====(
 #ifndef TINYIMAGEFORMAT_DXGIFORMAT
 #define TINYIMAGEFORMAT_DXGIFORMAT
 
@@ -794,7 +796,7 @@ typedef enum TinyImageFormat_DXGI_FORMAT {
 #endif
 
 )=====";
-	char const* otherEnumsD3D1 = R"=====(
+	char const *otherEnumsD3D1 = R"=====(
 inline TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORMAT fmt) {
 	switch (fmt) {
 	case TIF_DXGI_FORMAT_UNKNOWN: return TinyImageFormat_UNDEFINED;
@@ -929,7 +931,7 @@ inline TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORM
 	return TinyImageFormat_UNDEFINED;
 }
 )=====";
-	char const* otherEnumsD3D2 = R"=====(
+	char const *otherEnumsD3D2 = R"=====(
 inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_ToDXGI_FORMAT(TinyImageFormat fmt) {
 	switch (fmt) {
 	case TinyImageFormat_R1_UNORM: return TIF_DXGI_FORMAT_R1_UNORM;
@@ -1017,7 +1019,7 @@ inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_ToDXGI_FORMAT(TinyImageFormat
 	return TIF_DXGI_FORMAT_UNKNOWN;
 }
 )=====";
-	char const* otherEnumsD3D3 = R"=====(
+	char const *otherEnumsD3D3 = R"=====(
 inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless(TinyImageFormat_DXGI_FORMAT fmt) {
 	switch (fmt) {
 	case TIF_DXGI_FORMAT_R32G32B32A32_FLOAT:
@@ -1167,8 +1169,7 @@ inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless(TinyIma
 	return TIF_DXGI_FORMAT_UNKNOWN;
 })=====";
 
-
-	char const* otherEnumsMtl0 = R"=====(
+	char const *otherEnumsMtl0 = R"=====(
 #ifndef TINYIMAGEFORMAT_MTLPIXEL_FORMAT
 #define TINYIMAGEFORMAT_MTLPIXEL_FORMAT
 
@@ -1301,7 +1302,7 @@ typedef enum TinyImageFormat_MTLPixelFormat {
 } TinyImageFormat_MTLPixelFormat;
 #endif
 )=====";
-	char const* otherEnumsMtl1 = R"=====(
+	char const *otherEnumsMtl1 = R"=====(
 inline TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(TinyImageFormat fmt) {
 	switch (fmt) {
 	case TinyImageFormat_A8_UNORM: 									return TIF_MTLPixelFormatA8Unorm;
@@ -1426,7 +1427,7 @@ inline TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(TinyImage
 	return TIF_MTLPixelFormatInvalid;
 }
 )=====";
-	char const* otherEnumsMtl2 = R"=====(
+	char const *otherEnumsMtl2 = R"=====(
 inline TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPixelFormat fmt) {
 	switch (fmt) {
 	case TIF_MTLPixelFormatInvalid: return TinyImageFormat_UNDEFINED;
@@ -1560,7 +1561,7 @@ inline TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPix
 }
 
 )=====";
-	char const* otherEnumsMtl3 = R"=====(
+	char const *otherEnumsMtl3 = R"=====(
 inline bool TinyImageFormat_MTLPixelFormatOnMac(TinyImageFormat_MTLPixelFormat fmt) {
 	switch(fmt) {
 	case TIF_MTLPixelFormatA8Unorm:
@@ -1694,7 +1695,7 @@ inline bool TinyImageFormat_MTLPixelFormatOnMac(TinyImageFormat_MTLPixelFormat f
 }
 
 	)=====";
-	char const* otherEnumsMtl4 = R"=====(
+	char const *otherEnumsMtl4 = R"=====(
 inline bool TinyImageFormat_MTLPixelFormatOnIOs(TinyImageFormat_MTLPixelFormat fmt) {
 	switch(fmt) {
 	case TIF_MTLPixelFormatA8Unorm:
@@ -1840,7 +1841,4 @@ inline bool TinyImageFormat_MTLPixelFormatOnIOs(TinyImageFormat_MTLPixelFormat f
 	VFile_Write(file, otherEnumsMtl2, strlen(otherEnumsMtl2));
 	VFile_Write(file, otherEnumsMtl3, strlen(otherEnumsMtl3));
 	VFile_Write(file, otherEnumsMtl4, strlen(otherEnumsMtl4));
-
 }
-
-
