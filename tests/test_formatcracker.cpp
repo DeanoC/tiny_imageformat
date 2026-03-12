@@ -1,9 +1,14 @@
-#include "al2o3_platform/platform.h"
-#include "al2o3_catch2/catch2.hpp"
+#include <catch2/catch.hpp>
 
+#include "tiny_imageformat/tinyimageformat_apis.h"
 #include "tiny_imageformat/tinyimageformat_base.h"
 #include "tiny_imageformat/tinyimageformat_query.h"
+#include <cstring>
 #include <float.h>
+
+TEST_CASE("Metal RGB10A2Uint maps to UINT", "[Image][APIs]") {
+	REQUIRE(TinyImageFormat_FromMTLPixelFormat(TIF_MTLPixelFormatRGB10A2Uint) == TinyImageFormat_R10G10B10A2_UINT);
+}
 
 TEST_CASE("Format Cracker IsDepthOnly (C)", "[Image]") {
 
@@ -14,10 +19,7 @@ TEST_CASE("Format Cracker IsDepthOnly (C)", "[Image]") {
 		shouldBe |= strstr(name, "D24") != nullptr;
 		shouldBe |= strstr(name, "D32") != nullptr;
 		shouldBe &= (strstr(name, "S8") == nullptr);
-
-		if (TinyImageFormat_IsDepthOnly(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsDepthOnly failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsDepthOnly(fmt) == shouldBe);
 	}
 }
@@ -29,10 +31,7 @@ TEST_CASE("Format Cracker IsStencilOnly (C)", "[Image]") {
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = (strstr(name, "S8") != nullptr) &&
 										(strstr(name, "D") == nullptr);
-
-		if (TinyImageFormat_IsStencilOnly(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsStencilOnly failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsStencilOnly(fmt) == shouldBe);
 	}
 }
@@ -46,10 +45,7 @@ TEST_CASE("Format Cracker IsDepthAndStencil (C)", "[Image]") {
 		shouldBe |= strstr(name, "D24") != nullptr;
 		shouldBe |= strstr(name, "D32") != nullptr;
 		shouldBe &= strstr(name, "S8") != nullptr;
-
-		if (TinyImageFormat_IsDepthAndStencil(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsDepthAndStencil failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsDepthAndStencil(fmt) == shouldBe);
   }
 }
@@ -62,10 +58,7 @@ TEST_CASE("Format Cracker IsFloat (C)", "[Image]") {
 		bool shouldBe = strstr(name, "SFLOAT") != nullptr;
 		shouldBe |= strstr(name, "UFLOAT") != nullptr;
 		shouldBe |= strstr(name, "SBFLOAT") != nullptr;
-
-		if (TinyImageFormat_IsFloat(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsFloat failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsFloat(fmt) == shouldBe);
   }
 }
@@ -78,10 +71,7 @@ TEST_CASE("Format Cracker IsNormalised (C)", "[Image]") {
 		bool shouldBeNormalised = strstr(name, "UNORM") != nullptr;
 		shouldBeNormalised |= strstr(name, "SNORM") != nullptr;
 		shouldBeNormalised |= strstr(name, "SRGB") != nullptr;
-
-		if (TinyImageFormat_IsNormalised(fmt) != shouldBeNormalised) {
-			LOGINFO("TinyImageFormat_IsNormalised failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsNormalised(fmt) == shouldBeNormalised);
 	}
 }
@@ -95,10 +85,7 @@ TEST_CASE("Format Cracker IsSigned (C)", "[Image]") {
 		shouldBe |= strstr(name, "SINT") != nullptr;
 		shouldBe |= strstr(name, "SFLOAT") != nullptr;
 		shouldBe |= strstr(name, "SBFLOAT") != nullptr;
-
-		if (TinyImageFormat_IsSigned(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsSigned failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsSigned(fmt) == shouldBe);
   }
 }
@@ -109,10 +96,7 @@ TEST_CASE("Format Cracker IsSRGB (C)", "[Image]") {
 		TinyImageFormat fmt = (TinyImageFormat) i;
 		char const *name = TinyImageFormat_Name(fmt);
 		bool shouldBe = strstr(name, "SRGB") != nullptr;
-
-		if (TinyImageFormat_IsSRGB(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsSRGB failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsSRGB(fmt) == shouldBe);
   }
 }
@@ -127,10 +111,7 @@ TEST_CASE("Format Cracker IsCompressed (C)", "[Image]") {
 		shouldBe |=	(strstr(name, "ETC") != nullptr);
 		shouldBe |=	(strstr(name, "PVRTC") != nullptr);
 		shouldBe |=	(strstr(name, "ASTC") != nullptr);
-
-		if (TinyImageFormat_IsCompressed(fmt) != shouldBe) {
-			LOGINFO("TinyImageFormat_IsCompressed failed %s", name);
-		}
+		INFO(name);
 		CHECK(TinyImageFormat_IsCompressed(fmt) == shouldBe);
 	}
 }

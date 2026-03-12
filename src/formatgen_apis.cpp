@@ -3,7 +3,7 @@
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
-#include "al2o3_vfile/vfile.h"
+#include "formatgen_io.h"
 
 void GenAPIsEnums(VFile_Handle file) {
 	char const *otherEnumsVk0 = R"=====(
@@ -1465,7 +1465,7 @@ inline TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPix
 	case TIF_MTLPixelFormatRGBA8Sint: return TinyImageFormat_R8G8B8A8_SINT;
 	case TIF_MTLPixelFormatBGRA8Unorm: return TinyImageFormat_B8G8R8A8_UNORM;
 	case TIF_MTLPixelFormatRGB10A2Unorm: return TinyImageFormat_R10G10B10A2_UNORM;
-	case TIF_MTLPixelFormatRGB10A2Uint: return TinyImageFormat_R10G10B10A2_UNORM;
+	case TIF_MTLPixelFormatRGB10A2Uint: return TinyImageFormat_R10G10B10A2_UINT;
 	case TIF_MTLPixelFormatRG11B10Float: return TinyImageFormat_B10G11R11_UFLOAT;
 	case TIF_MTLPixelFormatRGB9E5Float: return TinyImageFormat_E5B9G9R9_UFLOAT;
 	case TIF_MTLPixelFormatBGR10A2Unorm: return TinyImageFormat_B10G10R10A2_UNORM;

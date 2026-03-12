@@ -1,74 +1,67 @@
-cmake_minimum_required(VERSION 3.12.4)
-get_directory_property(hasParent PARENT_DIRECTORY)
-if(NOT hasParent)
-	option(unittests "unittests" OFF)
-	get_filename_component(_PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
-	set_property(GLOBAL PROPERTY GLOBAL_FETCHDEPS_BASE ${_PARENT_DIR}/al2o3 )
-	include(FetchContent)
-	FetchContent_Declare( al2o3 GIT_REPOSITORY https://github.com/DeanoC/al2o3 GIT_TAG master )
-	FetchContent_GetProperties(al2o3)
-	if(NOT al2o3_POPULATED)
-		FetchContent_Populate(al2o3)
-		add_subdirectory(${al2o3_SOURCE_DIR} ${al2o3_BINARY_DIR})
-	endif()
-	INIT_AL2O3(${CMAKE_CURRENT_SOURCE_DIR})
-endif ()
+cmake_minimum_required(VERSION 3.14)
 
-SET_MIN_VERSIONS()
-set(LibName tiny_imageformat)
-project(${LibName})
+project(tiny_imageformat LANGUAGES C CXX)
 
-set(MAKE_GENERATOR TRUE)
+option(MAKE_GENERATOR "Build the header generator" ON)
+option(unittests "Build unit tests" OFF)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(tiny_imageformat STATIC
+	src/dummy.c
+)
+
+target_include_directories(tiny_imageformat
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MAKE_GENERATOR)
-	set(GeneratorSrc
-			src/formatgen.cpp
-			src/formatgen_base.cpp
-			src/formatgen_apis.cpp
-			src/formatgen_query.cpp
-			src/formatgen_decode.cpp
-			src/formatgen_encode.cpp
-			src/formatgen.h
-			src/formatgen_func.h
-			src/formatgen_macros.h
+	add_executable(generate_tiny_imageformat
+		src/formatgen.cpp
+		src/formatgen_base.cpp
+		src/formatgen_apis.cpp
+		src/formatgen_query.cpp
+		src/formatgen_decode.cpp
+		src/formatgen_encode.cpp
+	)
 
-			src/queryhelpers.h
-			src/decodehelpers.h
-			src/encodehelpers.h
-
-			src/doc.h
-			)
-
-	set(GeneratorDeps
-			al2o3_platform
-			al2o3_cmath
-			al2o3_os
-			al2o3_vfile
-			)
-	ADD_CONSOLE_APP(generate_${LibName} "${GeneratorSrc}" "${GeneratorDeps}")
+	target_include_directories(generate_tiny_imageformat
+		PRIVATE
+			${CMAKE_CURRENT_SOURCE_DIR}/include
+			${CMAKE_CURRENT_SOURCE_DIR}/src
+	)
 endif()
 
-set(Interface
-		tinyimageformat_base.h
-		tinyimageformat_apis.h
-		tinyimageformat_bits.h
-		tinyimageformat_decode.h
-		tinyimageformat_encode.h
-		tinyimageformat_query.h
-		)
-set(Src
-		dummy.c)
+if(unittests)
+	include(FetchContent)
 
-set(Deps
-		)
-ADD_LIB(${LibName} "${Interface}" "${Src}" "${Deps}")
+	FetchContent_Declare(
+		Catch2
+		GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+		GIT_TAG v2.13.10
+	)
+	FetchContent_MakeAvailable(Catch2)
 
-set( Tests
-		runner.cpp
-		test_formatcracker.cpp
-		)
-set( TestDeps
-		al2o3_catch2
-		utils_simple_logmanager
-		)
-ADD_LIB_TESTS(${LibName} "${Interface}" "${Tests}" "${TestDeps}")
+	enable_testing()
 
+	add_executable(test_tiny_imageformat
+		tests/runner.cpp
+		tests/test_formatcracker.cpp
+	)
+
+	target_include_directories(test_tiny_imageformat
+		PRIVATE
+			${CMAKE_CURRENT_SOURCE_DIR}/include
+	)
+
+	target_link_libraries(test_tiny_imageformat
+		PRIVATE
+			tiny_imageformat
+			Catch2::Catch2
+	)
+
+	add_test(NAME test_tiny_imageformat COMMAND test_tiny_imageformat)
+endif()

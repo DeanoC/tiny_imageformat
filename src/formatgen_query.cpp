@@ -5,7 +5,7 @@
 #include <inttypes.h>
 #include <cfloat>
 #include <cmath>
-#include "al2o3_vfile/vfile.h"
+#include "formatgen_io.h"
 #include "../include/tiny_imageformat/tinyimageformat_bits.h"
 #include "formatgen.h"
 
